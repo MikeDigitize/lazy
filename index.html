@@ -9,53 +9,58 @@
 			margin: 20px auto;
 			width: 100%;
 		}
+		.lazy-holder {
+			min-width: 320px;
+			min-height: 240px;
+			border: 1px solid #ededed;
+		}
 	</style>
 </head>
 <body>
 
 	<div class="container">
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/bb.png">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/earth.jpg">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/light.jpg">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/logo.png">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/maths.jpg">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/me.jpg">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/planet.png">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/rampant.jpg">
   		</div>
   	</div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<img data-src="images/red-planet.png">
   		</div>
   	</div>
@@ -72,19 +77,19 @@
 				const result = { loaded: true };
 
 				function onLoad() {
-					removeListeners(lazyImage);
+					removeListeners();
 					resolve(result);
 				}
 
 				function onError() {
-					removeListeners(lazyImage);
+					removeListeners();
 					result.loaded = false;
 					resolve(result);
 				}
 
-				function removeListeners(img) {
-					img.removeEventListener('load', onLoad);
-					img.removeEventListener('error', onError);
+				function removeListeners() {
+					lazyImage.removeEventListener('load', onLoad);
+					lazyImage.removeEventListener('error', onError);
 				}
 
 				lazyImage.addEventListener('load', onLoad);
@@ -149,41 +154,47 @@
 
 		})();
 
-		// function onCrazyShit1() {
-		// 	console.log('CRAZY1!!')
-		// }
-		// function onCrazyShit2() {
-		// 	console.log('CRAZY2!!')
-		// }
 
-		// const remove1 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit1);
-		// const remove2 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit2);
+		/////////////////////////////////////////////////////////////////////////////////////
 
-		// pubsub.pub('SOME_CRAZY_SHIT');
-
-		// remove2();
-
-		// pubsub.pub('SOME_CRAZY_SHIT');
-
-		// remove1();
-
-		// pubsub.pub('SOME_CRAZY_SHIT');
-
-		function getLazyImages() {
+		function getLazyImages(selector) {
 			return Array
-							.from(document.querySelectorAll('[data-src]'))
-							.map(image => ({ image, src: image.dataset.src}));
+							.from(document.querySelectorAll(selector))
+							.map(holder => ({ holder, image: holder.querySelector('[data-src]') }))
+							.map(holder => ({ src: holder.image.dataset.src, ...holder }));
 		}
 
-		function getImagePosition(img) {
-			return img.getBoundingClientRect();
+		function getHolderPosition(holder) {
+			return holder.getBoundingClientRect();
 		}
 
-		const lazyImages = getLazyImages().map(img => ({ pos: getImagePosition(img.image), ...img }));
+		const lazyImages = getLazyImages('.lazy-holder').map(img => ({ holderPos: getHolderPosition(img.holder), ...img }));
+
+		function getScrollPosition() {
+			const x = window.scrollX;
+			const y = window.scrollY;
+			return { x, y };
+		}
+
+		function getWindowSize() {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			return { width, height };
+		}
+
+		function loadImagesInView(images) {
+			let { x, y } = getScrollPosition();
+			const { width, height } = getWindowSize();
+			return {
+
+			}
+		}
+
+		console.log(lazyImages)
 		
-		Promise.all(lazyImages.map(img => showImage(img.image, img.src))).then(function(result) {
-			console.log(result);
-		});
+		// Promise.all(lazyImages.map(img => showImage(img.image, img.src))).then(function(result) {
+		// 	console.log(result);
+		// });
 
 	</script>
 </body>
