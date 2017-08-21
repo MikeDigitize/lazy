@@ -2,24 +2,65 @@
 <html>
 <head>
 	<title>Lazy</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<style type="text/css">
 		img {
 			display: block;
 			margin: 20px auto;
+			width: 100%;
 		}
 	</style>
 </head>
 <body>
+
+	<div class="container">
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/bb.png">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/earth.jpg">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/light.jpg">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/logo.png">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/maths.jpg">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/me.jpg">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/planet.png">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/rampant.jpg">
+  		</div>
+  	</div>
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+  			<img data-src="images/red-planet.png">
+  		</div>
+  	</div>
+	</div>
 	
-	<img data-src="images/bb.png">
-	<img data-src="images/earth.jpg">
-	<img data-src="images/light.jpg">
-	<img data-src="images/logo.png">
-	<img data-src="images/maths.jpg">
-	<img data-src="images/me.jpg">
-	<img data-src="images/planet.png">
-	<img data-src="images/rampant.png">
-	<img data-src="images/red-planet.png">
 
 	<script type="text/javascript">
 
@@ -64,6 +105,7 @@
 					const { loaded } = result;
 					
 					if(loaded) {
+						// don't tie to image element - picture and CSS backgrounds too
 						image.src = src;
 					}
 					else {
@@ -107,25 +149,25 @@
 
 		})();
 
-		function onCrazyShit1() {
-			console.log('CRAZY1!!')
-		}
-		function onCrazyShit2() {
-			console.log('CRAZY2!!')
-		}
+		// function onCrazyShit1() {
+		// 	console.log('CRAZY1!!')
+		// }
+		// function onCrazyShit2() {
+		// 	console.log('CRAZY2!!')
+		// }
 
-		const remove1 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit1);
-		const remove2 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit2);
+		// const remove1 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit1);
+		// const remove2 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit2);
 
-		pubsub.pub('SOME_CRAZY_SHIT');
+		// pubsub.pub('SOME_CRAZY_SHIT');
 
-		remove2();
+		// remove2();
 
-		pubsub.pub('SOME_CRAZY_SHIT');
+		// pubsub.pub('SOME_CRAZY_SHIT');
 
-		remove1();
+		// remove1();
 
-		pubsub.pub('SOME_CRAZY_SHIT');
+		// pubsub.pub('SOME_CRAZY_SHIT');
 
 		function getLazyImages() {
 			return Array
@@ -138,9 +180,8 @@
 		}
 
 		const lazyImages = getLazyImages().map(img => ({ pos: getImagePosition(img.image), ...img }));
-		console.log(lazyImages);
-
-		showImage(lazyImages[0].image, lazyImages[0].src).then(function(result) {
+		
+		Promise.all(lazyImages.map(img => showImage(img.image, img.src))).then(function(result) {
 			console.log(result);
 		});
 
