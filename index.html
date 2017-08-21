@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lazy</title>
+	<style type="text/css">
+		img {
+			display: block;
+			margin: 20px auto;
+		}
+	</style>
+</head>
+<body>
+	
+	<img data-src="images/bb.png">
+	<img data-src="images/earth.jpg">
+	<img data-src="images/light.jpg">
+	<img data-src="images/logo.png">
+	<img data-src="images/maths.jpg">
+	<img data-src="images/me.jpg">
+	<img data-src="images/planet.png">
+	<img data-src="images/rampant.png">
+	<img data-src="images/red-planet.png">
+
+	<script type="text/javascript">
+
+		function loadImage(src) {
+
+			return new Promise(function(resolve) {
+
+				const lazyImage = new Image();
+				const result = { loaded: true };
+
+				function onLoad() {
+					removeListeners(lazyImage);
+					resolve(result);
+				}
+
+				function onError() {
+					removeListeners(lazyImage);
+					result.loaded = false;
+					resolve(result);
+				}
+
+				function removeListeners(img) {
+					img.removeEventListener('load', onLoad);
+					img.removeEventListener('error', onError);
+				}
+
+				lazyImage.addEventListener('load', onLoad);
+				lazyImage.addEventListener('error', onError);
+
+				lazyImage.src = src;
+
+			});
+
+		}
+
+		function showImage(image, src) {
+
+			return new Promise(function(resolve) {
+
+				loadImage(src).then(function(result) {		
+
+					const { loaded } = result;
+					
+					if(loaded) {
+						image.src = src;
+					}
+					else {
+						// handle unloadable images here
+					}
+
+					resolve({ image, src, loaded });
+
+				});
+
+			});
+
+		}
+
+		const pubsub = (function() {
+
+			let events = [];
+
+			return {
+				pub(event) {
+
+					events.forEach(function(e) {
+						if(e.event === event) {
+							e.callback();
+						}
+					});
+
+				},
+				sub(event, callback) {
+
+					events.push({ event, callback });
+					return function() {
+						const index = events.findIndex(function(e) {
+							return e.event === event && e.callback === callback;
+						});
+						events.splice(index, 1);
+					}
+
+				}
+			}
+
+		})();
+
+		function onCrazyShit1() {
+			console.log('CRAZY1!!')
+		}
+		function onCrazyShit2() {
+			console.log('CRAZY2!!')
+		}
+
+		const remove1 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit1);
+		const remove2 = pubsub.sub('SOME_CRAZY_SHIT', onCrazyShit2);
+
+		pubsub.pub('SOME_CRAZY_SHIT');
+
+		remove2();
+
+		pubsub.pub('SOME_CRAZY_SHIT');
+
+		remove1();
+
+		pubsub.pub('SOME_CRAZY_SHIT');
+
+		function getLazyImages() {
+			return Array
+							.from(document.querySelectorAll('[data-src]'))
+							.map(image => ({ image, src: image.dataset.src}));
+		}
+
+		function getImagePosition(img) {
+			return img.getBoundingClientRect();
+		}
+
+		const lazyImages = getLazyImages().map(img => ({ pos: getImagePosition(img.image), ...img }));
+		console.log(lazyImages);
+
+		showImage(lazyImages[0].image, lazyImages[0].src).then(function(result) {
+			console.log(result);
+		});
+
+	</script>
+</body>
+</html>
