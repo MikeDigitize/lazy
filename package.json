@@ -1,0 +1,27 @@
+{
+  "name": "lazy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MikeDigitize/lazy",
+  "author": "Mike Chadwick <chad_01@hotmail.co.uk>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack"
+  },
+  "dependencies": {
+    "jest": "^20.0.4",
+    "webpack": "^3.5.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
+  },
+  "babel": {
+    "presets": [
+       ["env"]
+    ],
+    "plugins": ["transform-object-rest-spread"]
+  }
+}

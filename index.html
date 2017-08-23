@@ -66,153 +66,13 @@
   	</div>
 	</div>
 	
-
+	<script type="text/javascript" src="js/lazy.min.js"></script>
 	<script type="text/javascript">
 
-		function loadImage(src) {
-
-			return new Promise(function(resolve) {
-
-				const lazyImage = new Image();
-				const result = { loaded: true };
-
-				function onLoad() {
-					removeListeners();
-					resolve(result);
-				}
-
-				function onError() {
-					removeListeners();
-					result.loaded = false;
-					resolve(result);
-				}
-
-				function removeListeners() {
-					lazyImage.removeEventListener('load', onLoad);
-					lazyImage.removeEventListener('error', onError);
-				}
-
-				lazyImage.addEventListener('load', onLoad);
-				lazyImage.addEventListener('error', onError);
-
-				lazyImage.src = src;
-
-			});
-
-		}
-
-		function showImage(imageData) {
-
-			let { image, src, loaded } = imageData;
-
-			return new Promise(function(resolve) {
-
-				loadImage(src).then(function(result) {		
-
-					const { loaded } = result;
-					
-					if(loaded) {
-						// don't tie to image element - picture and CSS backgrounds too
-						image.src = src;
-						imageData.loaded = true;
-					}
-					else {
-						// handle unloadable images here
-					}
-
-					resolve(imageData);
-
-				});
-
-			});
-
-		}
-
-		const pubsub = (function() {
-
-			let events = [];
-
-			return {
-				pub(event, data) {
-
-					events.forEach(function(e) {
-						if(e.event === event) {
-							e.callback(data);
-						}
-					});
-
-				},
-				sub(event, callback) {
-
-					events.push({ event, callback });
-					return function() {
-						const index = events.findIndex(function(e) {
-							return e.event === event && e.callback === callback;
-						});
-						events.splice(index, 1);
-					}
-
-				}
-			}
-
-		})();
-
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		function getLazyImages(selector) {
-			return Array
-							.from(document.querySelectorAll(selector))
-							.map(holder => ({ holder, image: holder.querySelector('[data-src]') }))
-							.map(holder => ({ src: holder.image.dataset.src, loaded: false,  ...holder }))
-		}
-
-		function getLazyImagesPositions(selector) {
-			const lazyImages = getLazyImages(selector);
-			return lazyImages.map(image => ({ holderPosition: getHolderPosition(image.holder), ...image }));
-		}
-
-		function getHolderPosition(holder) {
-			return holder.getBoundingClientRect();
-		}
-
-		function getScrollPosition() {
-			const x = window.scrollX;
-			const y = window.scrollY;
-			return { x, y };
-		}
-
-		function getWindowSize() {
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			return { width, height };
-		}
-
-		function getWindowBoundaries() {
-			const { y } = getScrollPosition();
-			const { height } = getWindowSize();
-			const yTop = y;
-			const yBottom = y + height;
-			return { yTop, yBottom	};
-		}
-
-		function getImagesInView(images) {
-			const { yTop, yBottom } = getWindowBoundaries();
-			const unloadedImages = getUnloadedImages(images);
-			return unloadedImages.filter(image => image.holderPosition.top >= yTop && image.holderPosition.bottom <= yBottom);
-		}
-
-		function getUnloadedImages(images) {
-			return images.filter(image => !image.loaded);
-		}
-
-		function loadImagesInView(images) {
-			const imagesInView = getImagesInView(images);
-			return Promise.all(imagesInView.map(image => showImage(image)));
-		}
-
+		let lazyImages = getLazyImagesPositions('.lazy-holder');
+		
 		window.addEventListener('scroll', function onScroll() {			
-			
+	
 			loadImagesInView(lazyImages).then(function(results) {
 				lazyImages = getUnloadedImages(lazyImages);
 				if(!lazyImages.length) {
@@ -222,8 +82,6 @@
 			});			
 
 		});
-
-		let lazyImages = getLazyImagesPositions('.lazy-holder')
 		
 	</script>
 </body>
