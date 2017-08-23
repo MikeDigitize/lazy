@@ -101,7 +101,9 @@
 
 		}
 
-		function showImage(image, src) {
+		function showImage(imageData) {
+
+			let { image, src, loaded } = imageData;
 
 			return new Promise(function(resolve) {
 
@@ -112,12 +114,13 @@
 					if(loaded) {
 						// don't tie to image element - picture and CSS backgrounds too
 						image.src = src;
+						imageData.loaded = true;
 					}
 					else {
 						// handle unloadable images here
 					}
 
-					resolve({ image, src, loaded });
+					resolve(imageData);
 
 				});
 
@@ -130,11 +133,11 @@
 			let events = [];
 
 			return {
-				pub(event) {
+				pub(event, data) {
 
 					events.forEach(function(e) {
 						if(e.event === event) {
-							e.callback();
+							e.callback(data);
 						}
 					});
 
@@ -161,14 +164,17 @@
 			return Array
 							.from(document.querySelectorAll(selector))
 							.map(holder => ({ holder, image: holder.querySelector('[data-src]') }))
-							.map(holder => ({ src: holder.image.dataset.src, ...holder }));
+							.map(holder => ({ src: holder.image.dataset.src, loaded: false,  ...holder }))
+		}
+
+		function getLazyImagesPositions(selector) {
+			const lazyImages = getLazyImages(selector);
+			return lazyImages.map(image => ({ holderPosition: getHolderPosition(image.holder), ...image }));
 		}
 
 		function getHolderPosition(holder) {
 			return holder.getBoundingClientRect();
 		}
-
-		const lazyImages = getLazyImages('.lazy-holder').map(img => ({ holderPos: getHolderPosition(img.holder), ...img }));
 
 		function getScrollPosition() {
 			const x = window.scrollX;
@@ -182,20 +188,43 @@
 			return { width, height };
 		}
 
-		function loadImagesInView(images) {
-			let { x, y } = getScrollPosition();
-			const { width, height } = getWindowSize();
-			return {
-
-			}
+		function getWindowBoundaries() {
+			const { y } = getScrollPosition();
+			const { height } = getWindowSize();
+			const yTop = y;
+			const yBottom = y + height;
+			return { yTop, yBottom	};
 		}
 
-		console.log(lazyImages)
-		
-		// Promise.all(lazyImages.map(img => showImage(img.image, img.src))).then(function(result) {
-		// 	console.log(result);
-		// });
+		function getImagesInView(images) {
+			const { yTop, yBottom } = getWindowBoundaries();
+			const unloadedImages = getUnloadedImages(images);
+			return unloadedImages.filter(image => image.holderPosition.top >= yTop && image.holderPosition.bottom <= yBottom);
+		}
 
+		function getUnloadedImages(images) {
+			return images.filter(image => !image.loaded);
+		}
+
+		function loadImagesInView(images) {
+			const imagesInView = getImagesInView(images);
+			return Promise.all(imagesInView.map(image => showImage(image)));
+		}
+
+		window.addEventListener('scroll', function onScroll() {			
+			
+			loadImagesInView(lazyImages).then(function(results) {
+				lazyImages = getUnloadedImages(lazyImages);
+				if(!lazyImages.length) {
+					console.log('all loaded');
+					window.removeEventListener('scroll', onScroll);
+				}
+			});			
+
+		});
+
+		let lazyImages = getLazyImagesPositions('.lazy-holder')
+		
 	</script>
 </body>
 </html>
