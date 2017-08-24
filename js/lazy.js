@@ -2,8 +2,10 @@ const lazy = require('scroll-detection');
 const { 
 	getLazyImagesPositions,
 	getUnloadedImages,
-	loadImagesInView } = lazy;
+	loadImagesInView,
+	getImagePositions } = lazy;
 
 window.getLazyImagesPositions = getLazyImagesPositions;
 window.getUnloadedImages = getUnloadedImages;
 window.loadImagesInView = loadImagesInView;
+window.getImagePositions = getImagePositions;

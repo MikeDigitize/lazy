@@ -70,18 +70,23 @@
 	<script type="text/javascript">
 
 		let lazyImages = getLazyImagesPositions('.lazy-holder');
-		
-		window.addEventListener('scroll', function onScroll() {			
-	
-			loadImagesInView(lazyImages).then(function(results) {
-				lazyImages = getUnloadedImages(lazyImages);
-				if(!lazyImages.length) {
-					console.log('all loaded');
-					window.removeEventListener('scroll', onScroll);
-				}
-			});			
 
-		});
+		function showImages() {			
+	
+			setTimeout(function() {
+				loadImagesInView(lazyImages).then(function(results) {
+					lazyImages = getImagePositions(lazyImages);
+					lazyImages = getUnloadedImages(lazyImages);
+					if(!lazyImages.length) {
+						console.log('all loaded');
+						window.removeEventListener('scroll', showImages);
+					}
+				});		
+			}, 0)
+		}
+
+		document.addEventListener('DOMContentLoaded', showImages);		
+		window.addEventListener('scroll', showImages);
 		
 	</script>
 </body>

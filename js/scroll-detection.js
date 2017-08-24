@@ -6,7 +6,11 @@ const {
 
 function getLazyImagesPositions(selector) {
 	const lazyImages = getLazyImages(selector);
-	return lazyImages.map(image => ({ holderPosition: getHolderPosition(image.holder), ...image }));
+	return getImagePositions(lazyImages);
+}
+
+function getImagePositions(images) {
+	return images.map(image => ({ holderPosition: getHolderPosition(image.holder), ...image }));
 }
 
 function getHolderPosition(holder) {
@@ -51,5 +55,6 @@ function loadImagesInView(images) {
 module.exports = {
 	getLazyImagesPositions,
 	getUnloadedImages,
-	loadImagesInView
+	loadImagesInView,
+	getImagePositions
 };
