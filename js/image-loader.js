@@ -7,8 +7,15 @@
 function getLazyImages(selector) {
 	return Array
 					.from(document.querySelectorAll(selector))
-					.map(holder => ({ holder, image: holder.querySelector('[data-src]') }))
-					.map(holder => ({ src: holder.image.dataset.src, loaded: false,  ...holder }));
+					.map(holder => ({ 
+						holder, 
+						image: holder.querySelector('[data-src]') 
+					}))
+					.map(holder => ({ 
+						src: holder.image.getAttribute('data-src'), 
+						loaded: false,  
+						...holder 
+					}));
 }
 
 function loadImage(src) {

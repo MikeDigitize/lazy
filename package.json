@@ -6,7 +6,8 @@
   "author": "Mike Chadwick <chad_01@hotmail.co.uk>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack"
+    "dev": "webpack",
+    "test": "jest --watch"
   },
   "dependencies": {
     "jest": "^20.0.4",
@@ -19,9 +20,7 @@
     "babel-preset-env": "^1.6.0"
   },
   "babel": {
-    "presets": [
-       ["env"]
-    ],
+    "presets": [["env"]],
     "plugins": ["transform-object-rest-spread"]
   }
 }
