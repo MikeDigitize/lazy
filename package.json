@@ -6,7 +6,7 @@
   "author": "Mike Chadwick <chad_01@hotmail.co.uk>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack",
+    "start": "webpack",
     "test": "jest --watch"
   },
   "dependencies": {

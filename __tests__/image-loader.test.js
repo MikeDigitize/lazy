@@ -1,36 +1,28 @@
 const imageLoader = require('../js/image-loader');
+const helpers = require('../js/test-helpers');
+
 const {
 	showImage,
 	loadImage,
 	getLazyImages
 } = imageLoader;
 
-const holderSelector = 'holder';
-const imagePath = '../images/bb.png';
-const imagePath2 = '../images/earth.jpg';
-const imagePath3 = '../images/light.jpg';
-const imagePath4 = '../images/logo.png';
-
-function createDom(src) {
-	const holder = document.createElement('div');
-	const image = document.createElement('image');
-	holder.classList.add(holderSelector);
-	image.setAttribute('data-src', src);
-	holder.appendChild(image);
-	document.body.appendChild(holder);
-}
+const {
+	holderSelector,
+	imagePath,
+	imagePath2,
+	imagePath3,
+	imagePath4,
+	createDom,
+	cleanUpDom
+} = helpers;
 
 describe('Get lazy images from DOM test', function() {
 
 	console.log('getLazyImages expects a selector for an image container with an image inside');
 	console.log('the image should have an empty src attribute and a data-src attribute with the image path');
 
-	afterEach(function() {
-		const holders = Array.from(document.querySelectorAll(`.${holderSelector}`));
-		holders.forEach(function(holder) {
-			holder.parentNode.removeChild(holder);
-		});
-	});
+	afterEach(cleanUpDom);
 
 	test('getLazyImages retrieves an array of a single item matching a selector in DOM', function() {
 		
@@ -54,13 +46,13 @@ describe('Get lazy images from DOM test', function() {
 
 	test('getLazyImages returns an object containing properties describing the state of the lazy load item', function() {
 		
-		createDom(imagePath);
+		const { image, holder } = createDom(imagePath);
 		const lazyImages = getLazyImages(`.${holderSelector}`);
 		const [lazyImage] = lazyImages;
 
 		expect(Object.keys(lazyImage)).toHaveLength(4);
-		expect(lazyImage).toHaveProperty('holder');
-		expect(lazyImage).toHaveProperty('image');
+		expect(lazyImage).toHaveProperty('holder', holder);
+		expect(lazyImage).toHaveProperty('image', image);
 		expect(lazyImage).toHaveProperty('src', imagePath);
 		expect(lazyImage).toHaveProperty('loaded', false);
 
