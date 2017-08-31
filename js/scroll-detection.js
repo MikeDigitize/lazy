@@ -40,7 +40,11 @@ function getWindowBoundaries() {
 function getImagesInView(images) {
 	const { yTop, yBottom } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
-	return unloadedImages.filter(image => image.holderPosition.top >= yTop && image.holderPosition.bottom <= yBottom);
+	return unloadedImages.filter(image => isInViewVertically(image.holderPosition.top, yTop, image.holderPosition.bottom, yBottom));
+}
+
+function isInViewVertically(posYtop, windowYtop, posYbottom, windowYbottom) {
+	return posYtop >= windowYtop && posYbottom <= windowYbottom;
 }
 
 function getUnloadedImages(images) {
@@ -56,5 +60,6 @@ module.exports = {
 	getLazyImagesPositions,
 	getUnloadedImages,
 	loadImagesInView,
-	getImagePositions
+	getImagePositions,
+	isInViewVertically
 };
