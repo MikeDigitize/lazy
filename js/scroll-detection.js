@@ -1,16 +1,20 @@
-const lazy = require('./image-loader');
-const { 
-	showImage,
-	loadImage, 
-	getLazyImages } = lazy;
+const { LazyLoad } = require('./lazy');
+const { debounce } = require('./debounce');
 
-function getLazyImagesPositions(selector) {
-	const lazyImages = getLazyImages(selector);
-	return getImagePositions(lazyImages);
+class LazyScroll extends LazyLoad {
+	constructor(selector, eventName) {
+		super(selector, eventName);
+		this.images = getLazyImagePositions(this.images);
+		window.addEventListener('scroll', debounce(testImages.bind(this), 100));
+		window.addEventListener('DOMContentLoaded', testImages.bind(this));
+	}
 }
 
-function getImagePositions(images) {
-	return images.map(image => ({ holderPosition: getHolderPosition(image.holder), ...image }));
+function testImages() {
+	console.log(getImagesInView(this.images));
+}
+function getLazyImagePositions(images) {
+	return images.map(lazyImage => ({ imagePosition: getHolderPosition(lazyImage.image), ...lazyImage }));
 }
 
 function getHolderPosition(holder) {
@@ -30,36 +34,32 @@ function getWindowSize() {
 }
 
 function getWindowBoundaries() {
-	const { y } = getScrollPosition();
-	const { height } = getWindowSize();
-	const yTop = y;
-	const yBottom = y + height;
-	return { yTop, yBottom	};
-}
-
-function getImagesInView(images) {
-	const { yTop, yBottom } = getWindowBoundaries();
-	const unloadedImages = getUnloadedImages(images);
-	return unloadedImages.filter(image => isInViewVertically(image.holderPosition.top, yTop, image.holderPosition.bottom, yBottom));
-}
-
-function isInViewVertically(posYtop, windowYtop, posYbottom, windowYbottom) {
-	return posYtop >= windowYtop && posYbottom <= windowYbottom;
+	const { x, y } = getScrollPosition();
+	const { width, height } = getWindowSize();
+	const xMin = x;
+	const xMax = x + width;
+	const yMin = y;
+	const yMax = y + height;
+	return { xMin, xMax, yMin, yMax };
 }
 
 function getUnloadedImages(images) {
-	return images.filter(image => !image.loaded);
+	return images.filter(lazyImage => !lazyImage.loaded);
 }
 
-function loadImagesInView(images) {
-	const imagesInView = getImagesInView(images);
-	return Promise.all(imagesInView.map(image => showImage(image)));
+function getImagesInView(images) {
+	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
+	const unloadedImages = getUnloadedImages(images);
+	return unloadedImages.filter(lazyImage => {
+		const { top, bottom } = lazyImage.imagePosition;
+		return isInViewVertically(top, yMin, bottom, yMax);
+	});
+}
+function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {
+	//console.log('posYmin:', posYmin, 'windowYmin:', windowYmin, 'posYmax:', posYmax, 'windowYmax:', windowYmax);
+	return (posYmin <= windowYmax && posYmin >= windowYmin) || (windowYmin <= posYmax && posYmax <= windowYmax);
 }
 
 module.exports = {
-	getLazyImagesPositions,
-	getUnloadedImages,
-	loadImagesInView,
-	getImagePositions,
-	isInViewVertically
+	LazyScroll
 };

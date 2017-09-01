@@ -15,7 +15,7 @@ class LazyLoad {
 		}))
 		.map(function(data) {
 			const callback = lazyLoadImage.bind(data);
-			image.addEventListener(eventName, callback);
+			data.image.addEventListener(eventName, callback);
 			return {
 				...data,
 				callback

@@ -66,27 +66,29 @@
   	</div>
 	</div>
 	
-	<script type="text/javascript" src="js/lazy.min.js"></script>
+	<script type="text/javascript" src="js/scroll-detection.min.js"></script>
 	<script type="text/javascript">
 
-		let lazyImages = getLazyImagesPositions('.lazy-holder');
+		const lazyImages = new LazyScroll('.lazy-holder', 'lazyload');
 
-		function showImages() {			
+		// let lazyImages = getLazyImagesPositions('.lazy-holder');
+
+		// function showImages() {			
 	
-			setTimeout(function() {
-				loadImagesInView(lazyImages).then(function(results) {
-					lazyImages = getImagePositions(lazyImages);
-					lazyImages = getUnloadedImages(lazyImages);
-					if(!lazyImages.length) {
-						console.log('all loaded');
-						window.removeEventListener('scroll', showImages);
-					}
-				});		
-			}, 0)
-		}
+		// 	setTimeout(function() {
+		// 		loadImagesInView(lazyImages).then(function(results) {
+		// 			lazyImages = getImagePositions(lazyImages);
+		// 			lazyImages = getUnloadedImages(lazyImages);
+		// 			if(!lazyImages.length) {
+		// 				console.log('all loaded');
+		// 				window.removeEventListener('scroll', showImages);
+		// 			}
+		// 		});		
+		// 	}, 0)
+		// }
 
-		document.addEventListener('DOMContentLoaded', showImages);		
-		window.addEventListener('scroll', showImages);
+		// document.addEventListener('DOMContentLoaded', showImages);		
+		// window.addEventListener('scroll', showImages);
 		
 	</script>
 </body>
