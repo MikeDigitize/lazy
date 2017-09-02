@@ -1,6 +1,7 @@
 const { CreateEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
 const LAZY_LOAD = 'lazyload';
+const lazyEvent = CreateEvent(LAZY_LOAD);		
 
 class LazyLoad {
 	
@@ -8,7 +9,6 @@ class LazyLoad {
 		
 		const images = Array.from(document.querySelectorAll(selector));
 		
-		this.event = CreateEvent(LAZY_LOAD);		
 		this.images = images.map(image => ({	
 			image,
 			loaded: false,
@@ -19,6 +19,10 @@ class LazyLoad {
 			lazyImage.image.addEventListener(LAZY_LOAD, lazyLoadImage.bind(lazyImage));
 		});
 
+	}
+
+	fireEvent(image) {
+		image.dispatchEvent(lazyEvent);
 	}
 	
 }

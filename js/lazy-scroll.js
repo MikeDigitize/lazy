@@ -13,6 +13,13 @@ class LazyScroll extends LazyLoad {
 	}
 }
 
+function getLazyImagePositions(images) {
+	return images.map(lazyImage => ({ 
+		imagePosition: getImagePosition(lazyImage.image), 
+		...lazyImage 
+	}));
+}
+
 function setLazyImagePositions() {
 	this.images = getLazyImagePositions(this.images);
 }
@@ -32,7 +39,7 @@ function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
 	imagesToLoad.forEach(lazyImage => {
-		lazyImage.image.dispatchEvent(this.event);
+		this.fireEvent(lazyImage.image);
 		lazyImage.loaded = true;
 	});
 }
@@ -47,12 +54,6 @@ function removeEventListeners() {
 	window.removeEventListener('scroll', findImagesCallback);
 	window.removeEventListener('DOMContentLoaded', findImagesCallback);
 	window.removeEventListener('resize', resizeCallback);
-}
-function getLazyImagePositions(images) {
-	return images.map(lazyImage => ({ 
-		imagePosition: getImagePosition(lazyImage.image), 
-		...lazyImage 
-	}));
 }
 
 function getImagePosition(image) {
