@@ -59,7 +59,7 @@ const lazy = new LazyScroll('.lazy-image');
 To extend the base class and add custom loading criteria use the following pattern:
 
 ```javascript
-class CustomLazy extends Lazy {
+class CustomLazy extends LazyLoad {
   constructor(selector) {
     super(selector);
     // modify the images property to add custom data 
