@@ -69,7 +69,7 @@ class CustomLazy extends LazyLoad {
   }
 }
 
-// use some other user action to trigger an image load
+// use some other criteria to trigger an image load
 // loop through the array of images, if one meets the criteria to load
 // call the fireEvent method passing in the image to load
 
