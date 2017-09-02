@@ -64,7 +64,7 @@ class CustomLazy extends LazyLoad {
     super(selector);
     // modify the images property to add custom data 
     this.images = this.images.map(function(lazyImage) {
-      return the lazyImage object with additional data
+      // return the lazyImage object with additional data
     });
   }
 }
