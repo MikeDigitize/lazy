@@ -1,5 +1,5 @@
 const { CreateEvent } = require('./lazy-events');
-const { lazyLoadImage } = require('./image-loader');
+const { lazyLoadImage } = require('./lazy-image-loader');
 
 class LazyLoad {
 	
@@ -8,7 +8,8 @@ class LazyLoad {
 		const images = Array.from(document.querySelectorAll(selector));
 		
 		this.event = CreateEvent(eventName);		
-		this.images = images.map(image => ({			
+		this.images = images.map(image => ({	
+			eventName,		
 			image,
 			loaded: false,
 			src: image.getAttribute('data-src')	// js-dom doesn't support dataset

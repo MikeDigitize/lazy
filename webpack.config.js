@@ -2,10 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'js/scroll-detection.js'),
+    entry: path.resolve(__dirname, 'js/lazy-scroll.js'),
     output: {
         path: path.resolve(__dirname, 'js'),
-        filename: 'scroll-detection.min.js',
+        filename: 'lazy-scroll.min.js',
         libraryTarget: 'umd'
     },
     resolve: {

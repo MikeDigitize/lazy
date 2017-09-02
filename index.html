@@ -8,6 +8,7 @@
 			display: block;
 			margin: 20px auto;
 			width: 100%;
+			border: 1px solid red;
 		}
 		.lazy-holder {
 			min-width: 320px;
@@ -66,10 +67,10 @@
   	</div>
 	</div>
 	
-	<script type="text/javascript" src="js/scroll-detection.min.js"></script>
+	<script type="text/javascript" src="js/lazy-scroll.min.js"></script>
 	<script type="text/javascript">
 
-		const lazyImages = new LazyScroll('.lazy-holder', 'lazyload');
+		const lazyImages = new LazyScroll('.lazy-holder img', 'lazyload');
 
 		// let lazyImages = getLazyImagesPositions('.lazy-holder');
 

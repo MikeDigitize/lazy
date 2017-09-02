@@ -1,4 +1,4 @@
-function lazyLoadImage(src) {
+function loadImage(src) {
 
 	return new Promise(function (resolve) {
 
@@ -28,6 +28,14 @@ function lazyLoadImage(src) {
 
 	});
 
+}
+function lazyLoadImage() {
+	console.log('lazyLoadImage', this);
+	loadImage(this.src).then(() => {
+		this.image.src = this.src;
+		this.loaded = true;
+		console.log('loaded!', this);
+	});
 }
 
 module.exports = {
