@@ -1,26 +1,22 @@
 const { CreateEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
+const LAZY_LOAD = 'lazyload';
 
 class LazyLoad {
 	
-	constructor(selector, eventName) {
+	constructor(selector) {
 		
 		const images = Array.from(document.querySelectorAll(selector));
 		
-		this.event = CreateEvent(eventName);		
+		this.event = CreateEvent(LAZY_LOAD);		
 		this.images = images.map(image => ({	
-			eventName,		
 			image,
 			loaded: false,
 			src: image.getAttribute('data-src')	// js-dom doesn't support dataset
 		}))
-		.map(function(data) {
-			const callback = lazyLoadImage.bind(data);
-			data.image.addEventListener(eventName, callback);
-			return {
-				...data,
-				callback
-			};
+		
+		this.images.forEach(function(lazyImage) {
+			lazyImage.image.addEventListener(LAZY_LOAD, lazyLoadImage.bind(lazyImage));
 		});
 
 	}

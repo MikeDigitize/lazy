@@ -30,11 +30,8 @@ function loadImage(src) {
 
 }
 function lazyLoadImage() {
-	console.log('lazyLoadImage', this);
 	loadImage(this.src).then(() => {
 		this.image.src = this.src;
-		this.loaded = true;
-		console.log('loaded!', this);
 	});
 }
 

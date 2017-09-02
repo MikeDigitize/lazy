@@ -70,26 +70,7 @@
 	<script type="text/javascript" src="js/lazy-scroll.min.js"></script>
 	<script type="text/javascript">
 
-		const lazyImages = new LazyScroll('.lazy-holder img', 'lazyload');
-
-		// let lazyImages = getLazyImagesPositions('.lazy-holder');
-
-		// function showImages() {			
-	
-		// 	setTimeout(function() {
-		// 		loadImagesInView(lazyImages).then(function(results) {
-		// 			lazyImages = getImagePositions(lazyImages);
-		// 			lazyImages = getUnloadedImages(lazyImages);
-		// 			if(!lazyImages.length) {
-		// 				console.log('all loaded');
-		// 				window.removeEventListener('scroll', showImages);
-		// 			}
-		// 		});		
-		// 	}, 0)
-		// }
-
-		// document.addEventListener('DOMContentLoaded', showImages);		
-		// window.addEventListener('scroll', showImages);
+		var lazyImages = new LazyScroll('.lazy-holder img', 'lazyload');
 		
 	</script>
 </body>

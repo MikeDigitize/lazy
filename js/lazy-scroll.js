@@ -1,15 +1,15 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
 
-let { width } = getWindowSize();
+let findImagesCallback, resizeCallback;
 
 class LazyScroll extends LazyLoad {
-	constructor(selector, eventName) {
-		super(selector, eventName);
+	constructor(selector) {
+		super(selector);
 		setLazyImagePositions.call(this);
-		window.addEventListener('scroll', debounce(testImages.bind(this), 100));
-		window.addEventListener('DOMContentLoaded', testImages.bind(this));
-		window.addEventListener('resize', debounce(setLazyImagePositions.bind(this), 100));
+		findImagesCallback = debounce(findImagesToLoad.bind(this), 100);
+		resizeCallback = debounce(setLazyImagePositions.bind(this), 100);
+		addEventListeners();
 	}
 }
 
@@ -18,7 +18,7 @@ function setLazyImagePositions() {
 }
 
 function getYPosition(image) {
-	var left = 0, top = 0;
+	let left = 0, top = 0;
 	if (image.offsetParent) { 
 		do {
 			left += image.offsetLeft;
@@ -28,17 +28,31 @@ function getYPosition(image) {
 	}
 }
 
-function testImages() {
+function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
-	console.log(imagesToLoad);
-	// imagesToLoad.forEach(lazyImage => {
-	// 	//lazyImage.loaded = true;
-	// 	lazyImage.image.dispatchEvent(this.event);
-	// });
+	imagesToLoad.forEach(lazyImage => {
+		lazyImage.image.dispatchEvent(this.event);
+		lazyImage.loaded = true;
+	});
+}
+
+function addEventListeners() {
+	window.addEventListener('scroll', findImagesCallback);
+	window.addEventListener('DOMContentLoaded', findImagesCallback);
+	window.addEventListener('resize', resizeCallback);
+}
+
+function removeEventListeners() {
+	window.removeEventListener('scroll', findImagesCallback);
+	window.removeEventListener('DOMContentLoaded', findImagesCallback);
+	window.removeEventListener('resize', resizeCallback);
 }
 function getLazyImagePositions(images) {
-	return images.map(lazyImage => ({ imagePosition: getImagePosition(lazyImage.image), ...lazyImage }));
+	return images.map(lazyImage => ({ 
+		imagePosition: getImagePosition(lazyImage.image), 
+		...lazyImage 
+	}));
 }
 
 function getImagePosition(image) {
@@ -49,7 +63,8 @@ function getImagePosition(image) {
 }
 
 function getScrollPosition() {
-	return { scrollX, scrollY } = window;
+	const { pageXOffset, pageYOffset } = window;
+	return { pageXOffset, pageYOffset };
 }
 
 function getWindowSize() {
@@ -59,12 +74,12 @@ function getWindowSize() {
 }
 
 function getWindowBoundaries() {
-	const { scrollX, scrollY } = getScrollPosition();
+	const { pageXOffset, pageYOffset } = getScrollPosition();
 	const { width, height } = getWindowSize();
-	const xMin = scrollX;
-	const xMax = scrollX + width;
-	const yMin = scrollY;
-	const yMax = scrollY + height;
+	const xMin = pageXOffset;
+	const xMax = pageXOffset + width;
+	const yMin = pageYOffset;
+	const yMax = pageYOffset + height;
 	return { xMin, xMax, yMin, yMax };
 }
 
@@ -75,9 +90,13 @@ function getUnloadedImages(images) {
 function getImagesInView(images) {
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
+	if(unloadedImages.length === 0) {
+		removeEventListeners();
+		return [];
+	}
 	return unloadedImages.filter(lazyImage => {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
-		return isInViewVertically(top, yMin, bottom, yMax) //&& isInViewHorizontally(left, xMin, right, xMax);
+		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
 }
 function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {
