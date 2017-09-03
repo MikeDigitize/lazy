@@ -4,7 +4,7 @@ A base image loading, event driven class that is easily extendable to support an
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. These images need a `data-src` attribute which defines path to the image. The image's `src` attribute can be omitted or left empty.
+The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. These images need a `data-src` attribute containing the image path to load. The image's `src` attribute can be omitted or left empty.
 
 ```html
 <img data-src="images/my-lazy-loading-image.png">
