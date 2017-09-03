@@ -23,18 +23,19 @@ Upon initialisation the `LazyLoad` class creates an array of image data, includi
 
 An event listener is added to each image, listening for the custom event `lazyload`.
 
+An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image, which triggers the loading of the image and, once loaded, sets the src attribute of the image, so it appears in the document.
+
 ```javascript
 // an instance of LazyLoad looks like this
 {
   images: <Array>
+  fireEvent: <Function> // inherited
 }
 ```
 
-An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image, which triggers the loading of the image and, once loaded, sets the src attribute of the image, so it appears in the document.
-
 ## Lazy Scroll
 
-The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport and, if it is, it fires the `lazyload` event on the image.
+The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport and, if so, firing the `lazyload` event on the image to trigger a load.
 
 The `LazyScroll` class appends the positional data of each image to the image data stored as part of the base class.
 
@@ -50,7 +51,7 @@ The `LazyScroll` class appends the positional data of each image to the image da
 
 ## Usage
 
-To use the `LazyScroll` class simply call the class with a CSS selector and the plugin will do the rest, loading images as they appear in the viewport.
+To use the `LazyScroll` class call the class with a CSS selector and the plugin will do the rest, loading images as they appear in the viewport.
 
 ```javascript
 const lazy = new LazyScroll('.lazy-image');
@@ -70,7 +71,7 @@ class CustomLazy extends LazyLoad {
 }
 
 // use some other criteria to trigger an image load
-// loop through the array of images, if one meets the criteria to load
+// internally in the class loop through the array of images, if one meets the criteria to load
 // call the fireEvent method passing in the image to load
 
 const lazy = new CustomLazy('.lazy-image');
@@ -87,5 +88,4 @@ lazy.images.filter(function(lazyImage) {
 
 ### TODO:
 * A proximity based loader class
-* End to end testing
 * Support background images and picture element
