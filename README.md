@@ -89,3 +89,5 @@ lazy.images.filter(function(lazyImage) {
 ### TODO:
 * A proximity based loader class
 * Support background images and picture element
+* Handling when images fail to load
+* Show loading spinner whilst images load
