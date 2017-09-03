@@ -63,7 +63,7 @@ function getImagePosition(image) {
 	return { left, right, top, bottom };
 }
 
-function getScrollPosition() {
+function getWindowScrollPosition() {
 	const { pageXOffset, pageYOffset } = window;
 	return { pageXOffset, pageYOffset };
 }
@@ -75,7 +75,7 @@ function getWindowSize() {
 }
 
 function getWindowBoundaries() {
-	const { pageXOffset, pageYOffset } = getScrollPosition();
+	const { pageXOffset, pageYOffset } = getWindowScrollPosition();
 	const { width, height } = getWindowSize();
 	const xMin = pageXOffset;
 	const xMax = pageXOffset + width;
@@ -100,6 +100,7 @@ function getImagesInView(images) {
 		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
 }
+
 function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {
 	return posYmin <= windowYmax && posYmax >= windowYmin;
 }
@@ -109,5 +110,7 @@ function isInViewHorizontally(posXmin, windowXmin, posXmax, windowXmax) {
 }
 
 module.exports = {
-	LazyScroll
+	LazyScroll,
+	isInViewVertically,
+	isInViewHorizontally
 };

@@ -6,7 +6,6 @@ function loadImage(src) {
 		const result = { loaded: true };
 
 		function onLoad() {
-			console.log('loaded!');
 			removeListeners();
 			resolve(result);
 		}

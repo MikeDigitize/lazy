@@ -11,27 +11,22 @@ const {
 	cleanUpDom
 } = require('../js/test-helpers');
 
-describe('Should find all lazy images to load from a CSS selector', function() {
+describe('LazyLoad class tests', function() {
 
-	afterEach(cleanUpDom);
-
-	it('should find all images from a valid selector', function() {
-		
+  afterEach(cleanUpDom);
+  
+  it('should find all images from a valid selector', function() {
+    
     createDom(imagePath);
     createDom(imagePath2);
     createDom(imagePath3);
     createDom(imagePath4);
+    
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 
-		expect(lazyImages.images.length).toBe(4);
+    expect(lazyImages.images.length).toBe(4);
 
   });
-  
-});
-
-describe('Should find all lazy images to load from a CSS selector', function() {
-  
-  afterEach(cleanUpDom);
 
   it('should find no images from an invalid selector', function() {
     
@@ -39,19 +34,16 @@ describe('Should find all lazy images to load from a CSS selector', function() {
     createDom(imagePath2);
     createDom(imagePath3);
     createDom(imagePath4);
+    
     const lazyImages = new LazyLoad(`.${fakelazyImageClass}`);
 
     expect(lazyImages.images.length).toBe(0);
 
   });
-  
-});
 
-describe('lazy images are stored as an object containing properties describing the state of item', function() {
-
-  it('should have all property values assigned correctly', function() {
+  it('lazy images should be stored as an object containing properties describing their state', function() {
     
-    const { image } = createDom(imagePath);
+    const image = createDom(imagePath);
 		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 

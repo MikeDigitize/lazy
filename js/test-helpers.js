@@ -14,13 +14,16 @@ function createDom(src) {
 	const image = document.createElement('image');
 
 	holder.classList.add(lazyImageHolderClass);
+	holder.style.height = '300px';
+	holder.style.width = '300px';
 	image.classList.add(lazyImageClass);
+	image.style.width = '100%';
 	image.setAttribute('data-src', src);
 	holder.appendChild(image);
 
 	document.body.appendChild(holder);
 
-	return { image, holder };
+	return image;
 
 }
 

@@ -1,6 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const webpackPlugins = [];
+
+if(process.env.NODE_ENV === 'production') {
+    webpackPlugins.push(
+        new webpack.optimize.UglifyJsPlugin()
+    );
+}
+
 module.exports = {
     entry: path.resolve(__dirname, 'js/lazy-scroll.js'),
     output: {
@@ -24,8 +32,6 @@ module.exports = {
             }
         }]
     },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin()
-    ],
+    plugins: webpackPlugins,
     watch: true
 };

@@ -12,7 +12,7 @@ const {
 	fakeImagePath
 } = require('../js/test-helpers');
 
-describe('Image loader tests', function() {
+describe('loadImage tests', function() {
 	
 		it('Should respond appropriately when passed a correct file path', function(done) {
 			loadImage(imagePath).then(result => expect(result.loaded).toEqual(true));
@@ -31,18 +31,18 @@ describe('Image loader tests', function() {
 	
 });
 
-describe('Should detect the correct callback for Image, Picture and CSS background', function() {
+describe('getOnImageLoadCallback tests', function() {
 
 	const image = document.createElement('img');
 	const picture = document.createElement('picture');
 	const div = document.createElement('div');
 
-	it('Should return the correct Image element loader', function() {
+	it('Should return the Image element loader when an image is received', function() {
 		const result = getOnImageLoadCallback(image);
 		expect(result).toBe(loadImageElement);
 	});
 
-	it('Should return the correct CSS background element loader', function() {
+	it('Should return the CSS background loader when an image is not received', function() {
 		const result = getOnImageLoadCallback(div);
 		expect(result).toBe(loadBackgroundImage);
 	});
