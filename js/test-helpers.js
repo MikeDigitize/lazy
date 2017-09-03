@@ -1,16 +1,20 @@
-const holderSelector = 'holder';
+const lazyImageClass = 'lazy-image';
+const lazyImageHolderClass = 'lazy-image-holder';
 const imagePath = '../images/bb.png';
 const imagePath2 = '../images/earth.jpg';
 const imagePath3 = '../images/light.jpg';
 const imagePath4 = '../images/logo.png';
-const fakeImagePath = 'images/fake.jpg';
+const gifPath = '../images/brent.gif';
+const fakeImagePath = '../images/fake.jpg';
+const fakelazyImageClass = 'fake-lazy-image';
 
 function createDom(src) {
 
 	const holder = document.createElement('div');
 	const image = document.createElement('image');
 
-	holder.classList.add(holderSelector);
+	holder.classList.add(lazyImageHolderClass);
+	image.classList.add(lazyImageClass);
 	image.setAttribute('data-src', src);
 	holder.appendChild(image);
 
@@ -22,7 +26,7 @@ function createDom(src) {
 
 function cleanUpDom() {
 
-	const holders = Array.from(document.querySelectorAll(`.${holderSelector}`));
+	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}`));
 	holders.forEach(function(holder) {
 		holder.parentNode.removeChild(holder);
 	});
@@ -30,12 +34,14 @@ function cleanUpDom() {
 }
 
 module.exports = {
-	holderSelector,
+	lazyImageClass,
 	imagePath,
 	imagePath2,
 	imagePath3,
 	imagePath4,
+	gifPath,
 	fakeImagePath,
 	createDom,
-	cleanUpDom
+	cleanUpDom,
+	fakelazyImageClass
 };

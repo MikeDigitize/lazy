@@ -6,6 +6,7 @@ function loadImage(src) {
 		const result = { loaded: true };
 
 		function onLoad() {
+			console.log('loaded!');
 			removeListeners();
 			resolve(result);
 		}
@@ -31,12 +32,41 @@ function loadImage(src) {
 }
 
 function lazyLoadImage() {
-	loadImage(this.src).then(() => {
-		this.image.src = this.src;
+	const { image, src } = this;
+	const onImageLoad = getOnImageLoadCallback(image);
+	loadImage(src).then((result) => {
+		if(result.loaded) {
+			onImageLoad(image, src)
+		}
 	});
+}
+
+function getOnImageLoadCallback(image) {
+	switch (true) {
+		case image instanceof Image:
+			return loadImageElement;
+		default:
+			return loadBackgroundImage;
+	}
+}
+
+function loadImageElement(image, src) {
+	image.src = src;
+}
+
+function loadPictureElement() {
+
+}
+
+function loadBackgroundImage() {
+
 }
 
 module.exports = {
 	lazyLoadImage,
-	loadImage
+	loadImage,
+	getOnImageLoadCallback,
+	loadImageElement,
+	loadPictureElement,
+	loadBackgroundImage
 };

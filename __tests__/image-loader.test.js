@@ -1,78 +1,50 @@
-const { loadImage } = require('../js/lazy-image-loader');
-const {
-	holderSelector,
+const { 
+	loadImage, 
+	getOnImageLoadCallback,
+	loadImageElement,
+	loadPictureElement,
+	loadBackgroundImage 
+} = require('../js/lazy-image-loader');
+
+const { 
 	imagePath,
-	imagePath2,
-	imagePath3,
-	imagePath4,
-	fakeImagePath,
-	createDom,
-	cleanUpDom
+	gifPath,
+	fakeImagePath
 } = require('../js/test-helpers');
 
-describe('Calculator', function() {
+describe('Image loader tests', function() {
 	
-		it('should add numbers', function() {
-			expect(true).toBe(true);
-			expect(holderSelector).toContain('holder');
+		it('Should respond appropriately when passed a correct file path', function(done) {
+			loadImage(imagePath).then(result => expect(result.loaded).toEqual(true));
+			done();
+		});
+
+		it('Should respond appropriately when passed an incorrect file path', function(done) {
+			loadImage(fakeImagePath).then(result => expect(result.loaded).toEqual(false));
+			done();
+		});
+
+		it('Should respond appropriately when passed a correct GIF file path', function(done) {
+			loadImage(gifPath).then(result => expect(result.loaded).toEqual(true));
+			done();
 		});
 	
 });
 
-// test('test', function() {
-// 	expect.assertions(1);
-// 	return loadImage(imagePath).then(result => expect(result.loaded).toEqual(true));
-// });
+describe('Should detect the correct callback for Image, Picture and CSS background', function() {
 
-// test('test2', function() {
-// 	expect.assertions(1);
-// 	return loadImage(fakeImagePath).then(result => expect(result.loaded).toEqual(false));
-// });
+	const image = document.createElement('img');
+	const picture = document.createElement('picture');
+	const div = document.createElement('div');
 
-// describe('Get lazy images from DOM test', function() {
+	it('Should return the correct Image element loader', function() {
+		const result = getOnImageLoadCallback(image);
+		expect(result).toBe(loadImageElement);
+	});
 
-// 	console.log('getLazyImages expects a selector for an image container with an image inside');
-// 	console.log('the image should have an empty src attribute and a data-src attribute with the image path');
+	it('Should return the correct CSS background element loader', function() {
+		const result = getOnImageLoadCallback(div);
+		expect(result).toBe(loadBackgroundImage);
+	});
 
-// 	afterEach(cleanUpDom);
-
-// 	test('getLazyImages retrieves an array of a single item matching a selector in DOM', function() {
-		
-// 		createDom(imagePath);
-// 		const lazyImages = getLazyImages(`.${holderSelector}`);
-
-// 		expect(lazyImages).toHaveLength(1);
-
-// 	});
-
-// 	test('getLazyImages retrieves an array of all items matching a selector in DOM', function() {
-		
-// 		createDom(imagePath2);
-// 		createDom(imagePath3);
-// 		createDom(imagePath4);
-// 		const lazyImages = getLazyImages(`.${holderSelector}`);
-
-// 		expect(lazyImages).toHaveLength(3);
-
-// 	});
-
-// 	test('getLazyImages returns an object containing properties describing the state of the lazy load item', function() {
-		
-// 		const { image, holder } = createDom(imagePath);
-// 		const lazyImages = getLazyImages(`.${holderSelector}`);
-// 		const [lazyImage] = lazyImages;
-
-// 		expect(Object.keys(lazyImage)).toHaveLength(4);
-// 		expect(lazyImage).toHaveProperty('holder', holder);
-// 		expect(lazyImage).toHaveProperty('image', image);
-// 		expect(lazyImage).toHaveProperty('src', imagePath);
-// 		expect(lazyImage).toHaveProperty('loaded', false);
-
-// 		expect(lazyImage.holder).toBeInstanceOf(HTMLElement);
-// 		expect(lazyImage.image).toBeInstanceOf(HTMLElement);
-// 		expect(typeof lazyImage.src).toBe('string');
-// 		expect(typeof lazyImage.loaded).toBe('boolean');
-
-// 	});
-
-// });
+});

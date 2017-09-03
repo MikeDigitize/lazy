@@ -10,6 +10,7 @@
     "test": "karma start karma.conf.js"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
     "karma-babel-preprocessor": "^6.0.1",

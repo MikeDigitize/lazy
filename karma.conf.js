@@ -15,10 +15,16 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.js',
+      { pattern: 'images/*.jpg', watched: false, included: false, served: true },
+      { pattern: 'images/*.gif', watched: false, included: false, served: true },
       'js/*.js',
       '__tests__/*.test.js'
     ],
 
+    proxies: {
+      "/images/": "http://localhost:8080/images/"
+    },
 
     // list of files to exclude
     exclude: [
