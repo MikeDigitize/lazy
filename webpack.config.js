@@ -10,10 +10,14 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-    entry: path.resolve(__dirname, 'js/lazy-scroll.js'),
+    entry: {
+        'lazy.min': path.resolve(__dirname, 'js/lazy.js'),
+        'lazy-scroll.min': path.resolve(__dirname, 'js/lazy-scroll.js'),
+        'lazy-proximity.min': path.resolve(__dirname, 'js/lazy-proximity.js')
+    },
     output: {
         path: path.resolve(__dirname, 'js'),
-        filename: 'lazy-scroll.min.js',
+        filename: '[name].js',
         libraryTarget: 'umd'
     },
     resolve: {

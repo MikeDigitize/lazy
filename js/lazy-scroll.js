@@ -4,12 +4,17 @@ const { debounce } = require('./debounce');
 let findImagesCallback, resizeCallback;
 
 class LazyScroll extends LazyLoad {
+	
 	constructor(selector) {
+
 		super(selector);
+
 		setLazyImagePositions.call(this);
 		findImagesCallback = debounce(findImagesToLoad.bind(this), 100);
 		resizeCallback = debounce(setLazyImagePositions.bind(this), 100);
+
 		addEventListeners();
+
 	}
 }
 
