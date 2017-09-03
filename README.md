@@ -4,16 +4,16 @@ A base image loading, event driven class that is easily extendable to support an
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. These images need a `data-src` attribute which is the path to the image. The `src` attribute can be omitted or left empty.
+The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. These images need a `data-src` attribute containing the image path to load. The image's `src` attribute can be omitted or left empty.
 
 ```html
 <img data-src="images/my-lazy-loading-image.png">
 ```
 
-Upon initialisation the `LazyLoad` class creates an array of image data, including each image element, its src and a loaded attribute that's used to identify if the image has been loaded.
+Upon initialisation, the `LazyLoad` class creates an array of image data, storing each image element, its src and a loaded attribute used to identify if the image has been loaded.
 
 ```javascript
-// lazy image data is stored in an array, each image is represented as below
+// each lazy image stored in the images array is represented with the following data structure
 {
   image: <Image Elememt>
   src: <String>
@@ -21,14 +21,14 @@ Upon initialisation the `LazyLoad` class creates an array of image data, includi
 }
 ```
 
-An event listener is added to each image, listening for the custom event `lazyload` which is created internally.
+An event listener is added to each image upon initialisation of a new `LazyLoad` instance, listening for the custom event `lazyload` that's configured internally.
 
 An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image. This event triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
 
 ```javascript
 // an instance of LazyLoad looks like this
 {
-  images: <Array>
+  images: <Array> // stores objects representing each lazy load image (see above for data structure)
   fireEvent: <Function> // inherited
 }
 ```
@@ -40,7 +40,7 @@ The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to 
 The `LazyScroll` class appends the positional data of each image to the image data stored as part of the base class.
 
 ```javascript
-// lazy scroll images stored on the instance have an additional imagePosition property
+// lazy scroll images get an additional imagePosition property
 {
   img: <Image Elememt>
   src: <String>
