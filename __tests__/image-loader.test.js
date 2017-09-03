@@ -1,6 +1,4 @@
 const { loadImage } = require('../js/lazy-image-loader');
-const helpers = require('../js/test-helpers');
-
 const {
 	holderSelector,
 	imagePath,
@@ -10,12 +8,13 @@ const {
 	fakeImagePath,
 	createDom,
 	cleanUpDom
-} = helpers;
+} = require('../js/test-helpers');
 
 describe('Calculator', function() {
 	
 		it('should add numbers', function() {
 			expect(true).toBe(true);
+			expect(holderSelector).toContain('holder');
 		});
 	
 });
