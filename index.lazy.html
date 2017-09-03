@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Lazy Proximity</title>
+	<title>Lazy</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<style type="text/css">
 		img {
@@ -101,11 +101,37 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript" src="js/lazy-proximity.min.js"></script>
+	<script type="text/javascript" src="js/lazy.min.js"></script>
 	<script type="text/javascript">
 
 		var selectors = '.lazy-holder img, .lazy-holder1 img, .lazy-holder2 img, .lazy-holder3 img';
-		var lazyImages = new LazyProximity(selectors, '.btn');
+		var lazyImages = new LazyLoad(selectors);
+		var selectorCount = selectors.split(',').length;
+		
+		var triggers = 
+			Array
+				.from(document.querySelectorAll('.btn'))
+				.forEach(function(trigger, index) {
+
+					var indexes = [];
+					for(var i = index; i < lazyImages.images.length; i += selectorCount) {
+						indexes.push(i);
+					}
+
+					trigger.setAttribute('data-target-indexes', indexes.toString());
+					trigger.addEventListener('click', function onClick() {
+						
+						var indexes = trigger.getAttribute('data-target-indexes').split(',');
+						indexes.forEach(function(_i) {
+							var lazyImage = lazyImages.images[_i];
+							lazyImages.fireEvent(lazyImage.image);
+							lazyImage.loaded = true;
+						});
+						trigger.removeEventListener('click', onClick);
+
+					});
+
+				});
 		
 	</script>
 </body>

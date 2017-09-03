@@ -7,18 +7,20 @@ class LazyProximity extends LazyLoad {
     
     super(imageSelector);
     
-    const proximityTriggers = getProximityTriggers(proximitySelector);
+    const proximityTriggers = getProximityTriggers.call(this, proximitySelector);
 
     this.images = this.images.map(function(lazyImage) {
-      let lazyProximityTrigger;
+      let lazyProximityTrigger, onClickCallback;
       proximityTriggers.forEach(function(proximityTrigger) {
         const isTarget = proximityTrigger.targets.some((target) => target === lazyImage.image);
         if(isTarget) {
           lazyProximityTrigger = proximityTrigger.trigger;
+          onClickCallback = proximityTrigger.onClickCallback;
         }
       });
       return {
         lazyProximityTrigger,
+        onClickCallback,
         ...lazyImage
       };
     });
@@ -27,17 +29,20 @@ class LazyProximity extends LazyLoad {
     document.addEventListener('mousemove', this.onMouseMoveCallback);
 
   }
-  
+
 }
 
 function getProximityTriggers(proximitySelector) {
   return Array
           .from(document.querySelectorAll(proximitySelector))
-          .map(function(trigger) {
+          .map((trigger) => {
             const targets = Array.from(document.querySelectorAll(trigger.getAttribute('data-lazy-target')));
+            const onClickCallback = onClick.bind(this);
+            trigger.addEventListener('click', onClickCallback);
             return {
               trigger,
-              targets
+              targets,
+              onClickCallback
             };
           });
 }
@@ -58,13 +63,29 @@ function onMouseMove(evt) {
   const target = document.elementFromPoint(clientX, clientY);
 
   unloadedImages.forEach((lazyImage) => {
-    const { lazyProximityTrigger } = lazyImage;
+    const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
     if(lazyProximityTrigger === target || lazyProximityTrigger.contains(target)) {
-      this.fireEvent(lazyImage.image);
+      this.fireEvent(image);
       lazyImage.loaded = true;
+      lazyProximityTrigger.removeEventListener('click', onClickCallback);
     }
   });
   
+}
+
+function onClick(evt) {
+
+  const { target } = evt;
+
+  this.images.forEach((lazyImage) => {
+    const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
+    if(lazyProximityTrigger === target) {
+      this.fireEvent(image);
+      lazyImage.loaded = true;
+      lazyProximityTrigger.removeEventListener('click', onClickCallback);
+    }
+  });
+
 }
 
 module.exports = { LazyProximity };
