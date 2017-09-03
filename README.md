@@ -1,13 +1,13 @@
 # Lazy Loader Plugin
 
-A base image loading, event driven class that is easily extendable to support any loading criteria.
+An image loading, event driven class that is easily extendable to support any loading criteria.
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. These images need a `data-src` attribute containing the image path to load. The image's `src` attribute can be omitted or left empty.
+The `LazyLoad` base class takes a CSS selector to identify all images to be lazy loaded. Lazy images require a `data-lazy-src` attribute containing the image path to load. The image's `src` attribute can be omitted or left empty.
 
 ```html
-<img data-src="images/my-lazy-loading-image.png">
+<img data-lazy-src="images/my-lazy-loading-image.png">
 ```
 
 Upon initialisation, the `LazyLoad` class creates an array of image data, storing each image element, its src and a loaded attribute used to identify if the image has been loaded.
@@ -21,9 +21,9 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 }
 ```
 
-An event listener is added to each image upon initialisation of a new `LazyLoad` instance, listening for the custom event `lazyload` that's configured internally.
+An event listener is added to each image upon initialisation of a new `LazyLoad` instance, listening for a custom event `lazyload` which triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
 
-An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image. This event triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
+An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image.
 
 ```javascript
 // an instance of LazyLoad looks like this
@@ -35,7 +35,7 @@ An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an i
 
 ## Lazy Scroll
 
-The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If an image is in the viewport the `lazyload` event is fired on the image to load and display it.
+The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If an image is in the viewport the `lazyload` event is fired on the image.
 
 The `LazyScroll` class appends the positional data of each image to the image data stored as part of the base class.
 
@@ -49,13 +49,47 @@ The `LazyScroll` class appends the positional data of each image to the image da
 }
 ```
 
+## Lazy Proximity
+
+The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define trigger elements on the page that will trigger the loading of any amount of lazy images when the mouse is over them (or when they receive a click / touch event, for mobile). The lazy images to load should be defined with a CSS selector in the trigger element's `data-lazy-target` attribute.
+
+```html
+<!-- loads all images that match the selector ".lazy-holder img" -->
+<button type="button" class="btn btn-primary" data-lazy-target=".lazy-holder img">Click me!</button>
+```
+
+The `LazyProximity` class appends the trigger element and its onclick callback function to each lazy image stored on the instance.
+
+```javascript
+// lazy proximity images get additional lazyProximityTrigger and onClickCallback properties
+{
+  img: <Image Elememt>
+  src: <String>
+  loaded: <Boolean>
+  lazyProximityTrigger: <Element>
+  onClickCallback: <Function>
+}
+```
+
 ## Usage
 
-To use the `LazyScroll` class, call the class with a CSS selector and the plugin will do the rest, loading images as they appear in the viewport.
+#### LazyScroll
+
+To use the `LazyScroll` class, call the class with a CSS selector for the lazy images and the plugin will do the rest, loading images as they appear in the viewport.
 
 ```javascript
 const lazy = new LazyScroll('.lazy-image');
 ```
+
+#### LazyProximity
+
+To use the `LazyProximity` class, call the class with a CSS selector for the lazy images, and a second argument - a CSS selector for the trigger elements that load specific images when the mouse is over them (or they receive a click / touch event, for mobile).
+
+```javascript
+const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
+```
+
+#### Extending
 
 To extend the base class and add custom loading criteria use the following pattern:
 
