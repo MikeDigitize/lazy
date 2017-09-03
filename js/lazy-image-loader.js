@@ -29,6 +29,7 @@ function loadImage(src) {
 	});
 
 }
+
 function lazyLoadImage() {
 	loadImage(this.src).then(() => {
 		this.image.src = this.src;
@@ -36,5 +37,6 @@ function lazyLoadImage() {
 }
 
 module.exports = {
-	lazyLoadImage
+	lazyLoadImage,
+	loadImage
 };

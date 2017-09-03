@@ -3,6 +3,7 @@ const imagePath = '../images/bb.png';
 const imagePath2 = '../images/earth.jpg';
 const imagePath3 = '../images/light.jpg';
 const imagePath4 = '../images/logo.png';
+const fakeImagePath = 'images/fake.jpg';
 
 function createDom(src) {
 
@@ -34,6 +35,7 @@ module.exports = {
 	imagePath2,
 	imagePath3,
 	imagePath4,
+	fakeImagePath,
 	createDom,
 	cleanUpDom
 };

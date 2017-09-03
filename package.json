@@ -7,10 +7,17 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack",
-    "test": "jest --watch"
+    "test": "karma start karma.conf.js"
   },
   "dependencies": {
-    "jest": "^20.0.4",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "webpack": "^3.5.5"
   },
   "devDependencies": {
@@ -20,7 +27,13 @@
     "babel-preset-env": "^1.6.0"
   },
   "babel": {
-    "presets": [["env"]],
-    "plugins": ["transform-object-rest-spread"]
+    "presets": [
+      [
+        "env"
+      ]
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
   }
 }

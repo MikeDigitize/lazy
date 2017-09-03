@@ -1,5 +1,6 @@
 const { CreateEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
+
 const LAZY_LOAD = 'lazyload';
 const lazyEvent = CreateEvent(LAZY_LOAD);		
 
@@ -13,7 +14,7 @@ class LazyLoad {
 			image,
 			loaded: false,
 			src: image.getAttribute('data-src')	// js-dom doesn't support dataset
-		}))
+		}));
 		
 		this.images.forEach(function(lazyImage) {
 			lazyImage.image.addEventListener(LAZY_LOAD, lazyLoadImage.bind(lazyImage));
