@@ -13,7 +13,7 @@ The `LazyLoad` base class takes a CSS selector to identify all images to be lazy
 Upon initialisation the `LazyLoad` class creates an array of image data, including each image element, its src and a loaded attribute that's used to identify if the image has been loaded.
 
 ```javascript
-// lazy image data is stored in an array as below
+// lazy image data is stored in an array, each image is represented as below
 {
   image: <Image Elememt>
   src: <String>
@@ -21,9 +21,9 @@ Upon initialisation the `LazyLoad` class creates an array of image data, includi
 }
 ```
 
-An event listener is added to each image, listening for the custom event `lazyload`.
+An event listener is added to each image, listening for the custom event `lazyload` which is created internally.
 
-An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image, which triggers the loading of the image and, once loaded, sets the src attribute of the image, so it appears in the document.
+An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image. This event triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
 
 ```javascript
 // an instance of LazyLoad looks like this
@@ -35,12 +35,12 @@ An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an i
 
 ## Lazy Scroll
 
-The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport and, if so, firing the `lazyload` event on the image to trigger a load.
+The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If an image is in the viewport the `lazyload` event is fired on the image to load and display it.
 
 The `LazyScroll` class appends the positional data of each image to the image data stored as part of the base class.
 
 ```javascript
-// lazy scroll images are stored as below with the additional imagePosition property
+// lazy scroll images stored on the instance have an additional imagePosition property
 {
   img: <Image Elememt>
   src: <String>
@@ -51,7 +51,7 @@ The `LazyScroll` class appends the positional data of each image to the image da
 
 ## Usage
 
-To use the `LazyScroll` class call the class with a CSS selector and the plugin will do the rest, loading images as they appear in the viewport.
+To use the `LazyScroll` class, call the class with a CSS selector and the plugin will do the rest, loading images as they appear in the viewport.
 
 ```javascript
 const lazy = new LazyScroll('.lazy-image');
