@@ -1,7 +1,6 @@
 const { 
   LazyProximity,
-  getProximityTriggers,
-  getSurroundingCoordinates
+  getProximityTriggers
 } = require('../js/lazy-proximity');
 
 const { 

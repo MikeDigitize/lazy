@@ -105,7 +105,11 @@
 	<script type="text/javascript">
 
 		var selectors = '.lazy-holder img, .lazy-holder1 img, .lazy-holder2 img, .lazy-holder3 img';
-		var lazyImages = new LazyProximity(selectors, '.btn');
+		var lazyImages = new LazyProximity(selectors, '.btn', 150);
+
+		window.addEventListener('lazyloadcomplete', function(evt) {
+			console.log('loaded!', evt.target);
+		});
 		
 	</script>
 </body>

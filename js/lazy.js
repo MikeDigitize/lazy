@@ -4,7 +4,7 @@ const { lazyLoadImage } = require('./lazy-image-loader');
 const LAZY_LOAD = 'lazyload';
 const LAZY_SRC = 'data-lazy-src';	
 
-const lazyEvent = CreateEvent(LAZY_LOAD);	
+const onLazyLoadEvent = CreateEvent(LAZY_LOAD);	
 
 class LazyLoad {
 	
@@ -25,7 +25,7 @@ class LazyLoad {
 	}
 
 	fireEvent(image) {
-		image.dispatchEvent(lazyEvent);
+		image.dispatchEvent(onLazyLoadEvent);
 	}
 	
 }

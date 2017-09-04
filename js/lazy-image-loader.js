@@ -1,3 +1,8 @@
+const { CreateEvent } = require('./lazy-events');
+const LAZY_LOAD_COMPLETE = 'lazyloadcomplete';
+
+const onLazyLoadCompleteEvent = CreateEvent(LAZY_LOAD_COMPLETE);	
+
 function loadImage(src) {
 
 	return new Promise(function (resolve) {
@@ -35,7 +40,8 @@ function lazyLoadImage() {
 	const onImageLoad = getOnImageLoadCallback(image);
 	loadImage(src).then((result) => {
 		if(result.loaded) {
-			onImageLoad(image, src)
+			onImageLoad(image, src);
+			image.dispatchEvent(onLazyLoadCompleteEvent);
 		}
 	});
 }

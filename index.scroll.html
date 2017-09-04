@@ -91,6 +91,9 @@
 	<script type="text/javascript">
 
 		var lazyImages = new LazyScroll('.lazy-holder img');
+		window.addEventListener('lazyloadcomplete', function(evt) {
+			console.log('loaded!', evt.target);
+		});
 		
 	</script>
 </body>

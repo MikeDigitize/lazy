@@ -69,41 +69,20 @@ function onMouseMove(evt) {
   }
 
   const { clientX, clientY } = evt;
-  const coordinates = getSurroundingCoordinates(clientX, clientY);
+  const trigger = document.elementFromPoint(clientX, clientY);
 
   unloadedImages.forEach((lazyImage) => {
 
     const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
     
-    for(let i = 0; i < coordinates.length; i++) {
-      
-      const target = coordinates[i];
-      const trigger = document.elementFromPoint(target.x, target.y);
-      
-      if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
-        this.fireEvent(image);
-        lazyImage.loaded = true;
-        lazyProximityTrigger.removeEventListener('click', onClickCallback);
-        break;
-      }
-
-    }   
+    if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
+      this.fireEvent(image);
+      lazyImage.loaded = true;
+      lazyProximityTrigger.removeEventListener('click', onClickCallback);
+    }  
 
   });
   
-}
-
-function getSurroundingCoordinates(x, y) {
-  const current = { x, y };
-  const left = { x: x - PROXIMITY_TOLERANCE, y };
-  const topLeft = { x: x - PROXIMITY_TOLERANCE, y: y - PROXIMITY_TOLERANCE };
-  const top = { x, y: y - PROXIMITY_TOLERANCE };
-  const topRight = { x: x + PROXIMITY_TOLERANCE, y: y - PROXIMITY_TOLERANCE };
-  const right = { x: x + PROXIMITY_TOLERANCE, y };
-  const bottomRight = { x: x + PROXIMITY_TOLERANCE, y: y + PROXIMITY_TOLERANCE };
-  const bottom = { x, y: y + PROXIMITY_TOLERANCE };
-  const bottomLeft = { x: x - PROXIMITY_TOLERANCE, y: y + PROXIMITY_TOLERANCE };
-  return [ left, topLeft, top, topRight, right, bottomRight, bottom, bottomLeft, current ];
 }
 
 function onClick(evt) {
@@ -123,6 +102,5 @@ function onClick(evt) {
 
 module.exports = { 
   LazyProximity,
-  getProximityTriggers,
-  getSurroundingCoordinates
+  getProximityTriggers
 };
