@@ -1,6 +1,6 @@
 # Lazy
 
-An image loading, event driven class supporting deferral of image loading to a developer specified time. 
+An image loading, event driven class supporting deferral of image loading to a user specified time. 
 
 ## How it works
 
@@ -10,7 +10,7 @@ The `LazyLoad` base class takes a CSS selector of images to be lazy loaded.
 const lazy = new LazyLoad('.lazy-image');
 ```
 
-Lazy images require a `data-lazy-src` attribute with the image path to load. The image's `src` attribute can be omitted or left empty.
+Lazy images require a `data-lazy-src` attribute specifying the image path to load. The image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a server request if the `src` is set to an empty string so omitting is the preferred approach.
 
 ```html
 <img data-lazy-src="images/my-lazy-loading-image.png">
@@ -27,9 +27,9 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 }
 ```
 
-An event listener is added to each image upon initialisation of a new `LazyLoad` instance, listening for a custom event `lazyload` which triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
+An event listener is added to each lazy image, listening for a custom event `lazyload` which triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
 
-An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image.
+An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image, triggering its load.
 
 ```javascript
 // an instance of LazyLoad looks like this
@@ -39,7 +39,7 @@ An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an i
 }
 ```
 
-Upon an image loading, anpther custom event - `lazyloadcomplete` is fired on the image. This event can be captured on the window to allow for any further operations on the image, for example to trigger an opacity based fade-in CSS transition.
+Upon an image loading, another custom event - `lazyloadcomplete` is fired on the image. This event can be captured on the window to allow for any further operations on the image you might require, for example to trigger a fade-in CSS transition.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
@@ -69,7 +69,9 @@ The `scroll` event listener which triggers the `LazyScroll` functionality has it
 
 ## Lazy Proximity
 
-The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define trigger elements on the page that will trigger the loading of any amount of lazy images. Loading is triggered wither when the mouse is over a trigger element or when they receive a click / touch event, for mobile. The lazy images to load are defined with a CSS selector in the trigger element's `data-lazy-target` attribute.
+The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define trigger elements on the page that will trigger the loading of any amount of lazy images. 
+
+Loading is triggered when the mouse is over a trigger element or when a trigger receives a click / touch event, for mobile. The lazy images a trigger should load are defined with a CSS selector in the trigger element's `data-lazy-target` attribute.
 
 ```html
 <!-- loads all images that match the selector ".lazy-holder img" -->
@@ -89,7 +91,7 @@ The `LazyProximity` class appends the trigger element and its `onclick` callback
 }
 ```
 
-In order to save excessive positional calculations that could potentially be a performance overhead, the `LazyProximity` class keeps proximity detection simple. It runs via a single `mousemove` event listener on the document whose calback is throttled so as not to fire repeatedly.
+In order to save excessive positional calculations which could potentially be a performance overhead, the `LazyProximity` class keeps proximity detection simple. It runs via a single `mousemove` event listener on the document, whose calback is throttled so as not to fire repeatedly.
 
 It utilises two native DOM methods - `elementFromPoint` which takes an `x` and `y` co-ordinate and responds with the DOM element relative to those co-ordinates, and the `contains` method, inherited by every DOM Node which, when called against an element and passed an element as an argument, responds with whether the passed element is a child of the element the method is called against.  
 
@@ -105,7 +107,7 @@ const lazy = new LazyScroll('.lazy-image');
 
 #### LazyProximity
 
-To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the lazy images, and a CSS selector for the trigger elements. When these elements are hovered over by the mouse, or receive a click / touch (for mobile) they'll trigger the loading of images matching the selector in their `data-lazy-target` attribute.
+To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the lazy images, and a CSS selector for the trigger elements. When these elements are hovered over by the mouse, or receive a click / touch it will trigger the loading of images matching the selector in their `data-lazy-target` attribute.
 
 ```javascript
 const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
