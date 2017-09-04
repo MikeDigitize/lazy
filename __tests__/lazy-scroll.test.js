@@ -10,7 +10,7 @@ const {
 	imagePath2,
 	imagePath3,
 	imagePath4,
-	createDom,
+	createLazyImage,
 	cleanUpDom
 } = require('../js/test-helpers');
 
@@ -20,10 +20,10 @@ describe('LazyScroll class tests', function() {
 	
 	it('should add positional data to existing lazy image data', function() {
 		
-		const image = createDom(imagePath);
-		const image2 = createDom(imagePath2);
-		const image3 = createDom(imagePath3);
-		const image4 = createDom(imagePath4);
+		const image = createLazyImage(imagePath);
+		const image2 = createLazyImage(imagePath2);
+		const image3 = createLazyImage(imagePath3);
+		const image4 = createLazyImage(imagePath4);
 		
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;

@@ -7,7 +7,7 @@ const {
 	imagePath3,
 	imagePath4,
   fakelazyImageClass,
-	createDom,
+	createLazyImage,
 	cleanUpDom
 } = require('../js/test-helpers');
 
@@ -17,10 +17,10 @@ describe('LazyLoad class tests', function() {
   
   it('should find all images from a valid selector', function() {
     
-    createDom(imagePath);
-    createDom(imagePath2);
-    createDom(imagePath3);
-    createDom(imagePath4);
+    createLazyImage(imagePath);
+    createLazyImage(imagePath2);
+    createLazyImage(imagePath3);
+    createLazyImage(imagePath4);
     
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 
@@ -30,10 +30,10 @@ describe('LazyLoad class tests', function() {
 
   it('should find no images from an invalid selector', function() {
     
-    createDom(imagePath);
-    createDom(imagePath2);
-    createDom(imagePath3);
-    createDom(imagePath4);
+    createLazyImage(imagePath);
+    createLazyImage(imagePath2);
+    createLazyImage(imagePath3);
+    createLazyImage(imagePath4);
     
     const lazyImages = new LazyLoad(`.${fakelazyImageClass}`);
 
@@ -43,7 +43,7 @@ describe('LazyLoad class tests', function() {
 
   it('lazy images should be stored as an object containing properties describing their state', function() {
     
-    const image = createDom(imagePath);
+    const image = createLazyImage(imagePath);
 		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 

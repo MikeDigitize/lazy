@@ -1,5 +1,10 @@
 const lazyImageClass = 'lazy-image';
+const lazyImageClass2 = 'lazy-image2';
+const lazyImageClass3 = 'lazy-image3';
 const lazyImageHolderClass = 'lazy-image-holder';
+const lazyTriggerClass = 'lazy-trigger';
+const lazyTriggerClass2 = 'lazy-trigger2';
+const lazyTriggerClass3 = 'lazy-trigger3';
 const imagePath = '../images/bb.png';
 const imagePath2 = '../images/earth.jpg';
 const imagePath3 = '../images/light.jpg';
@@ -8,7 +13,7 @@ const gifPath = '../images/brent.gif';
 const fakeImagePath = '../images/fake.jpg';
 const fakelazyImageClass = 'fake-lazy-image';
 
-function createDom(src) {
+function createLazyImage(src, lazyClass = lazyImageClass) {
 
 	const holder = document.createElement('div');
 	const image = document.createElement('image');
@@ -16,7 +21,7 @@ function createDom(src) {
 	holder.classList.add(lazyImageHolderClass);
 	holder.style.height = '300px';
 	holder.style.width = '300px';
-	image.classList.add(lazyImageClass);
+	image.classList.add(lazyClass);
 	image.style.width = '100%';
 	image.setAttribute('data-lazy-src', src);
 	holder.appendChild(image);
@@ -27,24 +32,51 @@ function createDom(src) {
 
 }
 
+function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
+
+	const trigger = document.createElement('div');
+
+	trigger.classList.add(triggerClass);
+	trigger.style.height = '300px';
+	trigger.style.width = '300px';
+	trigger.setAttribute('data-lazy-target', `.${targetClass}`);
+
+	document.body.appendChild(trigger);
+
+	return trigger;
+
+}
+
 function cleanUpDom() {
 
 	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}`));
+	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
+
 	holders.forEach(function(holder) {
 		holder.parentNode.removeChild(holder);
+	});
+
+	triggers.forEach(function(trigger) {
+		trigger.parentNode.removeChild(trigger);
 	});
 	
 }
 
 module.exports = {
 	lazyImageClass,
+	lazyImageClass2,
+	lazyImageClass3,
+	lazyTriggerClass,
+	lazyTriggerClass2,
+	lazyTriggerClass3,
 	imagePath,
 	imagePath2,
 	imagePath3,
 	imagePath4,
 	gifPath,
 	fakeImagePath,
-	createDom,
+	createLazyImage,
+	createLazyTrigger,
 	cleanUpDom,
 	fakelazyImageClass
 };
