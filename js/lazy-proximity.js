@@ -3,15 +3,12 @@ const { debounce } = require('./debounce');
 
 const LAZYTARGET = 'data-lazy-target';
 
-let PROXIMITY_TOLERANCE = 50;
-
 class LazyProximity extends LazyLoad {
 
-  constructor(imageSelector, proximitySelector, tolerance = 50) {
+  constructor(imageSelector, proximitySelector) {
     
     super(imageSelector);
     
-    PROXIMITY_TOLERANCE = tolerance;
     const proximityTriggers = getProximityTriggers.call(this, proximitySelector);
 
     this.images = this.images.map(function(lazyImage) {

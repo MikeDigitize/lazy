@@ -132,6 +132,10 @@
 					});
 
 				});
+
+		window.addEventListener('lazyloadcomplete', function(evt) {
+			console.log('loaded!', evt.target);
+		});
 		
 	</script>
 </body>
