@@ -18,7 +18,7 @@ function createDom(src) {
 	holder.style.width = '300px';
 	image.classList.add(lazyImageClass);
 	image.style.width = '100%';
-	image.setAttribute('data-src', src);
+	image.setAttribute('data-lazy-src', src);
 	holder.appendChild(image);
 
 	document.body.appendChild(holder);

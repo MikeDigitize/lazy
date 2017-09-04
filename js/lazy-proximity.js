@@ -1,6 +1,8 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
 
+const LAZYTARGET = 'data-lazy-target';
+
 class LazyProximity extends LazyLoad {
 
   constructor(imageSelector, proximitySelector) {
@@ -36,7 +38,7 @@ function getProximityTriggers(proximitySelector) {
   return Array
           .from(document.querySelectorAll(proximitySelector))
           .map((trigger) => {
-            const targets = Array.from(document.querySelectorAll(trigger.getAttribute('data-lazy-target')));
+            const targets = Array.from(document.querySelectorAll(trigger.getAttribute(LAZYTARGET)));
             const onClickCallback = onClick.bind(this);
             trigger.addEventListener('click', onClickCallback);
             return {

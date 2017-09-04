@@ -2,8 +2,9 @@ const { CreateEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
 
 const LAZY_LOAD = 'lazyload';
+const LAZY_SRC = 'data-lazy-src';	
+
 const lazyEvent = CreateEvent(LAZY_LOAD);	
-const SRC = 'data-src';	
 
 class LazyLoad {
 	
@@ -14,7 +15,7 @@ class LazyLoad {
 		this.images = images.map(image => ({	
 			image,
 			loaded: false,
-			src: image.getAttribute(SRC)	// js-dom doesn't support dataset
+			src: image.getAttribute(LAZY_SRC)
 		}));
 		
 		this.images.forEach(function(lazyImage) {
