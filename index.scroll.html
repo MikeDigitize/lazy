@@ -9,7 +9,7 @@
 			margin: 20px auto;
 			width: 100%;
 			border: 1px solid red;
-			opacity: 0;
+			
 			transition: 2s opacity ease-in-out;
 		}
 		.lazy-holder {
@@ -99,7 +99,7 @@
 		var lazyImages = new LazyScroll('.lazy-holder img');
 		window.addEventListener('lazyloadcomplete', function(evt) {
 			console.log('loaded!', evt.target.src);
-			evt.target.classList.add('full-opacity');
+			//evt.target.classList.add('full-opacity');
 		});
 		
 	</script>

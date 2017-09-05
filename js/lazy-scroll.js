@@ -1,7 +1,7 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
 
-let findImagesCallback, resizeCallback;
+let onFindImagesToLoad, onResize;
 
 class LazyScroll extends LazyLoad {
 	
@@ -10,8 +10,8 @@ class LazyScroll extends LazyLoad {
 		super(selector);
 
 		setLazyImagePositions.call(this);
-		findImagesCallback = debounce(findImagesToLoad.bind(this), 100);
-		resizeCallback = debounce(setLazyImagePositions.bind(this), 100);
+		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
+		onResize = debounce(setLazyImagePositions.bind(this), 100);
 
 		addEventListeners();
 
@@ -20,8 +20,8 @@ class LazyScroll extends LazyLoad {
 
 function getLazyImagePositions(images) {
 	return images.map(lazyImage => ({ 
-		imagePosition: getImagePosition(lazyImage.image), 
-		...lazyImage 
+		...lazyImage,
+		imagePosition: getImagePosition(lazyImage.image)		 
 	}));
 }
 
@@ -50,15 +50,15 @@ function findImagesToLoad() {
 }
 
 function addEventListeners() {
-	window.addEventListener('scroll', findImagesCallback);
-	window.addEventListener('DOMContentLoaded', findImagesCallback);
-	window.addEventListener('resize', resizeCallback);
+	window.addEventListener('scroll', onFindImagesToLoad);
+	window.addEventListener('DOMContentLoaded', onFindImagesToLoad);
+	window.addEventListener('resize', onResize);
 }
 
 function removeEventListeners() {
-	window.removeEventListener('scroll', findImagesCallback);
-	window.removeEventListener('DOMContentLoaded', findImagesCallback);
-	window.removeEventListener('resize', resizeCallback);
+	window.removeEventListener('scroll', onFindImagesToLoad);
+	window.removeEventListener('DOMContentLoaded', onFindImagesToLoad);
+	window.removeEventListener('resize', onResize);
 }
 
 function getImagePosition(image) {

@@ -1,7 +1,6 @@
 const { CreateEvent } = require('./lazy-events');
-const LAZY_LOAD_COMPLETE = 'lazyloadcomplete';
-
-const onLazyLoadCompleteEvent = CreateEvent(LAZY_LOAD_COMPLETE);	
+const lazyLoadComplete = 'lazyloadcomplete';
+const onLazyLoadCompleteEvent = CreateEvent(lazyLoadComplete);	
 
 function loadImage(src) {
 
@@ -49,24 +48,24 @@ function lazyLoadImage() {
 function getOnImageLoadCallback(image) {
 	switch (true) {
 		case image instanceof Image:
-			return loadImageElement;
+			return onShowImageElement;
 		default:
-			return loadBackgroundImage;
+			return onShowBackgroundImage;
 	}
 }
 
-function loadImageElement(image, src) {
+function onShowImageElement(image, src) {
 	image.src = src;
 }
 
-function loadBackgroundImage() {
-
+function onShowBackgroundImage(div, src) {
+	div.style.backgroundImage = `url(${src})`;
 }
 
 module.exports = {
 	lazyLoadImage,
 	loadImage,
 	getOnImageLoadCallback,
-	loadImageElement,
-	loadBackgroundImage
+	onShowImageElement,
+	onShowBackgroundImage
 };

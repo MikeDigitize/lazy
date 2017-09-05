@@ -1,10 +1,10 @@
 const { CreateEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
 
-const LAZY_LOAD = 'lazyload';
-const LAZY_SRC = 'data-lazy-src';	
+const lazyLoadEvent = 'lazyload';
+const lazySrcDataAttribute = 'data-lazy-src';	
 
-const onLazyLoadEvent = CreateEvent(LAZY_LOAD);	
+const onLazyLoadEvent = CreateEvent(lazyLoadEvent);	
 
 class LazyLoad {
 	
@@ -15,11 +15,11 @@ class LazyLoad {
 		this.images = images.map(image => ({	
 			image,
 			loaded: false,
-			src: image.getAttribute(LAZY_SRC)
+			src: image.getAttribute(lazySrcDataAttribute)
 		}));
 		
 		this.images.forEach(function(lazyImage) {
-			lazyImage.image.addEventListener(LAZY_LOAD, lazyLoadImage.bind(lazyImage));
+			lazyImage.image.addEventListener(lazyLoadEvent, lazyLoadImage.bind(lazyImage));
 		});
 
 	}

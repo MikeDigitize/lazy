@@ -1,9 +1,9 @@
 const { 
 	loadImage, 
 	getOnImageLoadCallback,
-	loadImageElement,
+	onShowImageElement,
 	loadPictureElement,
-	loadBackgroundImage 
+	onShowBackgroundImage 
 } = require('../js/lazy-image-loader');
 
 const { 
@@ -39,12 +39,12 @@ describe('getOnImageLoadCallback tests', function() {
 
 	it('Should return the Image element loader when an image is received', function() {
 		const result = getOnImageLoadCallback(image);
-		expect(result).toBe(loadImageElement);
+		expect(result).toBe(onShowImageElement);
 	});
 
 	it('Should return the CSS background loader when an image is not received', function() {
 		const result = getOnImageLoadCallback(div);
-		expect(result).toBe(loadBackgroundImage);
+		expect(result).toBe(onShowBackgroundImage);
 	});
 
 });
