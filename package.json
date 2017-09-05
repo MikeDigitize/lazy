@@ -31,8 +31,6 @@
   },
   "babel": {
     "presets": [["env"]],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
+    "plugins": ["transform-object-rest-spread"]
   }
 }

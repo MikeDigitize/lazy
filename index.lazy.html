@@ -124,7 +124,7 @@
 						var indexes = trigger.getAttribute('data-target-indexes').split(',');
 						indexes.forEach(function(_i) {
 							var lazyImage = lazyImages.images[_i];
-							lazyImages.fireEvent(lazyImage.image);
+							lazyImages.fireLazyEvent(lazyImage.image);
 							lazyImage.loaded = true;
 						});
 						trigger.removeEventListener('click', onClick);

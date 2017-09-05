@@ -29,13 +29,13 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 
 An event listener is added to each image upon initialisation of a new `LazyLoad` instance, listening for a custom event `lazyload` which triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
 
-An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an image element as an argument and fires the `lazyload` event on the image.
+An instance of `LazyLoad` inherits a single method `fireLazyEvent`, which takes an image element as an argument and fires the `lazyload` event on the image.
 
 ```javascript
 // an instance of LazyLoad looks like this
 {
   images: <Array> // array pf objects representing each lazy load image (see above for data structure)
-  fireEvent: <Function> // inherited
+  fireLazyEvent: <Function> // inherited
 }
 ```
 
@@ -128,7 +128,7 @@ class CustomLazy extends LazyLoad {
 
 // use some other criteria to trigger an image load
 // internally in the class, loop through the array of images, if one meets the criteria to load
-// call the fireEvent method passing in the image to load
+// call the fireLazyEvent method passing in the image to load
 
 const lazy = new CustomLazy('.lazy-image');
 lazy.images.filter(function(lazyImage) {
@@ -136,7 +136,7 @@ lazy.images.filter(function(lazyImage) {
   return !lazyImage.loaded;
 }).forEach(function(lazyImage) {
   // test to see if the image meets the loading criteria, if it does fire the event
-  lazy.fireEvent(lazyImage.image);
+  lazy.fireLazyEvent(lazyImage.image);
   // and update the image data to show the image has loaded
   lazyImage.loaded = true;
 });

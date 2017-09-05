@@ -9,6 +9,4 @@ function CreateEvent(evt) {
 	}
 }
 
-module.exports = {
-	CreateEvent
-};
+module.exports = { CreateEvent };

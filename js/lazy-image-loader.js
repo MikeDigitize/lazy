@@ -59,10 +59,6 @@ function loadImageElement(image, src) {
 	image.src = src;
 }
 
-function loadPictureElement() {
-
-}
-
 function loadBackgroundImage() {
 
 }
@@ -72,6 +68,5 @@ module.exports = {
 	loadImage,
 	getOnImageLoadCallback,
 	loadImageElement,
-	loadPictureElement,
 	loadBackgroundImage
 };

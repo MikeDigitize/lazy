@@ -44,7 +44,7 @@ function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
 	imagesToLoad.forEach(lazyImage => {
-		this.fireEvent(lazyImage.image);
+		this.fireLazyEvent(lazyImage.image);
 		lazyImage.loaded = true;
 	});
 }

@@ -73,7 +73,7 @@ function onMouseMove(evt) {
     const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
     
     if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
-      this.fireEvent(image);
+      this.fireLazyEvent(image);
       lazyImage.loaded = true;
       lazyProximityTrigger.removeEventListener('click', onClickCallback);
     }  
@@ -89,7 +89,7 @@ function onClick(evt) {
   this.images.forEach((lazyImage) => {
     const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
     if(lazyProximityTrigger === target) {
-      this.fireEvent(image);
+      this.fireLazyEvent(image);
       lazyImage.loaded = true;
       lazyProximityTrigger.removeEventListener('click', onClickCallback);
     }

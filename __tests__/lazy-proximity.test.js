@@ -1,7 +1,4 @@
-const { 
-  LazyProximity,
-  getProximityTriggers
-} = require('../js/lazy-proximity');
+const { LazyProximity } = require('../js/lazy-proximity');
 
 const { 
   lazyImageClass,

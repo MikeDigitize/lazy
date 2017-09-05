@@ -24,7 +24,7 @@ class LazyLoad {
 
 	}
 
-	fireEvent(image) {
+	fireLazyEvent(image) {
 		image.dispatchEvent(onLazyLoadEvent);
 	}
 	
