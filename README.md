@@ -1,6 +1,6 @@
 # Lazy
 
-An image loading, event driven class supporting deferral of image loading to a user specified time. 
+An image loading, event driven class supporting lazy load aka deferral of image loading. 
 
 ## How it works
 
@@ -10,7 +10,7 @@ The `LazyLoad` base class takes a CSS selector of images to be lazy loaded.
 const lazy = new LazyLoad('.lazy-image');
 ```
 
-Lazy images require a `data-lazy-src` attribute specifying the image path to load. The image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a server request if the `src` is set to an empty string so omitting is the preferred approach.
+Lazy images require a `data-lazy-src` attribute specifying the image path to load. The image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
 
 ```html
 <img data-lazy-src="images/my-lazy-loading-image.png">
@@ -39,7 +39,7 @@ An instance of `LazyLoad` inherits a single method `fireEvent`, which takes an i
 }
 ```
 
-Upon an image loading, another custom event - `lazyloadcomplete` is fired on the image. This event can be captured on the window to allow for any further operations on the image you might require, for example to trigger a fade-in CSS transition.
+Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image, such as triggering a fade-in style CSS transition.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
@@ -65,13 +65,13 @@ The `LazyScroll` class appends the positional data of each image to the image da
 }
 ```
 
-The `scroll` event listener which triggers the `LazyScroll` functionality has its callback throttled to conserve performance.
+The `scroll` event listener on the window, which triggers the `LazyScroll` functionality, has its callback throttled to conserve performance.
 
 ## Lazy Proximity
 
-The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define trigger elements on the page that will trigger the loading of any amount of lazy images. 
+The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define elements on the page that will trigger the loading of any amount of lazy images when hovered over or when receiving a click / touch event, for mobile. 
 
-Loading is triggered when the mouse is over a trigger element or when a trigger receives a click / touch event, for mobile. The lazy images a trigger should load are defined with a CSS selector in the trigger element's `data-lazy-target` attribute.
+The lazy images a trigger element will load are defined with a CSS selector in its `data-lazy-target` attribute.
 
 ```html
 <!-- loads all images that match the selector ".lazy-holder img" -->
@@ -91,7 +91,7 @@ The `LazyProximity` class appends the trigger element and its `onclick` callback
 }
 ```
 
-In order to save excessive positional calculations which could potentially be a performance overhead, the `LazyProximity` class keeps proximity detection simple. It runs via a single `mousemove` event listener on the document, whose calback is throttled so as not to fire repeatedly.
+In order to save excessive positional calculations that could potentially be a performance overhead, the `LazyProximity` class keeps proximity detection simple. It runs via a single `mousemove` event listener on the document, whose calback is throttled so as not to fire repeatedly.
 
 It utilises two native DOM methods - `elementFromPoint` which takes an `x` and `y` co-ordinate and responds with the DOM element relative to those co-ordinates, and the `contains` method, inherited by every DOM Node which, when called against an element and passed an element as an argument, responds with whether the passed element is a child of the element the method is called against.  
 
