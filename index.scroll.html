@@ -20,6 +20,7 @@
 			opacity: 1;
 		}
 	</style>
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 </head>
 <body>
 
@@ -97,7 +98,7 @@
 
 		var lazyImages = new LazyScroll('.lazy-holder img');
 		window.addEventListener('lazyloadcomplete', function(evt) {
-			console.log('loaded!', evt.target);
+			console.log('loaded!', evt.target.src);
 			evt.target.classList.add('full-opacity');
 		});
 		
