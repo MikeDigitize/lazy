@@ -2,6 +2,10 @@
 
 An image loading, event driven class supporting lazy load aka deferral of image loading. 
 
+## Browser support
+
+IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`.
+
 ## How it works
 
 The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. 
