@@ -43,7 +43,7 @@ An instance of `LazyLoad` inherits a single method `fireLazyEvent`, which takes 
 }
 ```
 
-Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image, such as triggering a fade-in style CSS transition.
+Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image. As older browers can display images without `src` attributes as broken images, this is a good opportunity to add styling to hide them initially and then reveal upon loading.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
@@ -149,6 +149,7 @@ lazy.images.filter(function(lazyImage) {
 ```
 
 ### TODO:
-* Support background images and picture element
+* Write tests for background image support
+* Add support for Picture element
 * Better handling of when images fail to load
 * Option to show a loading spinner whilst images load
