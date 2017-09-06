@@ -31,7 +31,7 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 }
 ```
 
-An event listener listening for a `lazyload` event is bound to each lazy image. When fired the event triggers the loading of the image into cache and, once resolved, sets the src attribute of the image so it appears in the document.
+An event listener listening for a `lazyload` event is bound to each lazy image. When fired the event triggers the loading of the image into cache and, once resolved, sets the `src` attribute of the image so it appears in the document.
 
 An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed an image element it fires the `lazyload` event on the image.
 
