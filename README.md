@@ -33,17 +33,17 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 
 An event listener listening for a `lazyload` event is bound to each lazy image. When fired the event triggers the loading of the image into cache and, once resolved, sets the src attribute of the image so it appears in the document.
 
-An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed a lazy image element it fires the `lazyload` event on the image to trigger its lazy load.
+An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed an image element it fires the `lazyload` event on the image.
 
 ```javascript
 // an instance of LazyLoad looks like this
 {
-  images: <Array> // array pf objects representing each lazy load image (see above for data structure)
+  images: <Array> // array of objects representing each lazy load image (see above for data structure)
   fireLazyEvent: <Function> // inherited
 }
 ```
 
-Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image. As older browers can display images without `src` attributes as broken images, this is a good opportunity to add styling to hide them initially and then reveal upon loading.
+Upon a successful load, a `lazyloadcomplete` event is fired on the image which can be captured on the window. As older browers can display images without `src` attributes as broken images, this is a good opportunity to add styling to hide them initially and reveal upon loading. If an image can't be loaded a `lazyloaderror` event is fired on the image which too can be captured.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
@@ -51,13 +51,9 @@ window.addEventListener('lazyloadcomplete', function(evt) {
 });
 ```
 
-If an image can't be loaded a `lazyloaderror` event is fired on the image which too can be captured.
-
-The `LazyLoad` class has been designed to be as unopinionated as possible, making it easily extendable to support any loading criteria.
-
 ## Lazy Scroll
 
-The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If an image is in the viewport the `lazyload` event is fired on the image.
+The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If it is its `lazyload` event is fired.
 
 The `LazyScroll` class appends the positional data of each image to the image data stored on the instance.
 
@@ -70,8 +66,6 @@ The `LazyScroll` class appends the positional data of each image to the image da
   imagePosition: <Object>
 }
 ```
-
-The `scroll` event listener on the window, which triggers the `LazyScroll` functionality, has its callback throttled to conserve performance.
 
 ## Lazy Proximity
 
