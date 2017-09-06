@@ -43,7 +43,7 @@ An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed 
 }
 ```
 
-If an image is successfully loaded a `lazyloadcomplete` event is fired. It can be captured on the window to allow any further operations on the image.
+Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image. As older browers can display images without `src` attributes as broken images, this is a good opportunity to add styling to hide them initially and then reveal upon loading.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
@@ -99,6 +99,22 @@ The `LazyProximity` class appends the trigger element and its `onclick` callback
 
 ## Usage
 
+#### LazyLoad
+
+To use the `LazyLoad` class, call the class with a CSS selector for the lazy images.
+
+```javascript
+const lazy = new LazyScroll('.lazy-image');
+```
+To trigger the loading of an image, use the `fireLazyEvent` method on the instance, passing in the lazy image element to load.
+
+```javascript
+// access an image from the instance's images array
+const [lazyImage] = lazy.images;
+// call the fireLazyEvent method on the instance passing in the lazy image element
+lazy.fireLazyEvent(lazyImage.image);
+```
+
 #### LazyScroll
 
 To use the `LazyScroll` class, call the class with a CSS selector for the lazy images and the plugin will load images as they appear in the viewport.
@@ -147,6 +163,8 @@ lazy.images.filter(function(lazyImage) {
 ```
 
 ### TODO:
-* Support background images and picture element
+* Write tests for background image support
+* Add support for Picture element
 * Better handling of when images fail to load
+* Handling when functions are supplied with wrong argument types or null / empty results
 * Option to show a loading spinner whilst images load
