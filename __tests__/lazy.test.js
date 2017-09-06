@@ -50,7 +50,7 @@ describe('LazyLoad class tests', function() {
 		expect(Object.keys(lazyImage).length).toBe(3);
 		expect(lazyImage.image).toBe(image);
 		expect(lazyImage.src).toBe(imagePath);
-    expect(lazyImage.loaded).toBe(false);
+    expect(lazyImage.resolved).toBe(false);
     
   });
 

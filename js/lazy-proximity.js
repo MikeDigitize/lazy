@@ -35,8 +35,8 @@ class LazyProximity extends LazyLoad {
       
     });
 
-    this.onMouseMoveCallback = debounce(onMouseMove.bind(this), 100);
-    document.addEventListener('mousemove', this.onMouseMoveCallback);
+    this.onMouseMove = debounce(onMouseMove.bind(this), 100);
+    document.addEventListener('mousemove', this.onMouseMove);
 
   }
 
@@ -61,7 +61,7 @@ function getProximityTriggers(proximitySelector) {
 }
 
 function getUnloadedImages(images) {
-	return images.filter(lazyImage => !lazyImage.loaded);
+	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
 function onMouseMove(evt) {
@@ -69,7 +69,7 @@ function onMouseMove(evt) {
   // if no images remaining to load, remove the mousemove listener
   const unloadedImages = getUnloadedImages(this.images);
   if(unloadedImages.length === 0) {
-    document.removeEventListener('mousemove', this.onMouseMoveCallback);
+    document.removeEventListener('mousemove', this.onMouseMove);
     return;
   }
 
@@ -85,7 +85,7 @@ function onMouseMove(evt) {
     // load the lazy images and remove its click handler
     if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
       this.fireLazyEvent(image);
-      lazyImage.loaded = true;
+      lazyImage.resolved = true;
       lazyProximityTrigger.removeEventListener('click', onClickCallback);
     }  
 
@@ -101,7 +101,7 @@ function onClick(evt) {
     const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
     if(lazyProximityTrigger === target) {
       this.fireLazyEvent(image);
-      lazyImage.loaded = true;
+      lazyImage.resolved = true;
       lazyProximityTrigger.removeEventListener('click', onClickCallback);
     }
   });

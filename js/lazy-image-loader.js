@@ -1,13 +1,15 @@
 const { CreateEvent } = require('./lazy-events');
-const lazyLoadCompleteEvent = 'lazyloadcomplete';
-const onLazyLoadCompleteEvent = CreateEvent(lazyLoadCompleteEvent);	
+const onCompleteEventName = 'lazyloadcomplete';
+const onErrorEventName = 'lazyloaderror';
+const onComplete = CreateEvent(onCompleteEventName);	
+const onError = CreateEvent(onErrorEventName);	
 
 function loadImage(src) {
 
 	return new Promise(function (resolve) {
 
 		const lazyImage = new Image();
-		const result = { loaded: true };
+		const result = { resolved: true };
 
 		function onLoad() {
 			removeListeners();
@@ -16,7 +18,7 @@ function loadImage(src) {
 
 		function onError() {
 			removeListeners();
-			result.loaded = false;
+			result.resolved = false;
 			resolve(result);
 		}
 
@@ -37,28 +39,31 @@ function loadImage(src) {
 function lazyLoadImage() {
 
 	const { image, src } = this;
-	const onImageLoad = getOnImageLoadCallback(image);
+	const onImageLoad = getOnLoadCallback(image);
 	
 	loadImage(src).then((result) => {
-		if(result.loaded) {
+		if(result.resolved) {
 			onImageLoad(image, src);
-			image.dispatchEvent(onLazyLoadCompleteEvent);
+			image.dispatchEvent(onComplete);
+		}
+		else {
+			image.dispatchEvent(onError);
 		}
 	});
 
 }
 
 // TODO: add support for background image and picture element
-function getOnImageLoadCallback(image) {
+function getOnLoadCallback(image) {
 	switch (true) {
 		case image instanceof Image:
-			return onShowImageElement;
+			return onShowImage;
 		default:
 			return onShowBackgroundImage;
 	}
 }
 
-function onShowImageElement(image, src) {
+function onShowImage(image, src) {
 	image.src = src;
 }
 
@@ -70,7 +75,7 @@ function onShowBackgroundImage(div, src) {
 module.exports = {
 	lazyLoadImage,
 	loadImage,
-	getOnImageLoadCallback,
-	onShowImageElement,
+	getOnLoadCallback,
+	onShowImage,
 	onShowBackgroundImage
 };

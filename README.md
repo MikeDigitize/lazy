@@ -8,7 +8,7 @@ IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`.
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. 
+The `LazyLoad` base class takes a CSS selector of images to be lazy resolved. 
 
 ```javascript
 const lazy = new LazyLoad('.lazy-image');
@@ -20,20 +20,20 @@ Lazy images require a `data-lazy-src` attribute specifying the image path to loa
 <img data-lazy-src="images/my-lazy-loading-image.png">
 ```
 
-Upon initialisation, the `LazyLoad` class creates an array of image data, storing each image element, its src and a loaded attribute to identify if the image has loaded.
+Upon initialisation, the `LazyLoad` class creates an array of image data, storing each image element, its `src` and a resolved attribute initially set to `false`.
 
 ```javascript
 // each lazy image stored in the images array is represented with the following data structure
 {
   image: <Image Elememt>
   src: <String>
-  loaded: <Boolean>
+  resolved: <Boolean>
 }
 ```
 
-An event listener is added to each lazy image, listening for a custom event `lazyload` which triggers the loading of the image into cache and, once loaded, sets the src attribute of the image so it appears in the document.
+An event listener listening for a `lazyload` event is bound to each lazy image. When fired the event triggers the loading of the image into cache and, once resolved, sets the src attribute of the image so it appears in the document.
 
-An instance of `LazyLoad` inherits a single method `fireLazyEvent`, which takes an image element as an argument and fires the `lazyload` event on the image.
+An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed a lazy image element it fires the `lazyload` event on the image to trigger its lazy load.
 
 ```javascript
 // an instance of LazyLoad looks like this
@@ -43,13 +43,15 @@ An instance of `LazyLoad` inherits a single method `fireLazyEvent`, which takes 
 }
 ```
 
-Upon an image loading, another custom event - `lazyloadcomplete` - is fired on the image. This event can be captured on the window to allow any further operations on the image, such as triggering a fade-in style CSS transition.
+If an image is successfully loaded a `lazyloadcomplete` event is fired. It can be captured on the window to allow any further operations on the image.
 
 ```javascript
 window.addEventListener('lazyloadcomplete', function(evt) {
   // do something with the evt target
 });
 ```
+
+If an image can't be loaded a `lazyloaderror` event is fired on the image which too can be captured.
 
 The `LazyLoad` class has been designed to be as unopinionated as possible, making it easily extendable to support any loading criteria.
 
@@ -64,7 +66,7 @@ The `LazyScroll` class appends the positional data of each image to the image da
 {
   img: <Image Elememt>
   src: <String>
-  loaded: <Boolean>
+  resolved: <Boolean>
   imagePosition: <Object>
 }
 ```
@@ -89,15 +91,11 @@ The `LazyProximity` class appends the trigger element and its `onclick` callback
 {
   img: <Image Elememt>
   src: <String>
-  loaded: <Boolean>
+  resolved: <Boolean>
   lazyProximityTrigger: <Element>
   onClickCallback: <Function>
 }
 ```
-
-In order to save excessive positional calculations that could potentially be a performance overhead, the `LazyProximity` class keeps proximity detection simple. It runs via a single `mousemove` event listener on the document, whose calback is throttled so as not to fire repeatedly.
-
-It utilises two native DOM methods - `elementFromPoint` which takes an `x` and `y` co-ordinate and responds with the DOM element relative to those co-ordinates, and the `contains` method, inherited by every DOM Node which, when called against an element and passed an element as an argument, responds with whether the passed element is a child of the element the method is called against.  
 
 ## Usage
 
@@ -138,13 +136,13 @@ class CustomLazy extends LazyLoad {
 
 const lazy = new CustomLazy('.lazy-image');
 lazy.images.filter(function(lazyImage) {
-  // get the images yet to be loaded
-  return !lazyImage.loaded;
+  // get the images yet to be resolved
+  return !lazyImage.resolved;
 }).forEach(function(lazyImage) {
   // test to see if the image meets the loading criteria, if it does fire the event
   lazy.fireLazyEvent(lazyImage.image);
-  // and update the image data to show the image has loaded
-  lazyImage.loaded = true;
+  // and update the image data to show the image has resolved
+  lazyImage.resolved = true;
 });
 ```
 

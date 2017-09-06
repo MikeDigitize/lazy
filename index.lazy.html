@@ -126,7 +126,7 @@
 						indexes.forEach(function(_i) {
 							var lazyImage = lazyImages.images[_i];
 							lazyImages.fireLazyEvent(lazyImage.image);
-							lazyImage.loaded = true;
+							lazyImage.resolved = true;
 						});
 						trigger.removeEventListener('click', onClick);
 

@@ -51,7 +51,7 @@ function findImagesToLoad() {
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyEvent(lazyImage.image);
-		lazyImage.loaded = true;
+		lazyImage.resolved = true;
 	});
 }
 
@@ -96,7 +96,7 @@ function getWindowBoundaries() {
 }
 
 function getUnloadedImages(images) {
-	return images.filter(lazyImage => !lazyImage.loaded);
+	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
 function getImagesInView(images) {
