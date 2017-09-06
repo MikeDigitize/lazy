@@ -101,6 +101,22 @@ It utilises two native DOM methods - `elementFromPoint` which takes an `x` and `
 
 ## Usage
 
+#### LazyLoad
+
+To use the `LazyLoad` class, call the class with a CSS selector for the lazy images.
+
+```javascript
+const lazy = new LazyScroll('.lazy-image');
+```
+To trigger the loading of an image, use the `fireLazyEvent` method on the instance, passing in the lazy image element to load.
+
+```javascript
+// access an image from the instance's images array
+const [lazyImage] = lazy.images[0];
+// call the fireLazyEvent method on the instance passing in the lazy image element
+lazy.fireLazyEvent(lazyImage.image);
+```
+
 #### LazyScroll
 
 To use the `LazyScroll` class, call the class with a CSS selector for the lazy images and the plugin will load images as they appear in the viewport.
