@@ -1,8 +1,9 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
-
 let onFindImagesToLoad, onResize;
 
+// triggers lazy loading of images
+// based on their position relative to the window position
 class LazyScroll extends LazyLoad {
 	
 	constructor(selector) {
@@ -10,23 +11,24 @@ class LazyScroll extends LazyLoad {
 		super(selector);
 
 		setLazyImagePositions.call(this);
+
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
-
 		addEventListeners();
 
 	}
 }
 
+function setLazyImagePositions() {
+	this.images = getLazyImagePositions(this.images);
+}
+
+// adds positional data to each lazy load image stored on the instance
 function getLazyImagePositions(images) {
 	return images.map(lazyImage => ({ 
 		...lazyImage,
 		imagePosition: getImagePosition(lazyImage.image)		 
 	}));
-}
-
-function setLazyImagePositions() {
-	this.images = getLazyImagePositions(this.images);
 }
 
 function getYPosition(image) {
@@ -43,6 +45,10 @@ function getYPosition(image) {
 function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
+	loadImages.call(this, imagesToLoad);
+}
+
+function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyEvent(lazyImage.image);
 		lazyImage.loaded = true;
@@ -94,16 +100,20 @@ function getUnloadedImages(images) {
 }
 
 function getImagesInView(images) {
+
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
+	
 	if(unloadedImages.length === 0) {
 		removeEventListeners();
 		return [];
 	}
+
 	return unloadedImages.filter(lazyImage => {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
 		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
+
 }
 
 function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {

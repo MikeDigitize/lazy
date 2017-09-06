@@ -1,6 +1,6 @@
 const { CreateEvent } = require('./lazy-events');
-const lazyLoadComplete = 'lazyloadcomplete';
-const onLazyLoadCompleteEvent = CreateEvent(lazyLoadComplete);	
+const lazyLoadCompleteEvent = 'lazyloadcomplete';
+const onLazyLoadCompleteEvent = CreateEvent(lazyLoadCompleteEvent);	
 
 function loadImage(src) {
 
@@ -35,16 +35,20 @@ function loadImage(src) {
 }
 
 function lazyLoadImage() {
+
 	const { image, src } = this;
 	const onImageLoad = getOnImageLoadCallback(image);
+	
 	loadImage(src).then((result) => {
 		if(result.loaded) {
 			onImageLoad(image, src);
 			image.dispatchEvent(onLazyLoadCompleteEvent);
 		}
 	});
+
 }
 
+// TODO: add support for background image and picture element
 function getOnImageLoadCallback(image) {
 	switch (true) {
 		case image instanceof Image:
@@ -58,6 +62,7 @@ function onShowImageElement(image, src) {
 	image.src = src;
 }
 
+// TODO: tests for this function
 function onShowBackgroundImage(div, src) {
 	div.style.backgroundImage = `url(${src})`;
 }

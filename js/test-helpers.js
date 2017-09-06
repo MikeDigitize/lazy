@@ -1,3 +1,5 @@
+// bunch of common helper functions and values to use during testing
+
 const lazyImageClass = 'lazy-image';
 const lazyImageClass2 = 'lazy-image2';
 const lazyImageClass3 = 'lazy-image3';
