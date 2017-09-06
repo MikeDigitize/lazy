@@ -112,7 +112,7 @@ To trigger the loading of an image, use the `fireLazyEvent` method on the instan
 
 ```javascript
 // access an image from the instance's images array
-const [lazyImage] = lazy.images[0];
+const [lazyImage] = lazy.images;
 // call the fireLazyEvent method on the instance passing in the lazy image element
 lazy.fireLazyEvent(lazyImage.image);
 ```
