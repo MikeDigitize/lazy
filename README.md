@@ -157,6 +157,4 @@ lazy.images.filter(function(lazyImage) {
 ### TODO:
 * Write tests for background image support
 * Add support for Picture element
-* Better handling of when images fail to load
 * Handling when functions are supplied with wrong argument types or null / empty results
-* Option to show a loading spinner whilst images load
