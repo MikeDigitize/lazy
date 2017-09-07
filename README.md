@@ -74,17 +74,6 @@ Upon a successful load, a `lazyloadcomplete` event is fired on the image. Follow
 
 As older browers can display images without `src` attributes as broken images, it's probably a good idea to add styling to hide them initially and reveal upon loading. If an image can't be loaded a `lazyloaderror` event is fired.
 
-```javascript
-window.addEventListener('lazyloadcomplete', function(evt) {
-  var lazyImage = evt.target;
-  var spinner = lazyImage.previousElementSibling;
-  
-  // hide spinner and show image
-  spinner.style.display = "none";
-  lazyImage.style.display = "block";
-});
-```
-
 ## Lazy Scroll
 
 The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an image is in the viewport. If it is its `lazyload` event is fired. The `LazyScroll` class appends the positional data of each image to the image data stored on the instance.
