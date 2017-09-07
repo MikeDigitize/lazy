@@ -4,7 +4,7 @@
 	<title>Lazy Scroll</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<style type="text/css">
-		img {
+		.lazy-image {
 			display: block;
 			margin: 20px auto;
 			width: 100%;
@@ -12,11 +12,19 @@
 			opacity: 0;
 			transition: 2s opacity ease-in-out;
 		}
+		.loading-spinner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -82px;
+			margin-top: -10px;
+			opacity: 0;
+		}
 		.lazy-holder {
 			min-height: 240px;
 			border: 1px solid #ededed;
 		}
-		.full-opacity {
+		.visible {
 			opacity: 1;
 		}
 	</style>
@@ -27,68 +35,81 @@
 	<div class="container">
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/bb.png">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/bb.png" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/earth.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/earth.jpg" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/light.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/light.jpg" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/logo.png">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/logo.png" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/maths.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+				<img data-lazy-src="images/maths.jpg" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/me.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+				<img data-lazy-src="images/me.jpg" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/planet.png">
+				<img src="images/loader.gif" class="loading-spinner" />				
+				<img data-lazy-src="images/planet.png" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/rampant.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/rampant.jpg" class="lazy-image">
   		</div>
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/red-planet.png">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/red-planet.png" class="lazy-image">
   		</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/brent.gif">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/brent.gif" class="lazy-image">
   		</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/monkey.gif">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/monkey.gif" class="lazy-image">
   		</div>
 		</div>
   	</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/audi.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/audi.jpg" class="lazy-image">
   		</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/bridge.jpg">
+				<img src="images/loader.gif" class="loading-spinner" />
+  			<img data-lazy-src="images/bridge.jpg" class="lazy-image">
   		</div>
 		</div>
 	</div>
@@ -96,10 +117,31 @@
 	<script type="text/javascript" src="js/lazy-scroll.min.js"></script>
 	<script type="text/javascript">
 
-		var lazyImages = new LazyScroll('.lazy-holder img');
+		var lazyImages = new LazyScroll('.lazy-image');
+		
+		window.addEventListener('lazyload', function(evt) {
+			
+			var lazyImage = evt.target;
+			var spinner = lazyImage.previousElementSibling;
+
+			console.log('attempting to load...', lazyImage.src);
+			spinner.classList.add('visible');
+			
+		});
+
 		window.addEventListener('lazyloadcomplete', function(evt) {
-			console.log('loaded!', evt.target.src);
-			evt.target.classList.add('full-opacity');
+			
+			var lazyImage = evt.target;
+			var spinner = lazyImage.previousElementSibling;
+
+			console.log('loaded!', lazyImage.src);
+
+			// simulate a server request
+			setTimeout(function() {
+				spinner.classList.remove('visible');
+				lazyImage.classList.add('visible');
+			}, 500);
+			
 		});
 		
 	</script>
