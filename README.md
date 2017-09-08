@@ -47,7 +47,7 @@ The `lazyload` event can be captured on the `window` like any other event that b
 
 ```html
 <div class="lazy-image-container">
-  <img data-lazy-src="images/loading-spinner.gif" class="loading-spinner">
+  <img src="images/loading-spinner.gif" class="loading-spinner">
   <img data-lazy-src="images/my-lazy-loading-image.png" class="lazy-image">
 </div>
 ```
@@ -86,7 +86,7 @@ The lazy images that a trigger element is to load should be defined with a CSS s
 
 ```html
 <!-- loads all images that match the selector ".lazy-holder img" -->
-<button type="button" class="lazy-btn" data-lazy-target=".lazy-holder img">Click me!</button>
+<button class="lazy-btn" data-lazy-target=".lazy-holder img">Click me!</button>
 ```
 
 ## Usage
