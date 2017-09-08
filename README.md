@@ -91,6 +91,15 @@ The lazy images that a trigger element is to load should be defined with a CSS s
 
 ## Usage
 
+The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. Reference one of these in your HTML and use the instructions below to initialise.
+
+To extend any of the classes, install the project with -
+
+```
+yarn
+```
+and run the relevant command from npm `scripts` in the `package.json` file (`start`, `run dist` or `test`).
+
 #### LazyLoad
 
 To use the `LazyLoad` class, call the class with a CSS selector for the lazy images.
