@@ -32,22 +32,22 @@ describe('LazyScroll class tests', function() {
 		expect(Object.keys(lazyImage).length).toBe(4);
 		
 		expect(lazyImage.image).toBe(image);
-		expect(lazyImage.imagePosition).toBeTruthy();
+		expect(lazyImage.imagePosition).toBeDefined();
 		expect(lazyImage.src).toBe(imagePath);
 		expect(lazyImage.resolved).toBe(false);		
 
 		expect(lazyImage2.image).toBe(image2);
-		expect(lazyImage2.imagePosition).toBeTruthy();
+		expect(lazyImage2.imagePosition).toBeDefined();
 		expect(lazyImage2.src).toBe(imagePath2);
 		expect(lazyImage2.resolved).toBe(false);		
 
 		expect(lazyImage3.image).toBe(image3);
-		expect(lazyImage3.imagePosition).toBeTruthy();
+		expect(lazyImage3.imagePosition).toBeDefined();
 		expect(lazyImage3.src).toBe(imagePath3);
 		expect(lazyImage3.resolved).toBe(false);		
 
 		expect(lazyImage4.image).toBe(image4);
-		expect(lazyImage4.imagePosition).toBeTruthy();
+		expect(lazyImage4.imagePosition).toBeDefined();
 		expect(lazyImage4.src).toBe(imagePath4);
 		expect(lazyImage4.resolved).toBe(false);		
 

@@ -36,28 +36,28 @@ describe('LazyProximity class tests', function() {
     expect(lazyImage.lazyProximityTrigger).toBe(trigger);
     expect(lazyImage.src).toBe(imagePath);
     expect(lazyImage.resolved).toBe(false);	
-    expect(lazyImage.onClickCallback).toBeTruthy();
+    expect(lazyImage.onClickCallback).toBeDefined();
 
     expect(Object.keys(lazyImage2).length).toBe(5);
     expect(lazyImage2.image).toBe(image2);
     expect(lazyImage2.lazyProximityTrigger).toBe(trigger);
     expect(lazyImage2.src).toBe(imagePath2);
     expect(lazyImage2.resolved).toBe(false);	
-    expect(lazyImage2.onClickCallback).toBeTruthy();
+    expect(lazyImage2.onClickCallback).toBeDefined();
 
     expect(Object.keys(lazyImage3).length).toBe(5);
     expect(lazyImage3.image).toBe(image3);
     expect(lazyImage3.lazyProximityTrigger).toBe(trigger);
     expect(lazyImage3.src).toBe(imagePath3);
     expect(lazyImage3.resolved).toBe(false);	
-    expect(lazyImage3.onClickCallback).toBeTruthy();
+    expect(lazyImage3.onClickCallback).toBeDefined();
 
     expect(Object.keys(lazyImage4).length).toBe(5);
     expect(lazyImage4.image).toBe(image4);
     expect(lazyImage4.lazyProximityTrigger).toBe(trigger);
     expect(lazyImage4.src).toBe(imagePath4);
     expect(lazyImage4.resolved).toBe(false);	
-    expect(lazyImage4.onClickCallback).toBeTruthy();
+    expect(lazyImage4.onClickCallback).toBeDefined();
 
   });
   
@@ -79,21 +79,21 @@ describe('LazyProximity class tests', function() {
     expect(lazyImage.lazyProximityTrigger).toBe(trigger);
     expect(lazyImage.src).toBe(imagePath);
     expect(lazyImage.resolved).toBe(false);	
-    expect(lazyImage.onClickCallback).toBeTruthy();
+    expect(lazyImage.onClickCallback).toBeDefined();
 
     expect(Object.keys(lazyImage2).length).toBe(5);
     expect(lazyImage2.image).toBe(image2);
     expect(lazyImage2.lazyProximityTrigger).toBe(trigger2);
     expect(lazyImage2.src).toBe(imagePath2);
     expect(lazyImage2.resolved).toBe(false);	
-    expect(lazyImage2.onClickCallback).toBeTruthy();
+    expect(lazyImage2.onClickCallback).toBeDefined();
 
     expect(Object.keys(lazyImage3).length).toBe(5);
     expect(lazyImage3.image).toBe(image3);
     expect(lazyImage3.lazyProximityTrigger).toBe(trigger3);
     expect(lazyImage3.src).toBe(imagePath3);
     expect(lazyImage3.resolved).toBe(false);	
-    expect(lazyImage3.onClickCallback).toBeTruthy();
+    expect(lazyImage3.onClickCallback).toBeDefined();
 
   });
 	
