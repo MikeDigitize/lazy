@@ -127,5 +127,7 @@ function isInViewHorizontally(posXmin, windowXmin, posXmax, windowXmax) {
 module.exports = {
 	LazyScroll,
 	isInViewVertically,
-	isInViewHorizontally
+	isInViewHorizontally,
+	getWindowScrollPosition,
+	getImagePosition
 };

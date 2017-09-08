@@ -7,6 +7,7 @@ const lazyImageHolderClass = 'lazy-image-holder';
 const lazyTriggerClass = 'lazy-trigger';
 const lazyTriggerClass2 = 'lazy-trigger2';
 const lazyTriggerClass3 = 'lazy-trigger3';
+const bigDivClass = 'big-div';
 const imagePath = '../images/bb.png';
 const imagePath2 = '../images/earth.jpg';
 const imagePath3 = '../images/light.jpg';
@@ -49,9 +50,21 @@ function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 
 }
 
+function createBigDiv() {
+
+	const div = document.createElement('div');
+	div.style.height = '6000px';
+	div.style.width = '5000px';
+	div.classList.add(bigDivClass);
+
+	document.body.appendChild(div);
+
+	return div;
+}
+
 function cleanUpDom() {
 
-	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}`));
+	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}, .${bigDivClass}`));
 	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
 
 	holders.forEach(function(holder) {
@@ -80,5 +93,6 @@ module.exports = {
 	createLazyImage,
 	createLazyTrigger,
 	cleanUpDom,
-	fakelazyImageClass
+	fakelazyImageClass,
+	createBigDiv
 };
