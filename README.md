@@ -20,12 +20,12 @@ Lazy images require a `data-lazy-src` attribute specifying the image path to loa
 <img data-lazy-src="images/my-lazy-loading-image.png">
 ```
 
-Upon initialisation, the `LazyLoad` class creates an array of image data, storing each image element, its `src` and a resolved attribute initially set to `false`.
+Upon initialisation, the `LazyLoad` class creates an array of image data, storing each element, its `src` and a resolved attribute initially set to `false`.
 
 ```javascript
 // each lazy image stored in the images array is represented with the following data structure
 {
-  image: <Image Elememt>
+  image: <Elememt>
   src: <String>
   resolved: <Boolean>
 }
