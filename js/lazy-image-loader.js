@@ -53,7 +53,7 @@ function lazyLoadImage() {
 
 }
 
-// TODO: add support for background image and picture element
+// TODO: add support for picture element
 function getOnLoadCallback(image) {
 	switch (true) {
 		case image instanceof Image:
@@ -67,7 +67,6 @@ function onShowImage(image, src) {
 	image.src = src;
 }
 
-// TODO: tests for this function
 function onShowBackgroundImage(div, src) {
 	div.style.backgroundImage = `url(${src})`;
 }

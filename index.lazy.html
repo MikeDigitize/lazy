@@ -14,6 +14,27 @@
 			min-height: 240px;
 			border: 1px solid #ededed;
 		}
+		.monkey {
+			width: 350px;
+			height: 175px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
+		.audi {
+			width: 340px;
+			height: 235px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
+		.bridge {
+			width: 400px;
+			height: 600px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
 	</style>
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 </head>
@@ -25,32 +46,23 @@
           <button type="button" class="btn btn-primary" data-lazy-target=".lazy-holder img">Group 1</button>
       </div>
       <div class="col-sm-3">
-          <button type="button" class="btn btn-secondary" data-lazy-target=".lazy-holder1 img">Group 2</button>
+          <button type="button" class="btn btn-secondary" data-lazy-target=".monkey">Group 2</button>
       </div>
       <div class="col-sm-3">
-          <button type="button" class="btn btn-success" data-lazy-target=".lazy-holder2 img">Group 3</button>
+          <button type="button" class="btn btn-success" data-lazy-target=".audi">Group 3</button>
       </div>
       <div class="col-sm-3">
-          <button type="button" class="btn btn-info" data-lazy-target=".lazy-holder3 img">Group 4</button>
+          <button type="button" class="btn btn-info" data-lazy-target=".bridge">Group 4</button>
       </div>
     </div>
   	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/bb.png">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder1">
+  		<div class="col-sm-4 lazy-holder">
   			<img data-lazy-src="images/earth.jpg">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder2">
+			</div>
+			<div class="col-sm-4 lazy-holder">
   			<img data-lazy-src="images/light.jpg">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder3">
+			</div>
+			<div class="col-sm-4 lazy-holder">
   			<img data-lazy-src="images/logo.png">
   		</div>
   	</div>
@@ -59,80 +71,42 @@
   			<img data-lazy-src="images/maths.jpg">
   		</div>
   	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder1">
-  			<img data-lazy-src="images/me.jpg">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder2">
-  			<img data-lazy-src="images/planet.png">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder3">
-  			<img data-lazy-src="images/rampant.jpg">
-  		</div>
-  	</div>
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/red-planet.png">
-  		</div>
-		</div>
 		<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder1">
-  			<img data-lazy-src="images/brent.gif">
-  		</div>
-		</div>
-		<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder2">
-  			<img data-lazy-src="images/monkey.gif">
-  		</div>
-		</div>
-  	</div>
-		<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder3">
-  			<img data-lazy-src="images/audi.jpg">
-  		</div>
-		</div>
-		<div class="row">
-  		<div class="col-sm-4 offset-sm-4 lazy-holder">
-  			<img data-lazy-src="images/bridge.jpg">
+  		<div class="col-sm-4">
+  			<div class="monkey" data-lazy-src="images/monkey.gif"></div>
+			</div>
+			<div class="col-sm-4">
+  			<div class="audi" data-lazy-src="images/audi.jpg"></div>
+			</div>
+			<div class="col-sm-4">
+  			<div class="bridge" data-lazy-src="images/bridge.jpg"></div>
   		</div>
 		</div>
 	</div>
+  	
 	
 	<script type="text/javascript" src="js/lazy.min.js"></script>
 	<script type="text/javascript">
 
-		var selectors = '.lazy-holder img, .lazy-holder1 img, .lazy-holder2 img, .lazy-holder3 img';
-		var lazyImages = new LazyLoad(selectors);
-		var selectorCount = selectors.split(',').length;
+		var lazyImages = new LazyLoad('.lazy-holder img, .monkey, .audi, .bridge');
 		
-		var triggers = 
-			Array
-				.from(document.querySelectorAll('.btn'))
-				.forEach(function(trigger, index) {
+		Array
+			.from(document.querySelectorAll('.btn'))
+			.forEach(function(trigger) {
 
-					var indexes = [];
-					for(var i = index; i < lazyImages.images.length; i += selectorCount) {
-						indexes.push(i);
-					}
+				trigger.addEventListener('click', function onClick() {
 
-					trigger.setAttribute('data-target-indexes', indexes.toString());
-					trigger.addEventListener('click', function onClick() {
-						
-						var indexes = trigger.getAttribute('data-target-indexes').split(',');
-						indexes.forEach(function(_i) {
-							var lazyImage = lazyImages.images[_i];
-							lazyImages.fireLazyEvent(lazyImage.image);
-							lazyImage.resolved = true;
-						});
-						trigger.removeEventListener('click', onClick);
-
+					trigger.removeEventListener('click', onClick);					
+					var targets = Array.from(document.querySelectorAll(trigger.getAttribute('data-lazy-target')));
+					
+					targets.forEach(function(target) {
+						lazyImages.fireLazyEvent(target);
 					});
-
+		
 				});
+
+			});
+			
 
 		window.addEventListener('lazyloadcomplete', function(evt) {
 			console.log('loaded!', evt.target);
