@@ -8,13 +8,13 @@ IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`.
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. Lazy loaded images can be used for Image elements or as background images.
+The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. `LazyLoad` supports both Image elements and CSS background images.
 
 ```javascript
 const lazy = new LazyLoad('.lazy-image');
 ```
 
-Lazy images require a `data-lazy-src` attribute specifying the image path to load. If an element is an Image element, `LazyLoad` will set its `src` attribute with the loaded image when triggered, otherwise it will set the image as the `URL` value of the element's `CSS background-image` property.  
+Lazy images require a `data-lazy-src` attribute specifying the image path to load. If an element is an Image, when triggered `LazyLoad` will set its `src` attribute, otherwise it will set the `URL` value of the element's `CSS background-image` property.  
 
 When using Image elements, the image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
 
