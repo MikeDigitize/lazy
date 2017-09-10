@@ -16,7 +16,7 @@ const gifPath = '__tests__/images/brent.gif';
 const fakeImagePath = '__tests__/images/fake.jpg';
 const fakelazyImageClass = 'fake-lazy-image';
 
-function createLazyImage(src, lazyClass = lazyImageClass) {
+function createLazyImage(src, lazyClass = lazyImageClass, top = 'auto') {
 
 	const holder = document.createElement('div');
 	const image = document.createElement('image');
@@ -28,6 +28,8 @@ function createLazyImage(src, lazyClass = lazyImageClass) {
 	holder.classList.add(lazyImageHolderClass);
 	holder.style.height = '300px';
 	holder.style.width = '300px';
+	holder.style.position = 'relative';
+	holder.style.top = top;
 	image.classList.add(lazyClass);
 	image.style.width = '100%';
 	image.setAttribute('data-lazy-src', src);
@@ -71,21 +73,6 @@ function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 
 }
 
-function createBigDiv() {
-
-	const div = document.createElement('div');
-
-	div.constructor = HTMLDivElement;
-	div.style.height = '6000px';
-	div.style.width = '5000px';
-	div.classList.add(bigDivClass);
-
-	document.body.appendChild(div);
-
-	return div;
-
-}
-
 function cleanUpDom() {
 
 	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}, .${bigDivClass}`));
@@ -118,6 +105,5 @@ module.exports = {
 	createLazyTrigger,
 	createLazyBackground,
 	cleanUpDom,
-	fakelazyImageClass,
-	createBigDiv
+	fakelazyImageClass
 };

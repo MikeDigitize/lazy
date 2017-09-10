@@ -12,7 +12,6 @@ const {
 	imagePath3,
 	imagePath4,
 	createLazyImage,
-	createBigDiv,
 	cleanUpDom
 } = require('../js/test-helpers');
 
@@ -151,33 +150,6 @@ describe('LazyScroll class tests', function() {
 		const windowRightPosition = 400;
 
 		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
-
-	});
-
-	// essentially just testing DOM APIs...
-	it('should detect the correct scroll position of the window', function() {
-
-		createBigDiv();
-		
-		window.scrollTo(0, 500);
-
-		const { pageXOffset, pageYOffset } = getWindowScrollPosition();
-
-		expect(pageXOffset).toBe(0);
-		expect(pageYOffset).toBe(500);
-
-	});
-
-	it('should detect the scroll position of the window', function() {
-		
-		createBigDiv();
-
-		window.scrollTo(500, 1250);
-
-		const { pageXOffset, pageYOffset } = getWindowScrollPosition();
-
-		expect(pageXOffset).toBe(500);
-		expect(pageYOffset).toBe(1250);
 
 	});
 	
