@@ -1,15 +1,11 @@
 const { LazyLoad } = require('../js/lazy');
 
 const { 
-	imagePath,
-	imagePath2,
-	imagePath3,
-  imagePath4,
-  fakeImagePath,
   createLazyImage,
   createLazyBackground,
   cleanUpDom,
-  lazyClassNames
+  lazyClassNames,
+  lazyImagePaths
 } = require('./test-helpers');
 
 describe('LazyLoad class tests', function() {
@@ -17,6 +13,14 @@ describe('LazyLoad class tests', function() {
   afterEach(cleanUpDom);
   
   it('should find all images from a valid selector', function() {
+
+    const { 
+      imagePath,
+      imagePath2,
+      imagePath3,
+      imagePath4,
+      fakeImagePath
+    } = lazyImagePaths;
     
     createLazyImage(imagePath);
     createLazyImage(imagePath2);
@@ -31,6 +35,14 @@ describe('LazyLoad class tests', function() {
   });
 
   it('should find no images from an invalid selector', function() {
+
+    const { 
+      imagePath,
+      imagePath2,
+      imagePath3,
+      imagePath4,
+      fakeImagePath
+    } = lazyImagePaths;
     
     createLazyImage(imagePath);
     createLazyImage(imagePath2);
@@ -45,7 +57,8 @@ describe('LazyLoad class tests', function() {
   });
 
   it('lazy images should be stored as an object containing properties describing their state', function() {
-    
+
+    const { imagePath } = lazyImagePaths;
     const { image } = createLazyImage(imagePath);
     const { lazyImageClass } = lazyClassNames; 
 		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
@@ -60,6 +73,7 @@ describe('LazyLoad class tests', function() {
 
   it('should fire a lazyload event when LazyLoad attempts to load an image', function(done) {
     
+    const { imagePath } = lazyImagePaths;
     const { image, holder } = createLazyImage(imagePath);   
     const { lazyImageClass } = lazyClassNames;  
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
@@ -77,6 +91,7 @@ describe('LazyLoad class tests', function() {
 
   it('should set the src tag of an image element and fire a lazyloadcomplete event', function(done) {
     
+    const { imagePath } = lazyImagePaths;
     const { image, holder } = createLazyImage(imagePath);  
     const { lazyImageClass } = lazyClassNames;   
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
@@ -100,22 +115,23 @@ describe('LazyLoad class tests', function() {
 
   it('should set the background-image property of a non-image element and fire a lazyloadcomplete event', function(done) {
     
-    const image = createLazyBackground(imagePath);  
+    const { imagePath } = lazyImagePaths;
+    const { holder, divWithBackground } = createLazyBackground(imagePath);  
     const { lazyImageClass } = lazyClassNames;    
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
-    expect(lazyImage.image).toBe(image);
+    expect(lazyImage.image).toBe(divWithBackground);
     expect(lazyImage.image.style.backgroundImage).toBe('');
 
     lazyImages.fireLazyEvent(lazyImage.image);
 
-    image.parentNode.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+    holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
       const { backgroundImage } = lazyImage.image.style;
       expect(backgroundImage).toBeDefined();
       expect(backgroundImage).toContain(imagePath);
-      image.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      holder.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
     });
 
@@ -123,6 +139,7 @@ describe('LazyLoad class tests', function() {
 
   it('should fire a lazyloaderror event when an unresolvable image path is set', function(done) {
     
+    const { fakeImagePath } = lazyImagePaths;
     const { image, holder } = createLazyImage(fakeImagePath);   
     const { lazyImageClass } = lazyClassNames;    
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);

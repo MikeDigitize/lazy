@@ -27,7 +27,7 @@ const lazyClassNames = {
 	fakelazyImageClass
 };
 
-const imagePaths = {
+const lazyImagePaths = {
 	imagePath,
 	imagePath2,
 	imagePath3,
@@ -36,44 +36,55 @@ const imagePaths = {
 	fakeImagePath
 };
 
-function createLazyImage(src, lazyClass = lazyImageClass, top = 'auto') {
+function createLazyImage(src, lazyClass = lazyImageClass) {
 
-	const holder = document.createElement('div');
+	const holder = createLazyHolder();
 	const image = document.createElement('image');
 
-	// need to be explicity set in Karma
-	holder.constructor = HTMLDivElement;
+	// needs to be explicity set in Karma
 	image.constructor = HTMLImageElement;
-
-	holder.classList.add(lazyImageHolderClass);
-	holder.style.height = '300px';
-	holder.style.width = '300px';
-	holder.style.position = 'relative';
-	holder.style.top = top;
 	image.classList.add(lazyClass);
 	image.style.width = '100%';
 	image.setAttribute('data-lazy-src', src);
+	
 	holder.appendChild(image);
-
 	document.body.appendChild(holder);
 
 	return { holder, image };
 
 }
 
-function createLazyBackground(src, lazyClass = lazyImageClass) {
+function createLazyHolder() {
 
 	const holder = document.createElement('div');
 
+	// needs to be explicity set in Karma
 	holder.constructor = HTMLDivElement;
-	holder.classList.add(lazyClass);
+
+	holder.classList.add(lazyImageHolderClass);
 	holder.style.height = '300px';
 	holder.style.width = '300px';
-	holder.setAttribute('data-lazy-src', src);
-
-	document.body.appendChild(holder);
+	holder.style.position = 'relative';
 
 	return holder;
+
+}
+
+function createLazyBackground(src, lazyClass = lazyImageClass) {
+
+	const holder = createLazyHolder();
+	const divWithBackground = document.createElement('div');
+
+	divWithBackground.constructor = HTMLDivElement;
+	divWithBackground.classList.add(lazyClass);
+	divWithBackground.style.height = '300px';
+	divWithBackground.style.width = '300px';
+	divWithBackground.setAttribute('data-lazy-src', src);
+
+	holder.appendChild(divWithBackground);
+	document.body.appendChild(holder);
+
+	return { holder, divWithBackground };
 
 }
 
@@ -98,26 +109,17 @@ function cleanUpDom() {
 	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}`));
 	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
 
-	holders.forEach(function(holder) {
-		holder.parentNode.removeChild(holder);
-	});
-
-	triggers.forEach(function(trigger) {
-		trigger.parentNode.removeChild(trigger);
+	holders.concat(triggers).forEach(function(element) {
+		element.parentNode.removeChild(element);
 	});
 	
 }
 
 module.exports = {
-	imagePath,
-	imagePath2,
-	imagePath3,
-	imagePath4,
-	gifPath,
-	fakeImagePath,
 	createLazyImage,
 	createLazyTrigger,
 	createLazyBackground,
 	cleanUpDom,
-	lazyClassNames
+	lazyClassNames,
+	lazyImagePaths
 };

@@ -6,22 +6,23 @@ const {
 	onShowBackgroundImage 
 } = require('../js/lazy-image-loader');
 
-const { 
-	imagePath,
-	gifPath,
-	fakeImagePath
-} = require('./test-helpers');
+const { lazyImagePaths } = require('./test-helpers');
 
 describe('loadImage tests', function() {
 	
 	it('Should respond appropriately when passed a correct file path', function(done) {
+		
+		const { imagePath } = lazyImagePaths;
 		loadImage(imagePath).then(function(result) {
 			expect(result).toEqual(true);
 			done();
-		});			
+		});	
+
 	});
 
 	it('Should respond appropriately when passed an incorrect file path', function(done) {
+		
+		const { fakeImagePath } = lazyImagePaths;
 		loadImage(fakeImagePath).catch(function(result) {
 			expect(result).toEqual(false);
 			done();
@@ -30,10 +31,13 @@ describe('loadImage tests', function() {
 	});
 
 	it('Should respond appropriately when passed a correct GIF file path', function(done) {
+		
+		const { gifPath } = lazyImagePaths;
 		loadImage(gifPath).then(function(result) {
 			expect(result).toEqual(true);
 			done();
 		}); 
+
 	});
 	
 });

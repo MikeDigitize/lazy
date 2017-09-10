@@ -6,14 +6,11 @@ const {
 } = require('../js/lazy-scroll');
 
 const { 
-	imagePath,
-	imagePath2,
-	imagePath3,
-	imagePath4,
 	createLazyImage,
 	createLazyBackground,
 	cleanUpDom,
-	lazyClassNames
+	lazyClassNames,
+	lazyImagePaths
 } = require('./test-helpers');
 
 describe('LazyScroll class tests', function() {
@@ -22,10 +19,18 @@ describe('LazyScroll class tests', function() {
 	
 	it('should add positional data to existing lazy image data', function() {
 		
+		const { 
+			imagePath,
+			imagePath2,
+			imagePath3,
+			imagePath4
+		} = lazyImagePaths;
+
 		const image = createLazyImage(imagePath).image;
 		const image2 = createLazyImage(imagePath2).image;
 		const image3 = createLazyImage(imagePath3).image;
 		const image4 = createLazyImage(imagePath4).image;
+
 		const { lazyImageClass } = lazyClassNames;
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
@@ -156,8 +161,11 @@ describe('LazyScroll class tests', function() {
 
 	it('should trigger the load of an image when its in the viewport', function(done) {
 
+		const { imagePath } = lazyImagePaths;
 		const { lazyImageClass } = lazyClassNames;
-		const { image, holder } = createLazyImage(imagePath, lazyImageClass, '2000px');		
+		const { image, holder } = createLazyImage(imagePath, lazyImageClass);	
+		holder.style.top = '2000px';	
+		
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 
@@ -176,17 +184,18 @@ describe('LazyScroll class tests', function() {
 
 	it('should trigger the load of a background image when its in the viewport', function(done) {
 		
+		const { imagePath } = lazyImagePaths;
 		const { lazyImageClass } = lazyClassNames;
-		const image = createLazyBackground(imagePath);     
+		const { holder } = createLazyBackground(imagePath);     
     const lazyImages = new LazyScroll(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
-		image.parentNode.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+		holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
 			expect(evt.target).toBe(lazyImage.image);
       const { backgroundImage } = lazyImage.image.style;
       expect(backgroundImage).toBeDefined();
       expect(backgroundImage).toContain(imagePath);
-      image.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      holder.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
 		});
 

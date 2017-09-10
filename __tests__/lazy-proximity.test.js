@@ -1,15 +1,12 @@
 const { LazyProximity } = require('../js/lazy-proximity');
 
 const { 
-	imagePath,
-	imagePath2,
-	imagePath3,
-	imagePath4,
   createLazyImage,
   createLazyTrigger,
   createLazyBackground,
   cleanUpDom,
-  lazyClassNames
+  lazyClassNames,
+  lazyImagePaths
 } = require('./test-helpers');
 
 describe('LazyProximity class tests', function() {
@@ -22,6 +19,13 @@ describe('LazyProximity class tests', function() {
       lazyImageClass, 
       lazyTriggerClass 
     } = lazyClassNames;
+
+    const {
+      imagePath,
+      imagePath2,
+      imagePath3,
+      imagePath4
+    } = lazyImagePaths;
     
 		const image = createLazyImage(imagePath).image;
 		const image2 = createLazyImage(imagePath2).image;
@@ -71,6 +75,12 @@ describe('LazyProximity class tests', function() {
       lazyTriggerClass2,
       lazyTriggerClass3
     } = lazyClassNames;
+
+    const {
+      imagePath,
+      imagePath2,
+      imagePath3
+    } = lazyImagePaths;
 		
 		const image = createLazyImage(imagePath, lazyImageClass).image;
     const image2 = createLazyImage(imagePath2, lazyImageClass2).image;
@@ -113,14 +123,15 @@ describe('LazyProximity class tests', function() {
       lazyTriggerClass 
     } = lazyClassNames;
 
-    const image = createLazyImage(imagePath, lazyImageClass).image;
+    const { imagePath } = lazyImagePaths;
+    const { image, holder } = createLazyImage(imagePath, lazyImageClass);
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
     const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
     const [lazyImage] = lazyImages.images;
 
-    window.addEventListener('lazyload', function onLazyLoad(evt) {
+    holder.addEventListener('lazyload', function onLazyLoad(evt) {
       expect(evt.target).toBe(lazyImage.image);
-      window.removeEventListener('lazyload', onLazyLoad);
+      holder.removeEventListener('lazyload', onLazyLoad);
       done();
     });
 
@@ -135,17 +146,18 @@ describe('LazyProximity class tests', function() {
       lazyTriggerClass 
     } = lazyClassNames;
     
-    const image = createLazyImage(imagePath, lazyImageClass).image;
+    const { imagePath } = lazyImagePaths;
+    const { image, holder } = createLazyImage(imagePath, lazyImageClass);
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
     const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
     const [lazyImage] = lazyImages.images;
 
-    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+    holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
       const src = lazyImage.image.getAttribute('src');
       expect(src).toBeDefined();
       expect(src).toContain(imagePath);
-      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      holder.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
     });
 
@@ -160,17 +172,18 @@ describe('LazyProximity class tests', function() {
       lazyTriggerClass 
     } = lazyClassNames;
     
-    const image = createLazyBackground(imagePath);   
+    const { imagePath } = lazyImagePaths;
+    const { holder } = createLazyBackground(imagePath);   
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	 
     const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
     const [lazyImage] = lazyImages.images;
 
-    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+    holder.parentNode.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
       const { backgroundImage } = lazyImage.image.style;
       expect(backgroundImage).toBeDefined();
       expect(backgroundImage).toContain(imagePath);
-      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      holder.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
     });
 
