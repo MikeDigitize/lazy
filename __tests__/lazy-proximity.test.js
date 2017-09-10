@@ -13,6 +13,7 @@ const {
 	imagePath4,
   createLazyImage,
   createLazyTrigger,
+  createLazyBackground,
 	cleanUpDom
 } = require('../js/test-helpers');
 
@@ -61,7 +62,7 @@ describe('LazyProximity class tests', function() {
 
   });
   
-  it('should cope with multiple proximity triggers', function() {
+  it('should add proximity data from multiple proximity triggers', function() {
 		
 		const image = createLazyImage(imagePath, lazyImageClass);
     const image2 = createLazyImage(imagePath2, lazyImageClass2);
@@ -94,6 +95,63 @@ describe('LazyProximity class tests', function() {
     expect(lazyImage3.src).toBe(imagePath3);
     expect(lazyImage3.resolved).toBe(false);	
     expect(lazyImage3.onClickCallback).toBeDefined();
+
+  });
+
+  it('should trigger the loading of an image when a proximity target is clicked', function(done) {
+
+    const image = createLazyImage(imagePath, lazyImageClass);
+    const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
+    const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    window.addEventListener('lazyload', function onLazyLoad(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      window.removeEventListener('lazyload', onLazyLoad);
+      done();
+    });
+
+    lazyImage.lazyProximityTrigger.click();
+
+  });
+
+  it('should set an image src when a proximity target is clicked', function(done) {
+    
+    const image = createLazyImage(imagePath, lazyImageClass);
+    const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
+    const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      const src = lazyImage.image.getAttribute('src');
+      expect(src).toBeDefined();
+      expect(src).toContain(imagePath);
+      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      done();
+    });
+
+    lazyImage.lazyProximityTrigger.click();
+
+  });
+
+  it('should set a background-image property when a proximity target is clicked', function(done) {
+    
+    const image = createLazyBackground(imagePath);   
+    const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	 
+    const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      const { backgroundImage } = lazyImage.image.style;
+      expect(backgroundImage).toBeDefined();
+      expect(backgroundImage).toContain(imagePath);
+      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      done();
+    });
+
+    lazyImage.lazyProximityTrigger.click();
 
   });
 	
