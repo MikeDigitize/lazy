@@ -45,7 +45,7 @@ describe('LazyLoad class tests', function() {
 
   it('lazy images should be stored as an object containing properties describing their state', function() {
     
-    const image = createLazyImage(imagePath);
+    const { image } = createLazyImage(imagePath);
 		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 
@@ -58,13 +58,13 @@ describe('LazyLoad class tests', function() {
 
   it('should fire a lazyload event when LazyLoad attempts to load an image', function(done) {
     
-    const image = createLazyImage(imagePath);    
+    const { image, holder } = createLazyImage(imagePath);    
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
-    window.addEventListener('lazyload', function onLazyLoad(evt) {
+    holder.addEventListener('lazyload', function onLazyLoad(evt) {
       expect(evt.target).toBe(lazyImage.image);
-      window.removeEventListener('lazyload', onLazyLoad);
+      holder.removeEventListener('lazyload', onLazyLoad);
       done();
     });
 
@@ -74,7 +74,7 @@ describe('LazyLoad class tests', function() {
 
   it('should set the src tag of an image element and fire a lazyloadcomplete event', function(done) {
     
-    const image = createLazyImage(imagePath);    
+    const { image, holder } = createLazyImage(imagePath);    
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
@@ -83,12 +83,12 @@ describe('LazyLoad class tests', function() {
 
     lazyImages.fireLazyEvent(lazyImage.image);
 
-    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+    holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
       const src = lazyImage.image.getAttribute('src');
       expect(src).toBeDefined();
       expect(src).toContain(imagePath);
-      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      holder.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
     });
 
@@ -105,12 +105,12 @@ describe('LazyLoad class tests', function() {
 
     lazyImages.fireLazyEvent(lazyImage.image);
 
-    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+    image.parentNode.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
       const { backgroundImage } = lazyImage.image.style;
       expect(backgroundImage).toBeDefined();
       expect(backgroundImage).toContain(imagePath);
-      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      image.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
       done();
     });
 
@@ -118,17 +118,17 @@ describe('LazyLoad class tests', function() {
 
   it('should fire a lazyloaderror event when an unresolvable image path is set', function(done) {
     
-    const image = createLazyImage(fakeImagePath);    
+    const { image, holder } = createLazyImage(fakeImagePath);      
     const lazyImages = new LazyLoad(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
-    lazyImages.fireLazyEvent(lazyImage.image);
-
-    window.addEventListener('lazyloaderror', function onLazyLoadError(evt) {
+    holder.addEventListener('lazyloaderror', function onLazyLoadError(evt) {
       expect(evt.target).toBe(lazyImage.image);
-      window.removeEventListener('lazyloaderror', onLazyLoadError);
+      holder.removeEventListener('lazyloaderror', onLazyLoadError);
       done();
     });
+
+    lazyImages.fireLazyEvent(lazyImage.image);
 
   });
 

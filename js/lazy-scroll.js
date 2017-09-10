@@ -31,17 +31,6 @@ function getLazyImagePositions(images) {
 	}));
 }
 
-function getYPosition(image) {
-	let left = 0, top = 0;
-	if (image.offsetParent) { 
-		do {
-			left += image.offsetLeft;
-			top += image.offsetTop;
-		} while (image = image.offsetParent);
-		return { left, top };
-	}
-}
-
 function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
@@ -65,6 +54,17 @@ function removeEventListeners() {
 	window.removeEventListener('scroll', onFindImagesToLoad);
 	window.removeEventListener('DOMContentLoaded', onFindImagesToLoad);
 	window.removeEventListener('resize', onResize);
+}
+
+function getYPosition(image) {
+	let left = 0, top = 0;
+	if (image.offsetParent) { 
+		do {
+			left += image.offsetLeft;
+			top += image.offsetTop;
+		} while (image = image.offsetParent);
+	}
+	return { left, top };
 }
 
 function getImagePosition(image) {

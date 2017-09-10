@@ -37,7 +37,7 @@ function createLazyImage(src, lazyClass = lazyImageClass, top = 'auto') {
 
 	document.body.appendChild(holder);
 
-	return image;
+	return { holder, image };
 
 }
 
