@@ -28,7 +28,7 @@ function loadImage(src) {
 		lazyImage.addEventListener('load', onLoad);
 		lazyImage.addEventListener('error', onError);
 
-		lazyImage.src = src;
+		lazyImage.setAttribute('src', src);
 
 	});
 
@@ -53,7 +53,7 @@ function lazyLoadImage() {
 // TODO: add support for picture element
 function getOnLoadCallback(image) {
 	switch (true) {
-		case image instanceof Image:
+		case image.constructor === HTMLImageElement:
 			return onShowImage;
 		default:
 			return onShowBackgroundImage;
@@ -61,7 +61,7 @@ function getOnLoadCallback(image) {
 }
 
 function onShowImage(image, src) {
-	image.src = src;
+	image.setAttribute('src', src);
 }
 
 function onShowBackgroundImage(div, src) {

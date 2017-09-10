@@ -5,9 +5,11 @@ const {
 	imagePath,
 	imagePath2,
 	imagePath3,
-	imagePath4,
+  imagePath4,
+  fakeImagePath,
   fakelazyImageClass,
-	createLazyImage,
+  createLazyImage,
+  createLazyBackground,
 	cleanUpDom
 } = require('../js/test-helpers');
 
@@ -52,6 +54,82 @@ describe('LazyLoad class tests', function() {
 		expect(lazyImage.src).toBe(imagePath);
     expect(lazyImage.resolved).toBe(false);
     
+  });
+
+  it('should fire a lazyload event when LazyLoad attempts to load an image', function(done) {
+    
+    const image = createLazyImage(imagePath);    
+    const lazyImages = new LazyLoad(`.${lazyImageClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    window.addEventListener('lazyload', function onLazyLoad(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      window.removeEventListener('lazyload', onLazyLoad);
+      done();
+    });
+
+    lazyImages.fireLazyEvent(lazyImage.image);
+
+  });
+
+  it('should set the src tag of an image element and fire a lazyloadcomplete event', function(done) {
+    
+    const image = createLazyImage(imagePath);    
+    const lazyImages = new LazyLoad(`.${lazyImageClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    expect(lazyImage.image).toBe(image);
+    expect(lazyImage.image.getAttribute('src')).toBe(null);
+
+    lazyImages.fireLazyEvent(lazyImage.image);
+
+    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      const src = lazyImage.image.getAttribute('src');
+      expect(src).toBeDefined();
+      expect(src).toContain(imagePath);
+      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      done();
+    });
+
+  });
+
+  it('should set the background-image property of a non-image element and fire a lazyloadcomplete event', function(done) {
+    
+    const image = createLazyBackground(imagePath);     
+    const lazyImages = new LazyLoad(`.${lazyImageClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    expect(lazyImage.image).toBe(image);
+    expect(lazyImage.image.style.backgroundImage).toBe('');
+
+    lazyImages.fireLazyEvent(lazyImage.image);
+
+    window.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      const { backgroundImage } = lazyImage.image.style;
+      expect(backgroundImage).toBeDefined();
+      expect(backgroundImage).toContain(imagePath);
+      window.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+      done();
+    });
+
+  });
+
+  it('should fire a lazyloaderror event when an unresolvable image path is set', function(done) {
+    
+    const image = createLazyImage(fakeImagePath);    
+    const lazyImages = new LazyLoad(`.${lazyImageClass}`);
+    const [lazyImage] = lazyImages.images;
+
+    lazyImages.fireLazyEvent(lazyImage.image);
+
+    window.addEventListener('lazyloaderror', function onLazyLoadError(evt) {
+      expect(evt.target).toBe(lazyImage.image);
+      window.removeEventListener('lazyloaderror', onLazyLoadError);
+      done();
+    });
+
   });
 
 });

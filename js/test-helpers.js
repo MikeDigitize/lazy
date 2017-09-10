@@ -21,6 +21,10 @@ function createLazyImage(src, lazyClass = lazyImageClass) {
 	const holder = document.createElement('div');
 	const image = document.createElement('image');
 
+	// need to be explicity set in Karma
+	holder.constructor = HTMLDivElement;
+	image.constructor = HTMLImageElement;
+
 	holder.classList.add(lazyImageHolderClass);
 	holder.style.height = '300px';
 	holder.style.width = '300px';
@@ -35,10 +39,27 @@ function createLazyImage(src, lazyClass = lazyImageClass) {
 
 }
 
+function createLazyBackground(src, lazyClass = lazyImageClass) {
+
+	const holder = document.createElement('div');
+
+	holder.constructor = HTMLDivElement;
+	holder.classList.add(lazyClass);
+	holder.style.height = '300px';
+	holder.style.width = '300px';
+	holder.setAttribute('data-lazy-src', src);
+
+	document.body.appendChild(holder);
+
+	return holder;
+
+}
+
 function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 
 	const trigger = document.createElement('div');
-
+	
+	trigger.constructor = HTMLDivElement;
 	trigger.classList.add(triggerClass);
 	trigger.style.height = '300px';
 	trigger.style.width = '300px';
@@ -53,6 +74,8 @@ function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 function createBigDiv() {
 
 	const div = document.createElement('div');
+
+	div.constructor = HTMLDivElement;
 	div.style.height = '6000px';
 	div.style.width = '5000px';
 	div.classList.add(bigDivClass);
@@ -60,6 +83,7 @@ function createBigDiv() {
 	document.body.appendChild(div);
 
 	return div;
+
 }
 
 function cleanUpDom() {
@@ -92,6 +116,7 @@ module.exports = {
 	fakeImagePath,
 	createLazyImage,
 	createLazyTrigger,
+	createLazyBackground,
 	cleanUpDom,
 	fakelazyImageClass,
 	createBigDiv
