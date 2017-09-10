@@ -20,7 +20,6 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-ie-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
     "webpack": "^3.5.5"
   },
   "devDependencies": {
@@ -30,7 +29,13 @@
     "babel-preset-env": "^1.6.0"
   },
   "babel": {
-    "presets": [["env"]],
-    "plugins": ["transform-object-rest-spread"]
+    "presets": [
+      [
+        "env"
+      ]
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
   }
 }

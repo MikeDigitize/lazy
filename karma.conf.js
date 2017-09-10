@@ -15,6 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      '__tests__/array-from-polyfill.js',
+      '__tests__/array-some-polyfill.js',
+      '__tests__/classlist-polyfill.js',
       'node_modules/babel-polyfill/dist/polyfill.js',
       'js/*.js',
       '__tests__/*.test.js',
@@ -66,15 +69,27 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'], // 'PhantomJS', 'Firefox', 'Chrome', 'IE'
+    browsers: ['Chrome', 'Firefox', 'IE9', 'IE10'],
+
+
+    customLaunchers: {
+      IE9: {
+        base: 'IE',
+        'x-ua-compatible': 'IE=EmulateIE9'
+      },
+      IE10: {
+        base: 'IE',
+        'x-ua-compatible': 'IE=EmulateIE10'
+      }
+    },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 1
+    concurrency: Infinity
   });
 }
