@@ -109,7 +109,7 @@ function getImagesInView(images) {
 		return [];
 	}
 
-	return unloadedImages.filter(lazyImage => {
+	return unloadedImages.filter(function(lazyImage) {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
 		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
