@@ -8,13 +8,13 @@ IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`.
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. `LazyLoad` supports both Image elements and CSS background images.
+The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. `LazyLoad` supports both the loading of Image elements and CSS background images.
 
 ```javascript
 const lazy = new LazyLoad('.lazy-image');
 ```
 
-Lazy images require a `data-lazy-src` attribute specifying the image path to load. If an element is an Image `LazyLoad` will set its `src` attribute, otherwise it will set the `URL` value of the element's CSS `background-image` property. When using Image elements, the image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
+Lazy images require a `data-lazy-src` attribute specifying the image path to load. If an element is an Image `LazyLoad` will set its `src` attribute, otherwise it will set the `url` value of the element's CSS `background-image` property. When using Image elements, the image's `src` attribute can be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
 
 ```html
 <img data-lazy-src="images/my-lazy-loading-image.png">
@@ -43,7 +43,7 @@ An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed 
 }
 ```
 
-The `lazyload` event can be captured on the `window` like any other event that bubbles. It's a signal that `LazyLoad` is attempting to load an image and so can be used as an opportunity to show a loading spinner whilst this happens. 
+The `lazyload` event can be captured on the `window` or another parent like any other event that bubbles. It's a signal that `LazyLoad` is attempting to load an image and so can be used as an opportunity to do something whilst this happens, such as show a loading spinner. 
 
 ```html
 <div class="lazy-image-container">
@@ -70,7 +70,7 @@ window.addEventListener('lazyloadcomplete', function(evt) {
 });
 ```
 
-Upon a successful load, a `lazyloadcomplete` event is fired on the element. Following on from the previous example, this is when the loading spinner for that image can be removed and the image displayed. 
+Upon a successful load, a `lazyloadcomplete` event is fired on the element. Following on from the previous example, this would be an opportunity to remove the loading spinner and display the image. 
 
 As older browers can display images without `src` attributes as broken images, it's probably a good idea to add styling to hide them initially and reveal upon loading. If an image can't be loaded a `lazyloaderror` event is fired.
 
@@ -82,23 +82,18 @@ The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to 
 
 The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define elements on the page that will trigger the loading of any amount of lazy images when hovered over or when receiving a click / touch event, for mobile. 
 
-The lazy images that a trigger element is to load should be defined with a CSS selector in its `data-lazy-target` attribute.
+The lazy images a trigger element loads should be defined with a CSS selector in its `data-lazy-target` attribute.
 
 ```html
 <!-- loads all images that match the selector ".lazy-holder img" -->
-<button class="lazy-btn" data-lazy-target=".lazy-holder img">Click me!</button>
+<button class="lazy-btn" data-lazy-target=".lazy-holder img">Click or hover over me!</button>
 ```
 
 ## Usage
 
 The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. Reference one of these in your HTML and use the instructions below to initialise.
 
-To extend any of the classes, install the project with -
-
-```
-yarn
-```
-and run the relevant command from npm `scripts` in the `package.json` file (`start`, `run dist` or `test`).
+To extend any of the classes, install the project with `yarn` and run the relevant command from npm `scripts` in the `package.json` file.
 
 #### LazyLoad
 
@@ -110,15 +105,15 @@ const lazy = new LazyScroll('.lazy-image');
 To trigger the loading of an image, use the `fireLazyEvent` method on the instance, passing in the lazy image element to load.
 
 ```javascript
-// access an image from the instance's images array
+// access lazy image data from the instance's images array
 const [lazyImage] = lazy.images;
-// call the fireLazyEvent method on the instance passing in the lazy image element
+// call the fireLazyEvent method on the instance passing in the lazy image / element
 lazy.fireLazyEvent(lazyImage.image);
 ```
 
 #### LazyScroll
 
-To use the `LazyScroll` class, call the class with a CSS selector for the lazy images and the plugin will load images as they appear in the viewport.
+To use the `LazyScroll` class, call the class with a CSS selector for the lazy images and it will load images as they appear in the viewport.
 
 ```javascript
 const lazy = new LazyScroll('.lazy-image');
@@ -134,7 +129,7 @@ const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
 
 #### Extending
 
-To extend the base class and add custom loading criteria use the following pattern:
+To extend the base class and add custom loading criteria you can use the following pattern:
 
 ```javascript
 class CustomLazy extends LazyLoad {
