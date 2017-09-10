@@ -1,12 +1,6 @@
 const { LazyProximity } = require('../js/lazy-proximity');
 
 const { 
-  lazyImageClass,
-  lazyImageClass2,
-	lazyImageClass3,
-  lazyTriggerClass,
-	lazyTriggerClass2,
-	lazyTriggerClass3,
 	imagePath,
 	imagePath2,
 	imagePath3,
@@ -14,21 +8,26 @@ const {
   createLazyImage,
   createLazyTrigger,
   createLazyBackground,
-	cleanUpDom
-} = require('../js/test-helpers');
+  cleanUpDom,
+  lazyClassNames
+} = require('./test-helpers');
 
 describe('LazyProximity class tests', function() {
 
 	afterEach(cleanUpDom);
 	
 	it('should add the proximity trigger of each image to existing lazy image data', function() {
-		
+    
+    const { 
+      lazyImageClass, 
+      lazyTriggerClass 
+    } = lazyClassNames;
+    
 		const image = createLazyImage(imagePath).image;
 		const image2 = createLazyImage(imagePath2).image;
 		const image3 = createLazyImage(imagePath3).image;
     const image4 = createLazyImage(imagePath4).image;    
-    const trigger = createLazyTrigger(lazyTriggerClass);		
-
+    const trigger = createLazyTrigger(lazyTriggerClass);	
     const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
     const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
   
@@ -63,6 +62,15 @@ describe('LazyProximity class tests', function() {
   });
   
   it('should add proximity data from multiple proximity triggers', function() {
+
+    const { 
+      lazyImageClass, 
+      lazyImageClass2, 
+      lazyImageClass3,
+      lazyTriggerClass,
+      lazyTriggerClass2,
+      lazyTriggerClass3
+    } = lazyClassNames;
 		
 		const image = createLazyImage(imagePath, lazyImageClass).image;
     const image2 = createLazyImage(imagePath2, lazyImageClass2).image;
@@ -100,6 +108,11 @@ describe('LazyProximity class tests', function() {
 
   it('should trigger the loading of an image when a proximity target is clicked', function(done) {
 
+    const { 
+      lazyImageClass, 
+      lazyTriggerClass 
+    } = lazyClassNames;
+
     const image = createLazyImage(imagePath, lazyImageClass).image;
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
     const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
@@ -116,6 +129,11 @@ describe('LazyProximity class tests', function() {
   });
 
   it('should set an image src when a proximity target is clicked', function(done) {
+
+    const { 
+      lazyImageClass, 
+      lazyTriggerClass 
+    } = lazyClassNames;
     
     const image = createLazyImage(imagePath, lazyImageClass).image;
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	
@@ -136,6 +154,11 @@ describe('LazyProximity class tests', function() {
   });
 
   it('should set a background-image property when a proximity target is clicked', function(done) {
+
+    const { 
+      lazyImageClass, 
+      lazyTriggerClass 
+    } = lazyClassNames;
     
     const image = createLazyBackground(imagePath);   
     const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);	 

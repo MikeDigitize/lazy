@@ -15,12 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '__tests__/array-from-polyfill.js',
-      '__tests__/array-some-polyfill.js',
-      '__tests__/classlist-polyfill.js',
       'node_modules/babel-polyfill/dist/polyfill.js',
       'js/*.js',
-      '__tests__/*.test.js',
+      '__tests__/*.js',
       { pattern: '__tests__/images/*.png', watched: false, included: false, served: true },
       { pattern: '__tests__/images/*.jpg', watched: false, included: false, served: true },
       { pattern: '__tests__/images/*.gif', watched: false, included: false, served: true }
@@ -40,7 +37,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'js/*.js' : ['commonjs', 'babel'],
-      '__tests__/*.test.js' : ['commonjs', 'babel']
+      '__tests__/*.js' : ['commonjs', 'babel']
     },
 
 
@@ -69,7 +66,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'IE9', 'IE10'],
+    browsers: ['Chrome', 'Firefox', 'IE9', 'IE10'], 
 
 
     customLaunchers: {

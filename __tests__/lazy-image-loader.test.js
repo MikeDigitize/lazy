@@ -10,7 +10,7 @@ const {
 	imagePath,
 	gifPath,
 	fakeImagePath
-} = require('../js/test-helpers');
+} = require('./test-helpers');
 
 describe('loadImage tests', function() {
 	

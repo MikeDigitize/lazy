@@ -6,15 +6,15 @@ const {
 } = require('../js/lazy-scroll');
 
 const { 
-  lazyImageClass,
 	imagePath,
 	imagePath2,
 	imagePath3,
 	imagePath4,
 	createLazyImage,
 	createLazyBackground,
-	cleanUpDom
-} = require('../js/test-helpers');
+	cleanUpDom,
+	lazyClassNames
+} = require('./test-helpers');
 
 describe('LazyScroll class tests', function() {
 
@@ -26,7 +26,7 @@ describe('LazyScroll class tests', function() {
 		const image2 = createLazyImage(imagePath2).image;
 		const image3 = createLazyImage(imagePath3).image;
 		const image4 = createLazyImage(imagePath4).image;
-		
+		const { lazyImageClass } = lazyClassNames;
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
 		
@@ -156,8 +156,8 @@ describe('LazyScroll class tests', function() {
 
 	it('should trigger the load of an image when its in the viewport', function(done) {
 
-		const { image, holder } = createLazyImage(imagePath, lazyImageClass, '2000px');
-		
+		const { lazyImageClass } = lazyClassNames;
+		const { image, holder } = createLazyImage(imagePath, lazyImageClass, '2000px');		
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 
@@ -176,6 +176,7 @@ describe('LazyScroll class tests', function() {
 
 	it('should trigger the load of a background image when its in the viewport', function(done) {
 		
+		const { lazyImageClass } = lazyClassNames;
 		const image = createLazyBackground(imagePath);     
     const lazyImages = new LazyScroll(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;

@@ -7,14 +7,34 @@ const lazyImageHolderClass = 'lazy-image-holder';
 const lazyTriggerClass = 'lazy-trigger';
 const lazyTriggerClass2 = 'lazy-trigger2';
 const lazyTriggerClass3 = 'lazy-trigger3';
-const bigDivClass = 'big-div';
+const fakelazyImageClass = 'fake-lazy-image';
+
 const imagePath = '__tests__/images/bb.png';
 const imagePath2 = '__tests__/images/earth.jpg';
 const imagePath3 = '__tests__/images/light.jpg';
 const imagePath4 = '__tests__/images/logo.png';
 const gifPath = '__tests__/images/brent.gif';
 const fakeImagePath = '__tests__/images/fake.jpg';
-const fakelazyImageClass = 'fake-lazy-image';
+
+const lazyClassNames = {
+	lazyImageClass,
+	lazyImageClass2,
+	lazyImageClass3,
+	lazyImageHolderClass,
+	lazyTriggerClass,
+	lazyTriggerClass2,
+	lazyTriggerClass3,
+	fakelazyImageClass
+};
+
+const imagePaths = {
+	imagePath,
+	imagePath2,
+	imagePath3,
+	imagePath4,
+	gifPath,
+	fakeImagePath
+};
 
 function createLazyImage(src, lazyClass = lazyImageClass, top = 'auto') {
 
@@ -75,7 +95,7 @@ function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 
 function cleanUpDom() {
 
-	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}, .${bigDivClass}`));
+	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}`));
 	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
 
 	holders.forEach(function(holder) {
@@ -89,12 +109,6 @@ function cleanUpDom() {
 }
 
 module.exports = {
-	lazyImageClass,
-	lazyImageClass2,
-	lazyImageClass3,
-	lazyTriggerClass,
-	lazyTriggerClass2,
-	lazyTriggerClass3,
 	imagePath,
 	imagePath2,
 	imagePath3,
@@ -105,5 +119,5 @@ module.exports = {
 	createLazyTrigger,
 	createLazyBackground,
 	cleanUpDom,
-	fakelazyImageClass
+	lazyClassNames
 };
