@@ -8,7 +8,7 @@ IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`.
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. `LazyLoad` supports both the loading of Image elements and CSS background images.
+The `LazyLoad` base class takes a CSS selector of images to be lazy loaded. `LazyLoad` supports the loading of images for both Image elements and elements with CSS background images.
 
 ```javascript
 const lazy = new LazyLoad('.lazy-image');
