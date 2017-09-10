@@ -36,6 +36,7 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
   resolved: <Boolean>
 }
 ```
+### Lazy Events
 
 An event listener listening for a `lazyload` event is bound to each element. When fired, the event triggers the loading of the image into cache and, once resolved, either sets the `src` attribute of an Image, or the CSS `background-image` property of any other element.
 
