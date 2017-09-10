@@ -6,20 +6,18 @@ const onError = CreateEvent(onErrorEventName);
 
 function loadImage(src) {
 
-	return new Promise(function (resolve) {
+	return new Promise(function (resolve, reject) {
 
 		const lazyImage = new Image();
-		const result = { resolved: true };
 
 		function onLoad() {
 			removeListeners();
-			resolve(result);
+			resolve(true);
 		}
 
 		function onError() {
 			removeListeners();
-			result.resolved = false;
-			resolve(result);
+			reject(false);
 		}
 
 		function removeListeners() {
@@ -41,15 +39,14 @@ function lazyLoadImage() {
 	const { image, src } = this;
 	const onImageLoad = getOnLoadCallback(image);
 	
-	loadImage(src).then((result) => {
-		if(result.resolved) {
+	loadImage(src)
+		.then(function() {
 			onImageLoad(image, src);
 			image.dispatchEvent(onComplete);
-		}
-		else {
+		})
+		.catch(function() {
 			image.dispatchEvent(onError);
-		}
-	});
+		});
 
 }
 

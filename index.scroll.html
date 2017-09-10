@@ -24,8 +24,42 @@
 			min-height: 240px;
 			border: 1px solid #ededed;
 		}
+		.monkey {
+			width: 350px;
+			height: 175px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
+		.audi {
+			width: 340px;
+			height: 235px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
+		.bridge {
+			width: 400px;
+			height: 600px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			margin: 20px auto;
+		}
 		.visible {
 			opacity: 1;
+		}
+		.error {
+			background-color: crimson;
+			width: 300px;
+			margin: auto;
+			height: 200px;
+		}
+		.error:before {
+			content: "Error!";
+			color: #fff;
+			position: relative;
+			top: 42%;
+			left: 42%;
 		}
 	</style>
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
@@ -95,21 +129,23 @@
 		</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-				<img src="images/loader.gif" class="loading-spinner" />
-  			<img data-lazy-src="images/monkey.gif" class="lazy-image">
+  			<div data-lazy-src="images/monkey.gif" class="lazy-image monkey"></div>
   		</div>
 		</div>
   	</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-				<img src="images/loader.gif" class="loading-spinner" />
-  			<img data-lazy-src="images/audi.jpg" class="lazy-image">
+  			<div data-lazy-src="images/audi.jpg" class="lazy-image audi"></div>
   		</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-				<img src="images/loader.gif" class="loading-spinner" />
-  			<img data-lazy-src="images/bridge.jpg" class="lazy-image">
+  			<div data-lazy-src="images/bridge.jpg" class="lazy-image bridge"></div>
+  		</div>
+		</div>
+		<div class="row">
+  		<div class="col-sm-4 offset-sm-4 lazy-holder">
+  			<div data-lazy-src="images/fake.jpg" class="lazy-image"></div>
   		</div>
 		</div>
 	</div>
@@ -124,8 +160,11 @@
 			var lazyImage = evt.target;
 			var spinner = lazyImage.previousElementSibling;
 
-			console.log('attempting to load...', lazyImage.src);
-			spinner.classList.add('visible');
+			console.log('attempting to load...', lazyImage.src || lazyImage.getAttribute('data-lazy-src'));
+
+			if(spinner) {
+				spinner.classList.add('visible');
+			}
 			
 		});
 
@@ -134,13 +173,25 @@
 			var lazyImage = evt.target;
 			var spinner = lazyImage.previousElementSibling;
 
-			console.log('loaded!', lazyImage.src);
+			console.log('loaded!', lazyImage.src || lazyImage.getAttribute('data-lazy-src'));
 
-			// simulate a server request
+			// simulate a long server response
 			setTimeout(function() {
-				spinner.classList.remove('visible');
+				if(spinner) {
+					spinner.classList.remove('visible');
+				}				
 				lazyImage.classList.add('visible');
 			}, 500);
+			
+		});
+
+		window.addEventListener('lazyloaderror', function(evt) {
+
+			var lazyImage = evt.target;
+			console.log('error!', lazyImage.src || lazyImage.getAttribute('data-lazy-src'));
+
+			lazyImage.classList.add('error');
+			lazyImage.classList.remove('lazy-image');
 			
 		});
 		
