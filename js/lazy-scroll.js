@@ -5,18 +5,18 @@ let onFindImagesToLoad, onResize;
 // triggers lazy loading of images
 // based on their position relative to the window position
 class LazyScroll extends LazyLoad {
-	
+
 	constructor(selector) {
 
 		super(selector);
 
 		setLazyImagePositions.call(this);
-
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 		addEventListeners();
 
-	}
+  }
+
 }
 
 function setLazyImagePositions() {
@@ -25,9 +25,9 @@ function setLazyImagePositions() {
 
 // adds positional data to each lazy load image stored on the instance
 function getLazyImagePositions(images) {
-	return images.map(lazyImage => ({ 
+	return images.map(lazyImage => ({
 		...lazyImage,
-		imagePosition: getImagePosition(lazyImage.image)		 
+		imagePosition: getImagePosition(lazyImage.image)
 	}));
 }
 
@@ -58,7 +58,7 @@ function removeEventListeners() {
 
 function getYPosition(image) {
 	let left = 0, top = 0;
-	if (image.offsetParent) { 
+	if (image.offsetParent) {
 		do {
 			left += image.offsetLeft;
 			top += image.offsetTop;
@@ -103,7 +103,7 @@ function getImagesInView(images) {
 
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
-	
+
 	if(unloadedImages.length === 0) {
 		removeEventListeners();
 		return [];

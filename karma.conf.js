@@ -22,7 +22,7 @@ module.exports = function(config) {
       { pattern: '__tests__/images/*.jpg', watched: false, included: false, served: true },
       { pattern: '__tests__/images/*.gif', watched: false, included: false, served: true }
     ],
-    
+
 
     proxies: {
       '/__tests__/images/': '/base/__tests__/images/'
@@ -66,7 +66,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'IE9', 'IE10'], //
+    browsers: ['Chrome', 'Firefox'], // 'IE9', 'IE10'
 
 
     customLaunchers: {
