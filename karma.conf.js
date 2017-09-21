@@ -2,6 +2,7 @@
 // Generated on Sun Sep 03 2017 18:58:26 GMT+0100 (GMT Daylight Time)
 
 module.exports = function(config) {
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -27,10 +28,6 @@ module.exports = function(config) {
     proxies: {
       '/__tests__/images/': '/base/__tests__/images/'
     },
-
-    // list of files to exclude
-    exclude: [
-    ],
 
 
     // preprocess matching files before serving them to the browser
@@ -66,7 +63,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox'], // 'IE9', 'IE10'
+    browsers: ['Chrome', 'Firefox'], //'IE9', 'IE10'
 
 
     customLaunchers: {
@@ -85,8 +82,12 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
+
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
+
+
   });
+
 }

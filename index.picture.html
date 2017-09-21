@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lazy Picture</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <script src="__tests__/picture-element-polyfill.js"></script>
+  <style>
+    .lazy-pic {
+			opacity: 0;
+			transition: 2s opacity ease-in-out;
+		}
+    .loading-spinner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -82px;
+			margin-top: -10px;
+			opacity: 0;
+    }
+    .visible {
+			opacity: 1;
+		}
+  </style>
+</head>
+<body>
+
+	<div class="container">
+  	<div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+        <img src="images/loader.gif" class="loading-spinner" />
+  			<picture class="lazy-pic">
+          <source media="(min-width: 650px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-large.png">
+          <source media="(min-width: 465px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-medium.png">
+          <!-- img tag for browsers that do not support picture element -->
+          <img data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-small.png" alt="a cute kitten">
+        </picture>
+			</div>
+    </div>
+    <div class="row">
+  		<div class="col-sm-4 offset-sm-4">
+          <img src="images/loader.gif" class="loading-spinner" />
+          <picture class="lazy-pic">
+            <!--[if IE 9]><video style="display: none;"><![endif]-->
+            <source data-lazy-src="http://media.ao.com/uk/computing/gaming/img/laptops.jpg, //media.ao.com/uk/computing/gaming/img/laptops_2x.jpg 2x" media="(min-width: 768px)">
+            <!--[if IE 9]></video><![endif]-->
+            <img data-lazy-src="http://media.ao.com/uk/computing/gaming/img/mobile-laptops.jpg, //media.ao.com/uk/computing/gaming/img/mobile-laptops_2x.jpg 2x" alt="Gaming Laptops">
+          </picture>
+			</div>
+  	</div>
+	</div>
+
+	<script type="text/javascript" src="js/lazy.min.js"></script>
+	<script type="text/javascript">
+
+    var lazyImage = new LazyLoad('.lazy-pic');
+
+    setTimeout(function() {
+
+      var img = lazyImage.images[0];
+      var image = img.image;
+      lazyImage.fireLazyEvent(image);
+
+      setTimeout(function() {
+
+        img = lazyImage.images[1];
+        image = img.image;
+        lazyImage.fireLazyEvent(image);
+
+      }, 1000);
+
+    }, 1000);
+
+		window.addEventListener('lazyloadcomplete', function(evt) {
+
+      var lazyImage = evt.target;
+			var spinner = lazyImage.previousElementSibling;
+
+			console.log('attempting to load...', evt.target);
+
+			if(spinner) {
+				spinner.classList.add('visible');
+      }
+
+    });
+
+    window.addEventListener('lazyload', function(evt) {
+
+      var lazyImage = evt.target;
+			var spinner = lazyImage.previousElementSibling;
+
+			console.log('loaded!', evt.target);
+
+			// simulate a long server response
+			setTimeout(function() {
+				if(spinner) {
+					spinner.classList.remove('visible');
+				}
+				lazyImage.classList.add('visible');
+      }, 1500);
+
+    });
+
+	</script>
+</body>
+</html>

@@ -37,12 +37,17 @@ class LazyLoad {
 }
 
 function getLazySrc(image) {
-  let src = image.getAttribute(lazySrcDataAttribute);
+
+  const src = image.getAttribute(lazySrcDataAttribute);
+
   if(src) {
     return src;
   }
+
+  // return an array of image sources
   const sources = Array.from(image.children);
   return sources.map((source) => source.getAttribute(lazySrcDataAttribute));
+
 }
 
 module.exports = { LazyLoad };

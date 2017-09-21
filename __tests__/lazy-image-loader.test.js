@@ -1,45 +1,51 @@
-const { 
-	loadImage, 
+const {
+	loadImage,
 	getOnLoadCallback,
 	onShowImage,
 	loadPictureElement,
-	onShowBackgroundImage 
+	onShowBackgroundImage
 } = require('../js/lazy-image-loader');
 
 const { lazyImagePaths } = require('./test-helpers');
 
 describe('loadImage tests', function() {
-	
+
 	it('Should respond appropriately when passed a correct file path', function(done) {
-		
-		const { imagePath } = lazyImagePaths;
-		loadImage(imagePath).then(function(result) {
+
+    const { imagePath } = lazyImagePaths;
+    const image = new Image();
+
+		loadImage(imagePath, image).then(function(result) {
 			expect(result).toEqual(true);
 			done();
-		});	
+		});
 
 	});
 
 	it('Should respond appropriately when passed an incorrect file path', function(done) {
-		
-		const { fakeImagePath } = lazyImagePaths;
-		loadImage(fakeImagePath).catch(function(result) {
+
+    const { fakeImagePath } = lazyImagePaths;
+    const image = new Image();
+
+		loadImage(fakeImagePath, image).catch(function(result) {
 			expect(result).toEqual(false);
 			done();
 		});
-		
+
 	});
 
 	it('Should respond appropriately when passed a correct GIF file path', function(done) {
-		
-		const { gifPath } = lazyImagePaths;
-		loadImage(gifPath).then(function(result) {
+
+    const { gifPath } = lazyImagePaths;
+    const image = new Image();
+
+		loadImage(gifPath, image).then(function(result) {
 			expect(result).toEqual(true);
 			done();
-		}); 
+		});
 
 	});
-	
+
 });
 
 describe('getOnLoadCallback tests', function() {
