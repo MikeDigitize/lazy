@@ -43,7 +43,9 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 ```
 ### Lazy Events
 
-An instance of `LazyLoad` inherits a single method `fireLazyEvent`. An event listener listening for a `lazyload` event is bound to each element. When passed an element it fires its `lazyload` event. Upon receipt of that event `LazyLoad` will attempt to load the element.
+An event listener listening for a `lazyload` event is bound to each element upon initialisation. An instance of `LazyLoad` inherits a single method `fireLazyEvent` which, when passed an element, fires its `lazyload` event. Upon receipt of that event the element will attempt to load. 
+
+Note: if an element that receives a `lazyload` event is not an image or picture element, upon successful load its CSS `background-image` property will be set as the loaded image. 
 
 ```javascript
 // an instance of LazyLoad looks like this
