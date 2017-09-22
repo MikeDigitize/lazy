@@ -31,7 +31,7 @@ const lazy = new LazyLoad('.lazy-image');
 </picture>
 ```
 
-Upon initialisation, the `LazyLoad` class creates an array of image data, storing each element, its `src` and a resolved attribute initially set to `false`. If a `HTMLPictureElement` is found the `src` will be an array of sources from its children.
+Upon initialisation, the `LazyLoad` class creates an array of image data, storing each element, its `src` (pulled from its `data-lazy-src` attribute) and a resolved attribute initially set to `false`. If a `HTMLPictureElement` is found the `src` will be an array of the `data-lazy-src` attributes from its children.
 
 ```javascript
 // each element stored in the images array is represented with the following data structure
@@ -43,7 +43,7 @@ Upon initialisation, the `LazyLoad` class creates an array of image data, storin
 ```
 ### Lazy Events
 
-An event listener listening for a `lazyload` event is bound to each element. When fired, the event triggers the loading of the element. An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed an element it fires the `lazyload` event on that element.
+An event listener listening for a `lazyload` event is bound to each element. When fired, the event triggers its load. An instance of `LazyLoad` inherits a single method `fireLazyEvent`. When passed an element it fires the `lazyload` event on that element.
 
 ```javascript
 // an instance of LazyLoad looks like this
@@ -94,7 +94,7 @@ const lazy = new LazyLoad('.lazy-picture');
 const picture = lazy.images[0];
 const image = picture.image;
 
-// fire lazy event
+// fire lazyload event
 lazy.fireLazyEvent(image);
 
 // force polyfill to run again
@@ -181,7 +181,7 @@ lazy.images.filter(function(lazyImage) {
   // get the elements yet to be resolved
   return !lazyImage.resolved;
 }).forEach(function(lazyImage) {
-  // test to see if the element meets the loading criteria, if it does fire the event
+  // test to see if the element meets the loading criteria, if it does fire the lazyload event
   lazy.fireLazyEvent(lazyImage.image);
   // and update the data to show the element has resolved
   lazyImage.resolved = true;
