@@ -24,13 +24,16 @@ function loadImage(src, image) {
 		}
 
 		image.addEventListener('load', onLoad);
-		image.addEventListener('error', onError);
+    image.addEventListener('error', onError);
 
-    // if picture element set srcset on each child
-    if(image.parentNode instanceof HTMLPictureElement) {
-      Array.from(image.parentNode.children).forEach(function(child, i) {
-        child.setAttribute('srcset', src[i]);
-      });
+    // if picture element, set srcset on each child
+    if(image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
+      image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === HTMLUnknownElement) {
+
+        Array.from(image.parentNode.children).forEach(function(child, i) {
+          child.setAttribute('srcset', src[i]);
+        });
+
     }
     else {
       image.setAttribute('src', src);
@@ -47,7 +50,7 @@ function lazyLoadImage() {
   let lazyImage = new Image();
 
   // find the img element within the picture element
-  if(image instanceof HTMLPictureElement) {
+  if(image.constructor === window.HTMLPictureElement || typeof window.HTMLPictureElement === 'undefined' && image.constructor === HTMLUnknownElement) {
     lazyImage = image.querySelector('img');
   }
 
@@ -68,7 +71,7 @@ function getOnLoadCallback(image) {
 	switch (true) {
 		case image.constructor === HTMLImageElement:
       return onShowImage;
-    case image.constructor !== HTMLPictureElement:
+    case image.constructor !== window.HTMLPictureElement:
 			return onShowBackgroundImage;
 		default:
 			return () => {};
