@@ -4,7 +4,7 @@ An image loading, event driven class supporting lazy load aka deferral of image 
 
 ## Browser support
 
-IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`. If you want to lazy load the `HTMLPictureElement` you'll need to polyfill it in IE ([Picturefill is recommended](https://github.com/scottjehl/picturefill)).
+IE9+ although you'll need to polyfill `Array.from` and `Array.prototype.some`. If you want to lazy load the `HTMLPictureElement` you'll need to polyfill it for non-supporting browsers, IE for example ([Picturefill is recommended](https://github.com/scottjehl/picturefill)).
 
 ## How it works
 
