@@ -66,6 +66,11 @@
 				spinner.classList.add('visible');
       }
 
+      picturefill({
+        reevaluate: true,
+        elements: [lazyImage.querySelector('img')]
+      });
+
     });
 
     window.addEventListener('lazyloadcomplete', function(evt) {
@@ -97,11 +102,6 @@
         img = lazyImage.images[1];
         image = img.image;
         lazyImage.fireLazyEvent(image);
-
-        picturefill({
-          reevaluate: true,
-          elements: document.querySelectorAll('.lazy-pic img')
-        });
 
       }, 1000);
 

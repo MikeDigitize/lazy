@@ -26,7 +26,7 @@ function loadImage(src, image) {
 		image.addEventListener('load', onLoad);
     image.addEventListener('error', onError);
 
-    // if picture element, set srcset on each child
+    // if the image is within a picture element, set srcset on each child
     if(image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
       image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === HTMLUnknownElement) {
 
@@ -49,7 +49,7 @@ function lazyLoadImage() {
 
   let lazyImage = new Image();
 
-  // find the img element within the picture element
+  // if it's a picture element, find the img element within
   if(image.constructor === window.HTMLPictureElement || typeof window.HTMLPictureElement === 'undefined' && image.constructor === HTMLUnknownElement) {
     lazyImage = image.querySelector('img');
   }
@@ -74,7 +74,7 @@ function getOnLoadCallback(image) {
     case image.constructor !== window.HTMLPictureElement:
 			return onShowBackgroundImage;
 		default:
-			return () => {};
+			return () => {}; // empty function callback for picture element
 	}
 }
 

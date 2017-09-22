@@ -44,9 +44,8 @@ function getLazySrc(image) {
     return src;
   }
 
-  // return an array of image sources
-  const sources = Array.from(image.children);
-  return sources.map((source) => source.getAttribute(lazySrcDataAttribute));
+  // return an array of image sources from the picture element children (source and img elements)
+  return Array.from(image.children).map((source) => source.getAttribute(lazySrcDataAttribute));
 
 }
 
