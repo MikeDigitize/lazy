@@ -36,7 +36,18 @@ function loadImage(src, image) {
       image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === HTMLUnknownElement) {
 
         Array.from(image.parentNode.children).forEach(function(child, i) {
-          child.setAttribute('srcset', src[i]);
+
+          // IE9 polyfill approach is to use a video element around the source elements
+          if(child.constructor !== HTMLVideoElement) {
+            child.setAttribute('srcset', src[i]);
+          }
+          else {
+            // the source elements will be children of the video element in ie9
+            Array.from(child.children).forEach(function(videoChild, j) {
+              videoChild.setAttribute('srcset', src[i + j]);
+            });
+          }
+
         });
 
     }
@@ -79,7 +90,7 @@ function getOnLoadCallback(image) {
 	switch (true) {
 		case image.constructor === HTMLImageElement:
       return onShowImage;
-    case image.constructor !== window.HTMLPictureElement || image.constructor !== window.HTMLUnknownElement:
+    case image.constructor !== window.HTMLPictureElement:
 			return onShowBackgroundImage;
 		default:
 			return () => {}; // empty function callback for picture element

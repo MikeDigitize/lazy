@@ -8,7 +8,12 @@ class LazyScroll extends LazyLoad {
 
 	constructor(selector) {
 
-		super(selector);
+    super(selector);
+
+    if(!this.images) {
+      console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
+      return;
+    }
 
     // add the positional info of elements to the data stored on the instance
     setLazyImagePositions.call(this);

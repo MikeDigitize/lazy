@@ -6,10 +6,6 @@
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="__tests__/picture-element-polyfill.js"></script>
   <style>
-    .lazy-pic {
-			opacity: 0;
-			transition: 2s opacity ease-in-out;
-		}
     .loading-spinner {
 			position: absolute;
 			top: 50%;
@@ -19,41 +15,97 @@
 			opacity: 0;
     }
     .visible {
-			opacity: 1;
-		}
+			opacity: 1 !important;
+    }
+    #horizontal-container {
+      width: 5000px;
+      height: 300px;
+      display: flex;
+      justify-content: flex-end;
+      border: 1px solid #000;
+    }
+    .lazy-holder {
+      width: 400px;
+      height: 300px;
+      border: 2px solid crimson;
+      margin: auto;
+      position: relative;
+    }
+    .lazy-holder picture {
+      display: block;
+      opacity: 0;
+    }
+    .lazy-holder picture img {
+      max-width: 100%;
+      max-height: 300px;
+    }
   </style>
 </head>
 <body>
 
-	<div class="container">
-  	<div class="row">
-  		<div class="col-sm-4 offset-sm-4">
-        <img src="images/loader.gif" class="loading-spinner" />
-  			<picture class="lazy-pic">
-          <source media="(min-width: 650px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-large.png">
-          <source media="(min-width: 465px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-medium.png">
-          <!-- img tag for browsers that do not support picture element -->
-          <img id="img1" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-small.png" alt="a cute kitten">
-        </picture>
-			</div>
+  <div id="horizontal-container">
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source data-lazy-src="images/audi.jpg" media="(min-width: 768px)">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="images/audi-mob.jpg" alt="Gaming Laptops">
+      </picture>
     </div>
-    <div class="row">
-  		<div class="col-sm-4 offset-sm-4">
-          <img src="images/loader.gif" class="loading-spinner" />
-          <picture class="lazy-pic">
-            <!--[if IE 9]><video style="display: none;"><![endif]-->
-            <source data-lazy-src="http://media.ao.com/uk/computing/gaming/img/laptops.jpg, http://media.ao.com/uk/computing/gaming/img/laptops_2x.jpg 2x" media="(min-width: 768px)">
-            <!--[if IE 9]></video><![endif]-->
-            <img id="img2" data-lazy-src="http://media.ao.com/uk/computing/gaming/img/mobile-laptops.jpg, http:////media.ao.com/uk/computing/gaming/img/mobile-laptops_2x.jpg 2x" alt="Gaming Laptops">
-          </picture>
-			</div>
-  	</div>
-	</div>
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source data-lazy-src="images/bb.png" media="(min-width: 768px)">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="images/bb-mob.jpg" alt="Gaming Laptops">
+      </picture>
+    </div>
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source data-lazy-src="images/kylo.jpg" media="(min-width: 768px)">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="images/kylo-mob.jpg" alt="Gaming Laptops">
+      </picture>
+    </div>
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source data-lazy-src="images/tiefighter.jpg" media="(min-width: 768px)">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="images/tiefighter-mob.jpg" alt="Gaming Laptops">
+      </picture>
+    </div>
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source media="(min-width: 650px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-large.png">
+        <source media="(min-width: 465px)" data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-medium.png">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="https://googlechrome.github.io/samples/picture-element/images/kitten-small.png" alt="a cute kitten">
+      </picture>
+    </div>
+    <div class="lazy-holder">
+      <img src="images/loader.gif" class="loading-spinner" />
+      <picture>
+        <!--[if IE 9]><video style="display: none;"><![endif]-->
+        <source data-lazy-src="http://media.ao.com/uk/computing/gaming/img/laptops.jpg, http://media.ao.com/uk/computing/gaming/img/laptops_2x.jpg 2x" media="(min-width: 768px)">
+        <!--[if IE 9]></video><![endif]-->
+        <img data-lazy-src="http://media.ao.com/uk/computing/gaming/img/mobile-laptops.jpg, http://media.ao.com/uk/computing/gaming/img/mobile-laptops_2x.jpg 2x" alt="Gaming Laptops">
+      </picture>
+    </div>
+  </div>
 
-	<script type="text/javascript" src="js/lazy.min.js"></script>
+  <script type="text/javascript" src="js/lazy.min.js"></script>
+  <script type="text/javascript" src="js/lazy-scroll.min.js"></script>
 	<script type="text/javascript">
 
-    var lazyImage = new LazyLoad('.lazy-pic');
+    var lazyscroll = new LazyScroll('.lazy-holder picture');
 
 		window.addEventListener('lazyload', function(evt) {
 
@@ -66,10 +118,13 @@
 				spinner.classList.add('visible');
       }
 
-      picturefill({
-        reevaluate: true,
-        elements: [lazyImage.querySelector('img')]
-      });
+      // if browser doesn't support picture element
+      if(lazyImage.constructor === HTMLUnknownElement && typeof window.HTMLPictureElement === 'undefined') {
+        picturefill({
+          reevaluate: true,
+          elements: [lazyImage.querySelector('img')]
+        });
+      }
 
     });
 
@@ -89,23 +144,6 @@
       }, 1500);
 
     });
-
-    setTimeout(function() {
-
-      var img = lazyImage.images[0];
-      var image = img.image;
-
-      lazyImage.fireLazyEvent(image);
-
-      setTimeout(function() {
-
-        img = lazyImage.images[1];
-        image = img.image;
-        lazyImage.fireLazyEvent(image);
-
-      }, 1000);
-
-    }, 1000);
 
 	</script>
 </body>

@@ -14,7 +14,7 @@ class LazyLoad {
     const images = Array.from(document.querySelectorAll(selector));
 
     if(!images.length) {
-      console.warn(`No elements matching the selector ${selector} were found, LazyImage could not initialise`);
+      console.warn(`No elements matching the selector ${selector} were found, LazyLoad could not initialise`);
       return;
     }
 
@@ -49,7 +49,23 @@ function getLazySrc(image) {
   }
 
   // if a picture element return an array of image sources from its children (source and img elements)
-  return Array.from(image.children).map((source) => source.getAttribute(lazySrcDataAttribute));
+  const srcs = Array.from(image.children).map(function(child) {
+
+    // polyfill approach is to use a video element around source elements
+    // so the `data-lazy-src` attributes need to be retrieved from within the video element
+    // the sources will be an array in an array so will need flattening
+    if(child.constructor === HTMLVideoElement) {
+      return Array.from(child.children).map(function(videoChild) {
+        return videoChild.getAttribute(lazySrcDataAttribute);
+      });
+    }
+    else {
+      return child.getAttribute(lazySrcDataAttribute);
+    }
+  });
+
+  // flatten the array if necessary
+  return [].concat.apply([], srcs);
 
 }
 
