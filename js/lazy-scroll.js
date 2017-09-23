@@ -10,7 +10,10 @@ class LazyScroll extends LazyLoad {
 
 		super(selector);
 
-		setLazyImagePositions.call(this);
+    // add the positional info of elements to the data stored on the instance
+    setLazyImagePositions.call(this);
+
+    // debounce the scroll and resize event handlers
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 		addEventListeners();
@@ -23,7 +26,7 @@ function setLazyImagePositions() {
 	this.images = getLazyImagePositions(this.images);
 }
 
-// adds positional data to each lazy load image stored on the instance
+// adds positional data to each lazy load element stored on the instance
 function getLazyImagePositions(images) {
 	return images.map(lazyImage => ({
 		...lazyImage,
@@ -31,12 +34,14 @@ function getLazyImagePositions(images) {
 	}));
 }
 
+// find images to load from ones yet to be resolved
 function findImagesToLoad() {
 	setLazyImagePositions.call(this);
 	const imagesToLoad = getImagesInView(this.images);
 	loadImages.call(this, imagesToLoad);
 }
 
+// trigger the loading of images within the viewport
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyEvent(lazyImage.image);
@@ -56,7 +61,8 @@ function removeEventListeners() {
 	window.removeEventListener('resize', onResize);
 }
 
-function getYPosition(image) {
+// get top and left co-ordinates of an element relative to the document
+function getXYPosition(image) {
 	let left = 0, top = 0;
 	if (image.offsetParent) {
 		do {
@@ -67,8 +73,9 @@ function getYPosition(image) {
 	return { left, top };
 }
 
+// get top, left, right and bottom position of an image relative to document
 function getImagePosition(image) {
-	const { top, left } = getYPosition(image);
+	const { top, left } = getXYPosition(image);
 	const bottom = top + image.offsetHeight;
 	const right = left + image.offsetWidth;
 	return { left, right, top, bottom };
@@ -85,6 +92,8 @@ function getWindowSize() {
 	return { width, height };
 }
 
+// get the positional boundaries of the viewport
+// to see if an element is within those boundaries
 function getWindowBoundaries() {
 	const { pageXOffset, pageYOffset } = getWindowScrollPosition();
 	const { width, height } = getWindowSize();
@@ -99,6 +108,7 @@ function getUnloadedImages(images) {
 	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
+// test if an element is horizontally and vertically within the view port
 function getImagesInView(images) {
 
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();

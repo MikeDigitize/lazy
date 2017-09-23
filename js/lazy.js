@@ -5,7 +5,8 @@ const onLoad = CreateEvent(onLoadEventName);
 const lazySrcDataAttribute = 'data-lazy-src';
 
 // base lazy load class that provides the functionality to lazy load
-// but doesn't actually trigger any lazy load behaviour internally
+// but doesn't actually auto trigger any lazy load behaviour internally
+// just provides an event driven interface to do so
 class LazyLoad {
 
 	constructor(selector) {
@@ -17,19 +18,21 @@ class LazyLoad {
       return;
     }
 
-		// lazy load data for each image
+		// lazy load data for each element
 		this.images = images.map(image => ({
 			image,
 			resolved: false,
 			src: getLazySrc(image)
 		}));
 
+    // add the lazyload event listener to each element
 		this.images.forEach(function(lazyImage) {
 			lazyImage.image.addEventListener(onLoadEventName, lazyLoadImage.bind(lazyImage));
 		});
 
 	}
 
+  // fire lazyload event on element to begin attempting to load
 	fireLazyEvent(image) {
 		image.dispatchEvent(onLoad);
 	}
@@ -38,13 +41,14 @@ class LazyLoad {
 
 function getLazySrc(image) {
 
+  // if a non picture element get the `data-lazy-src` attribute directly from it
   const src = image.getAttribute(lazySrcDataAttribute);
 
   if(src) {
     return src;
   }
 
-  // return an array of image sources from the picture element children (source and img elements)
+  // if a picture element return an array of image sources from its children (source and img elements)
   return Array.from(image.children).map((source) => source.getAttribute(lazySrcDataAttribute));
 
 }

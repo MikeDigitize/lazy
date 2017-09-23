@@ -18,8 +18,9 @@ class LazyProximity extends LazyLoad {
       return;
     }
 
-    // add the proximity trigger and the click handler
+    // add the proximity trigger and the click handler (for removal later)
     // to the lazy image data stored on the instance
+    // click handler is for touch support
     this.images = this.images.map(function(lazyImage) {
 
       let lazyProximityTrigger, onClickCallback;
@@ -40,6 +41,7 @@ class LazyProximity extends LazyLoad {
 
     });
 
+    // capture mousemove on document to detect hover over trigger
     this.onMouseMove = debounce(onMouseMove.bind(this), 100);
     document.addEventListener('mousemove', this.onMouseMove);
 
@@ -54,7 +56,9 @@ function getProximityTriggers(proximitySelector) {
   return Array
           .from(document.querySelectorAll(proximitySelector))
           .map((trigger) => {
+            // get all elements to trigger the loading of
             const targets = Array.from(document.querySelectorAll(trigger.getAttribute(lazyTargetDataAttribute)));
+            // bind the click handler for touch and store a reference to it for removal later
             const onClickCallback = onClick.bind(this);
             trigger.addEventListener('click', onClickCallback);
             return {
@@ -69,6 +73,7 @@ function getUnloadedImages(images) {
 	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
+// hover capturing
 function onMouseMove(evt) {
 
   // if no images remaining to load, remove the mousemove listener
@@ -98,6 +103,7 @@ function onMouseMove(evt) {
 
 }
 
+// click handling
 function onClick(evt) {
 
   const { target } = evt;
