@@ -14,7 +14,9 @@ The `LazyLoad` base class takes a CSS selector of elements to be lazy loaded. `L
 const lazy = new LazyLoad('.lazy-image');
 ```
 
-`LazyLoad` uses a `data-lazy-src` attribute to identify the image path to load. When using image elements, the image's `src` attribute should be omitted or left empty. Note that omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
+`LazyLoad` uses a `data-lazy-src` attribute to identify the image path to load. When using image elements, the image's `src` attribute should be omitted or left empty. 
+
+Note: omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
 
 ```html
 <!-- lazy load an image element -->
