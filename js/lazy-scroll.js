@@ -2,8 +2,15 @@ const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
 let onFindImagesToLoad, onResize;
 
-// triggers lazy loading of images
-// based on their position relative to the window position
+/**
+ *
+ * LazyScroll
+ *
+ * Triggers the lazy loading of elements based on their scroll position relative to the viewport.
+ * Stores each element's positional data to test after a scroll or resize event.
+ *
+ */
+
 class LazyScroll extends LazyLoad {
 
 	constructor(selector) {
@@ -18,7 +25,7 @@ class LazyScroll extends LazyLoad {
     // add the positional info of elements to the data stored on the instance
     setLazyImagePositions.call(this);
 
-    // debounce the scroll and resize event handlers
+    // debounce the scroll and resize event handlers used to test if elements are in the viewport
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 		addEventListeners();
@@ -46,7 +53,7 @@ function findImagesToLoad() {
 	loadImages.call(this, imagesToLoad);
 }
 
-// trigger the loading of images within the viewport
+// attempt to load an element found within the viewport
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyEvent(lazyImage.image);
@@ -97,8 +104,7 @@ function getWindowSize() {
 	return { width, height };
 }
 
-// get the positional boundaries of the viewport
-// to see if an element is within those boundaries
+// get the boundaries of the viewport to see if an element is within them
 function getWindowBoundaries() {
 	const { pageXOffset, pageYOffset } = getWindowScrollPosition();
 	const { width, height } = getWindowSize();
@@ -113,7 +119,7 @@ function getUnloadedImages(images) {
 	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
-// test if an element is horizontally and vertically within the view port
+// test if a yet to be resolved element is horizontally and vertically within the viewport
 function getImagesInView(images) {
 
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
