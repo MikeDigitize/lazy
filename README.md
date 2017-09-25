@@ -125,7 +125,20 @@ The elements a trigger is to load should be defined with a CSS selector in its `
 
 ## Usage
 
-The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. Reference one of these in your HTML and use the instructions below to initialise.
+The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. 
+
+```javascript
+// new school
+import LazyLoad from './lazy.min.js';
+
+// old school
+const LazyScroll = require('./lazy-scroll.min.js');
+```
+
+```html
+<!-- in the browser to expose LazyProximity globally -->
+<script src="./lazy-proximity.min.js"></script>
+```
 
 To extend any of the classes, install the project with `yarn` and run the appropriate command from npm `scripts` in the `package.json` file.
 
@@ -191,3 +204,6 @@ lazy.images.filter(function(lazyImage) {
   lazyImage.resolved = true;
 });
 ```
+
+### Licence
+MIT
