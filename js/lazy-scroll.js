@@ -32,6 +32,10 @@ class LazyScroll extends LazyLoad {
 
   }
 
+  rescanViewport() {
+    findImagesToLoad.call(this);
+  }
+
 }
 
 function setLazyImagePositions() {

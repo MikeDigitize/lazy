@@ -105,7 +105,7 @@
   	</div>
   	<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
-				<img src="images/loader.gif" class="loading-spinner" />				
+				<img src="images/loader.gif" class="loading-spinner" />
 				<img data-lazy-src="images/planet.png" class="lazy-image">
   		</div>
   	</div>
@@ -132,7 +132,6 @@
   			<div data-lazy-src="images/monkey.gif" class="lazy-image monkey"></div>
   		</div>
 		</div>
-  	</div>
 		<div class="row">
   		<div class="col-sm-4 offset-sm-4 lazy-holder">
   			<div data-lazy-src="images/audi.jpg" class="lazy-image audi"></div>
@@ -148,15 +147,15 @@
   			<div data-lazy-src="images/fake.jpg" class="lazy-image"></div>
   		</div>
 		</div>
-	</div>
-	
+  </div>
+
 	<script type="text/javascript" src="js/lazy-scroll.min.js"></script>
 	<script type="text/javascript">
 
 		var lazyImages = new LazyScroll('.lazy-image');
-		
+
 		window.addEventListener('lazyload', function(evt) {
-			
+
 			var lazyImage = evt.target;
 			var spinner = lazyImage.previousElementSibling;
 
@@ -165,11 +164,11 @@
 			if(spinner) {
 				spinner.classList.add('visible');
 			}
-			
+
 		});
 
 		window.addEventListener('lazyloadcomplete', function(evt) {
-			
+
 			var lazyImage = evt.target;
 			var spinner = lazyImage.previousElementSibling;
 
@@ -179,10 +178,10 @@
 			setTimeout(function() {
 				if(spinner) {
 					spinner.classList.remove('visible');
-				}				
+				}
 				lazyImage.classList.add('visible');
 			}, 500);
-			
+
 		});
 
 		window.addEventListener('lazyloaderror', function(evt) {
@@ -192,9 +191,9 @@
 
 			lazyImage.classList.add('error');
 			lazyImage.classList.remove('lazy-image');
-			
+
 		});
-		
+
 	</script>
 </body>
 </html>

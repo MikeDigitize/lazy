@@ -8,12 +8,13 @@ const {
 	lazyImagePaths
 } = require('./test-helpers');
 
-describe('LazyScroll class tests', function() {
+// TODO: test for picture element
+describe('Picture element tests', function() {
 
 	afterEach(cleanUpDom);
 
   it('Should work', function() {
-    
-  })
+    expect(true).toBe(true);
+  });
 
 });
