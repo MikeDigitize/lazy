@@ -11,6 +11,7 @@
     "test": "karma start karma.conf.js"
   },
   "dependencies": {
+    "babel-plugin-transform-proto-to-assign": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
@@ -31,11 +32,14 @@
   "babel": {
     "presets": [
       [
-        "env"
+        "env", {
+          "loose": true
+        }
       ]
     ],
     "plugins": [
-      "transform-object-rest-spread"
+      "transform-object-rest-spread",
+      "transform-proto-to-assign"
     ]
   }
 }
