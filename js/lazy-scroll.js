@@ -79,18 +79,18 @@ function removeEventListeners() {
 
 // get top and left co-ordinates of an element relative to the document
 function getXYPosition(image) {
-	const { top, left } = image.getBoundingClientRect();
+	const { top, left, bottom, right } = image.getBoundingClientRect();
   return {
     top: top + document.documentElement.scrollTop,
-    left: left + document.documentElement.scrollLeft
+    left: left + document.documentElement.scrollLeft,
+    bottom: bottom + document.documentElement.scrollTop,
+    right: right + document.documentElement.scrollLeft
   };
 }
 
 // get top, left, right and bottom position of an image relative to document
 function getImagePosition(image) {
-	const { top, left } = getXYPosition(image);
-	const bottom = top + image.offsetHeight;
-	const right = left + image.offsetWidth;
+	const { top, left, bottom, right } = getXYPosition(image);
 	return { left, right, top, bottom };
 }
 
