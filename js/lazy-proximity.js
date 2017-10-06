@@ -108,13 +108,17 @@ function onMouseMove(evt) {
 
     const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
 
-    // if the element the mouse is over is the trigger, or is a child of the trigger
-    if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
+    if(lazyProximityTrigger) {
 
-      // load the lazy element, remove its click handler and set it as resolved
-      this.fireLazyEvent(image);
-      lazyImage.resolved = true;
-      lazyProximityTrigger.removeEventListener('click', onClickCallback);
+      // if the element the mouse is over is the trigger, or is a child of the trigger
+      if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
+
+        // load the lazy element, remove its click handler and set it as resolved
+        this.fireLazyEvent(image);
+        lazyImage.resolved = true;
+        lazyProximityTrigger.removeEventListener('click', onClickCallback);
+
+      }
 
     }
 
@@ -132,13 +136,17 @@ function onClick(evt) {
 
     const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
 
-    // match the clicked trigger with a saved trigger
-    if(lazyProximityTrigger === target) {
+    if(lazyProximityTrigger) {
 
-      // and load that trigger's lazy element
-      this.fireLazyEvent(image);
-      lazyImage.resolved = true;
-      lazyProximityTrigger.removeEventListener('click', onClickCallback);
+      // match the clicked trigger with a saved trigger
+      if(lazyProximityTrigger === target) {
+
+        // and load that trigger's lazy element
+        this.fireLazyEvent(image);
+        lazyImage.resolved = true;
+        lazyProximityTrigger.removeEventListener('click', onClickCallback);
+
+      }
 
     }
 
