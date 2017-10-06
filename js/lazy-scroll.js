@@ -80,11 +80,12 @@ function removeEventListeners() {
 // get top and left co-ordinates of an element relative to the document
 function getXYPosition(image) {
 	const { top, left, bottom, right } = image.getBoundingClientRect();
+	const { pageXOffset, pageYOffset } = window;
   return {
-    top: top + document.documentElement.scrollTop,
-    left: left + document.documentElement.scrollLeft,
-    bottom: bottom + document.documentElement.scrollTop,
-    right: right + document.documentElement.scrollLeft
+    top: top + pageYOffset,
+    left: left + pageXOffset,
+    bottom: bottom + pageYOffset,
+    right: right + pageXOffset
   };
 }
 
@@ -139,11 +140,11 @@ function getImagesInView(images) {
 }
 
 function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {
-	return posYmin <= windowYmax && posYmax >= windowYmin;
+	return (posYmin <= windowYmax && posYmin >= windowYmin) || (posYmax <= windowYmax && posYmax >= windowYmin);
 }
 
 function isInViewHorizontally(posXmin, windowXmin, posXmax, windowXmax) {
-	return posXmin <= windowXmax && posXmax >= windowXmin;
+	return (posXmin <= windowXmax && posXmin >= windowXmin) || (posXmax <= windowXmax && posXmax >= windowXmin);
 }
 
 module.exports = {
