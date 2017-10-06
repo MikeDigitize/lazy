@@ -1,11 +1,11 @@
-const { 
+const {
 	LazyScroll,
 	isInViewVertically,
 	isInViewHorizontally,
 	getWindowScrollPosition
 } = require('../js/lazy-scroll');
 
-const { 
+const {
 	createLazyImage,
 	createLazyBackground,
 	cleanUpDom,
@@ -16,10 +16,10 @@ const {
 describe('LazyScroll class tests', function() {
 
 	afterEach(cleanUpDom);
-	
+
 	it('should add positional data to existing lazy image data', function() {
-		
-		const { 
+
+		const {
 			imagePath,
 			imagePath2,
 			imagePath3,
@@ -34,33 +34,33 @@ describe('LazyScroll class tests', function() {
 		const { lazyImageClass } = lazyClassNames;
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
-		
+
 		expect(lazyImages.images.length).toBe(4);
 		expect(Object.keys(lazyImage).length).toBe(4);
-		
+
 		expect(lazyImage.image).toBe(image);
 		expect(lazyImage.imagePosition).toBeDefined();
 		expect(lazyImage.src).toBe(imagePath);
-		expect(lazyImage.resolved).toBe(false);		
+		expect(lazyImage.resolved).toBe(false);
 
 		expect(lazyImage2.image).toBe(image2);
 		expect(lazyImage2.imagePosition).toBeDefined();
 		expect(lazyImage2.src).toBe(imagePath2);
-		expect(lazyImage2.resolved).toBe(false);		
+		expect(lazyImage2.resolved).toBe(false);
 
 		expect(lazyImage3.image).toBe(image3);
 		expect(lazyImage3.imagePosition).toBeDefined();
 		expect(lazyImage3.src).toBe(imagePath3);
-		expect(lazyImage3.resolved).toBe(false);		
+		expect(lazyImage3.resolved).toBe(false);
 
 		expect(lazyImage4.image).toBe(image4);
 		expect(lazyImage4.imagePosition).toBeDefined();
 		expect(lazyImage4.src).toBe(imagePath4);
-		expect(lazyImage4.resolved).toBe(false);		
+		expect(lazyImage4.resolved).toBe(false);
 
 	});
 
-	it('should detect when an image\'s vertical position is in the viewport', function() {
+	it('should detect when an image\'s vertical position is in the viewport (1)', function() {
 
 		const imageTopPosition = 100;
 		const windowTopPosition = 50;
@@ -71,8 +71,8 @@ describe('LazyScroll class tests', function() {
 
 	});
 
-	it('should detect when an image\'s vertical position is in the viewport', function() {
-		
+	it('should detect when an image\'s vertical position is in the viewport (2)', function() {
+
 		const imageTopPosition = 100;
 		const windowTopPosition = 100;
 		const imageBottomPosition = 600;
@@ -82,8 +82,8 @@ describe('LazyScroll class tests', function() {
 
 	});
 
-	it('should detect when an image\'s vertical position is in the viewport', function() {
-		
+	it('should detect when an image\'s vertical position is in the viewport (3)', function() {
+
 		const imageTopPosition = 0;
 		const windowTopPosition = 50;
 		const imageBottomPosition = 600;
@@ -93,8 +93,8 @@ describe('LazyScroll class tests', function() {
 
 	});
 
-	it('should detect when an image\'s vertical position is not in the viewport', function() {
-		
+	it('should detect when an image\'s vertical position is not in the viewport (4)', function() {
+
 		const imageTopPosition = 100;
 		const windowTopPosition = 300;
 		const imageBottomPosition = 200;
@@ -104,8 +104,8 @@ describe('LazyScroll class tests', function() {
 
 	});
 
-	it('should detect when an image\'s vertical position is not in the viewport', function() {
-		
+	it('should detect when an image\'s vertical position is not in the viewport (5)', function() {
+
 		const imageTopPosition = 501;
 		const windowTopPosition = 100;
 		const imageBottomPosition = 1000;
@@ -116,7 +116,7 @@ describe('LazyScroll class tests', function() {
 	});
 
 	it('should detect when an image\'s horizontal position is in the viewport', function() {
-		
+
 		const imageLeftPosition = 100;
 		const windowLeftPosition = 50;
 		const imageRightPosition = 200;
@@ -127,7 +127,7 @@ describe('LazyScroll class tests', function() {
 	});
 
 	it('should detect when an image\'s horizontal position is in the viewport', function() {
-		
+
 		const imageLeftPosition = 100;
 		const windowLeftPosition = 100;
 		const imageRightPosition = 200;
@@ -138,7 +138,7 @@ describe('LazyScroll class tests', function() {
 	});
 
 	it('should detect when an image\'s horizontal position is not in the viewport', function() {
-		
+
 		const imageLeftPosition = 100;
 		const windowLeftPosition = 300;
 		const imageRightPosition = 200;
@@ -149,7 +149,7 @@ describe('LazyScroll class tests', function() {
 	});
 
 	it('should detect when an image\'s horizontal position is not in the viewport', function() {
-		
+
 		const imageLeftPosition = 401;
 		const windowLeftPosition = 300;
 		const imageRightPosition = 501;
@@ -163,9 +163,9 @@ describe('LazyScroll class tests', function() {
 
 		const { imagePath } = lazyImagePaths;
 		const { lazyImageClass } = lazyClassNames;
-		const { image, holder } = createLazyImage(imagePath, lazyImageClass);	
-		holder.style.top = '2000px';	
-		
+		const { image, holder } = createLazyImage(imagePath, lazyImageClass);
+		holder.style.top = '2000px';
+
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 
@@ -183,10 +183,10 @@ describe('LazyScroll class tests', function() {
 	});
 
 	it('should trigger the load of a background image when its in the viewport', function(done) {
-		
+
 		const { imagePath } = lazyImagePaths;
 		const { lazyImageClass } = lazyClassNames;
-		const { holder } = createLazyBackground(imagePath);     
+		const { holder } = createLazyBackground(imagePath);
     const lazyImages = new LazyScroll(`.${lazyImageClass}`);
     const [lazyImage] = lazyImages.images;
 
@@ -202,5 +202,5 @@ describe('LazyScroll class tests', function() {
 		window.scrollTo(0, lazyImage.imagePosition.top);
 
 	});
-	
+
 });
