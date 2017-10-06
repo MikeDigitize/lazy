@@ -1,10 +1,105 @@
-# Lazy
+# LazyLoad, LazyScroll and LazyProximity
 
-An image loading, event driven class supporting lazy load aka deferral of image loading.
+Image loading, event driven classes that support lazy load aka deferral of image loading. `LazyLoad` is the base class that provides the event driven loading functionality, `LazyScroll` is an extension that triggers lazy loading on the scroll event as items appear in the viewport and `LazyProximity` is an extension that lazy loads items when the cursor is over them or they receive a touch event on cursor-less devices.
 
 ## Browser support
 
 IE9+ although you'll need to polyfill `Array.from`, `Array.prototype.some` and `Element.prototype.classList`. If you want to lazy load the `HTMLPictureElement` you'll need to polyfill it for non-supporting browsers ([Picturefill is recommended](https://github.com/scottjehl/picturefill)).
+
+## Usage
+
+The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. 
+
+```javascript
+// new school
+import LazyLoad from './lazy.min.js';
+import LazyScroll from './lazy-scroll.min.js';
+import LazyProximity from './lazy-proximity.min.js';
+
+// old school
+const LazyLoad = require('./lazy.min.js');
+const LazyScroll = require('./lazy-scroll.min.js');
+const LazyProximity = require('./lazy-proximity.min.js');
+```
+
+```html
+<!-- in the browser to expose globally -->
+<script src="./lazy.min.js"></script>
+<script src="./lazy-scroll.min.js"></script>
+<script src="./lazy-proximity.min.js"></script>
+```
+
+Install the project with `yarn` and run the appropriate command from npm `scripts` in the `package.json` file.
+
+#### LazyLoad
+
+The `LazyLoad` base class gives you the means to lazy load items. It requires you to manually trigger the lazy load by firing a `lazyload` event on the item. It does not automatically trigger loading like the `LazyScroll` and `LazyProximity` classes. To use the `LazyLoad` class, create a new instance by passing a CSS selector of the elements to lazy load.
+
+```javascript
+const lazy = new LazyScroll('.your-lazy-item-identifying-selector');
+```
+The instance has two properties - an array of images to lazy load and a `fireLazyEvent` method that, when passed an element, will fire the `lazyload` event on it, triggering its load.
+
+```javascript
+// pull the first element from the images array
+const [lazyImage] = lazy.images;
+// call the fireLazyEvent method passing in the element to lazy load
+lazy.fireLazyEvent(lazyImage.image);
+```
+
+#### LazyScroll
+
+To use the `LazyScroll` class, call the class with a CSS selector of the elements to lazy load and they will load as they appear in the viewport. `LazyScroll` responds to the `scroll` event both vertically and horizontally.
+
+```javascript
+const lazy = new LazyScroll('.your-lazy-item-identifying-selector');
+```
+
+You may find yourself in a scenario where you have a carousel of images you want to lazy load where some of the images are hidden off screen. As the carousel transitions from slide to slide and images appear in the viewport no `scroll` event occurs, so `LazyScroll` exposes a method - `rescanViewport` - to manually rescan the viewport in such a scenario. In this case you'd call this method on each carousel transition / user interaction.
+
+```javascript
+// call this method to rescan the viewport for images to load
+lazy.rescanViewport();
+```
+
+#### LazyProximity
+
+To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the elements to lazy load, and a CSS selector for the trigger elements. When these elements are hovered over or receive a click / touch they will trigger the loading of elements matching the selector in their `data-lazy-target` attribute.
+
+```javascript
+const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
+```
+
+#### Extending
+
+To extend the base class and add custom loading criteria you can use the following pattern:
+
+```javascript
+class CustomLazy extends LazyLoad {
+  constructor(selector) {
+    super(selector);
+    // modify the images property to add custom data
+    this.images = this.images.map(function(lazyImage) {
+      // return each lazy element's data object with additional data
+    });
+  }
+}
+
+// use some other criteria to trigger an element load
+// internally in the class, loop through the array of elements, if one meets the criteria to load
+// call the fireLazyEvent method passing in the element to load
+
+const lazy = new CustomLazy('.lazy-image');
+lazy.images.filter(function(lazyImage) {
+  // get the elements yet to be resolved
+  return !lazyImage.resolved;
+}).forEach(function(lazyImage) {
+  // test to see if the element meets the loading criteria, if it does fire the lazyload event
+  lazy.fireLazyEvent(lazyImage.image);
+  // and update the data to show the element has resolved
+  lazyImage.resolved = true;
+});
+```
 
 ## How it works
 
@@ -121,88 +216,6 @@ The elements a trigger is to load should be defined with a CSS selector in its `
 ```html
 <!-- loads all elements that match the selector ".lazy-holder img" -->
 <button class="lazy-btn" data-lazy-target=".lazy-holder img">Click or hover over me!</button>
-```
-
-## Usage
-
-The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. 
-
-```javascript
-// new school
-import LazyLoad from './lazy.min.js';
-
-// old school
-const LazyScroll = require('./lazy-scroll.min.js');
-```
-
-```html
-<!-- in the browser to expose LazyProximity globally -->
-<script src="./lazy-proximity.min.js"></script>
-```
-
-To extend any of the classes, install the project with `yarn` and run the appropriate command from npm `scripts` in the `package.json` file.
-
-#### LazyLoad
-
-To use the `LazyLoad` class, call the class with a CSS selector of the elements to lazy load.
-
-```javascript
-const lazy = new LazyScroll('.lazy-image');
-```
-To trigger the loading of an image, use the `fireLazyEvent` method on the instance, passing in the element to load.
-
-```javascript
-// access lazy image data from the instance's images array
-const [lazyImage] = lazy.images;
-// call the fireLazyEvent method on the instance passing in the element to lazy load
-lazy.fireLazyEvent(lazyImage.image);
-```
-
-#### LazyScroll
-
-To use the `LazyScroll` class, call the class with a CSS selector of the elements to lazy load and they will load as they appear in the viewport.
-
-```javascript
-const lazy = new LazyScroll('.lazy-image');
-```
-
-#### LazyProximity
-
-To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the elements to lazy load, and a CSS selector for the trigger elements. When these elements are hovered over or receive a click / touch it will trigger the loading of elements matching the selector in their `data-lazy-target` attribute.
-
-```javascript
-const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
-```
-
-#### Extending
-
-To extend the base class and add custom loading criteria you can use the following pattern:
-
-```javascript
-class CustomLazy extends LazyLoad {
-  constructor(selector) {
-    super(selector);
-    // modify the images property to add custom data
-    this.images = this.images.map(function(lazyImage) {
-      // return each lazy element's data object with additional data
-    });
-  }
-}
-
-// use some other criteria to trigger an element load
-// internally in the class, loop through the array of elements, if one meets the criteria to load
-// call the fireLazyEvent method passing in the element to load
-
-const lazy = new CustomLazy('.lazy-image');
-lazy.images.filter(function(lazyImage) {
-  // get the elements yet to be resolved
-  return !lazyImage.resolved;
-}).forEach(function(lazyImage) {
-  // test to see if the element meets the loading criteria, if it does fire the lazyload event
-  lazy.fireLazyEvent(lazyImage.image);
-  // and update the data to show the element has resolved
-  lazyImage.resolved = true;
-});
 ```
 
 ### Licence
