@@ -1,6 +1,8 @@
-# LazyLoad, LazyScroll and LazyProximity
+# What is it?
 
 Image loading, event driven classes that support lazy load aka deferral of image loading. The classes support the loading of image elements, picture elements and elements with CSS background images.
+
+## LazyLoad, LazyScroll and LazyProximity
 
 `LazyLoad` is the base class that provides the event driven loading functionality, `LazyScroll` is a `scroll` event based extension that loads items as they appear in the viewport and `LazyProximity` is an extension that defines trigger elements which, when the cursor is over them or they receive a touch event (on cursor-less devices), triggers the lazy load of specified target elements.
 
