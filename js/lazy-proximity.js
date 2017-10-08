@@ -114,7 +114,7 @@ function onMouseMove(evt) {
       if(lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
 
         // load the lazy element, remove its click handler and set it as resolved
-        this.fireLazyEvent(image);
+        this.fireLazyLoadEvent(image);
         lazyImage.resolved = true;
         lazyProximityTrigger.removeEventListener('click', onClickCallback);
 
@@ -142,7 +142,7 @@ function onClick(evt) {
       if(lazyProximityTrigger === target) {
 
         // and load that trigger's lazy element
-        this.fireLazyEvent(image);
+        this.fireLazyLoadEvent(image);
         lazyImage.resolved = true;
         lazyProximityTrigger.removeEventListener('click', onClickCallback);
 

@@ -1,12 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
-
 const webpackPlugins = [];
+let watch = true;
 
 if(process.env.NODE_ENV === 'production') {
     webpackPlugins.push(
         new webpack.optimize.UglifyJsPlugin()
     );
+    watch = false;
 }
 
 module.exports = {
@@ -37,5 +38,5 @@ module.exports = {
         }]
     },
     plugins: webpackPlugins,
-    watch: true
+    watch
 };

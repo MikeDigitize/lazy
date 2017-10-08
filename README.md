@@ -57,7 +57,7 @@ To modify the classes or create your own wrapper around `LazyLoad` install the p
 
 #### LazyLoad
 
-The `LazyLoad` base class gives you the means to lazy load items. It does not automatically trigger loading like the `LazyScroll` and `LazyProximity` classes do. An instance of `LazyLoad` inherits a method - `fireLazyEvent` - which, when passed an element, will fire a `lazyload` event on that element, telling `LazyLoad` to attempt to load it. 
+The `LazyLoad` base class gives you the means to lazy load items. It does not automatically trigger loading like the `LazyScroll` and `LazyProximity` classes do. An instance of `LazyLoad` inherits a method - `fireLazyLoadEvent` - which, when passed an element, will fire a `lazyload` event on that element, telling `LazyLoad` to attempt to load it. 
 
 To use the `LazyLoad` class, create a new instance by passing a CSS selector of the elements to lazy load.
 
@@ -70,8 +70,8 @@ To use the `LazyLoad` class, create a new instance by passing a CSS selector of 
 const lazy = new LazyScroll('.my-lazy-image');
 // pull the first element from the instance's images array
 const [lazyImage] = lazy.images;
-// call the fireLazyEvent method passing in the element to lazy load
-lazy.fireLazyEvent(lazyImage.image);
+// call the fireLazyLoadEvent method passing in the element to lazy load
+lazy.fireLazyLoadEvent(lazyImage.image);
 ```
 
 #### LazyScroll
@@ -128,14 +128,14 @@ class CustomLazy extends LazyLoad {
 
 // use some other criteria to trigger an element load
 // internally in the class, loop through the array of elements, if one meets the criteria to load
-// call the fireLazyEvent method passing in the element to load
+// call the fireLazyLoadEvent method passing in the element to load
 const lazy = new CustomLazy('.lazy-image');
 lazy.images.filter(function(lazyImage) {
   // get the elements yet to be resolved
   return !lazyImage.resolved;
 }).forEach(function(lazyImage) {
   // test to see if the element meets the loading criteria, if it does fire the lazyload event
-  lazy.fireLazyEvent(lazyImage.image);
+  lazy.fireLazyLoadEvent(lazyImage.image);
   // and update the data to show the element has resolved
   lazyImage.resolved = true;
 });
@@ -237,7 +237,7 @@ const lazy = new LazyLoad('.lazy-picture');
 const [picture] = lazy.images;
 
 // fire lazyload event on the picture element
-lazy.fireLazyEvent(picture.image);
+lazy.fireLazyLoadEvent(picture.image);
 
 // force polyfill to run again on the element
 picturefill({

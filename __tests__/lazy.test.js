@@ -84,7 +84,7 @@ describe('LazyLoad class tests', function() {
       done();
     });
 
-    lazyImages.fireLazyEvent(lazyImage.image);
+    lazyImages.fireLazyLoadEvent(lazyImage.image);
 
   });
 
@@ -99,7 +99,7 @@ describe('LazyLoad class tests', function() {
     expect(lazyImage.image).toBe(image);
     expect(lazyImage.image.getAttribute('src')).toBe(null);
 
-    lazyImages.fireLazyEvent(lazyImage.image);
+    lazyImages.fireLazyLoadEvent(lazyImage.image);
 
     holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
@@ -123,7 +123,7 @@ describe('LazyLoad class tests', function() {
     expect(lazyImage.image).toBe(divWithBackground);
     expect(lazyImage.image.style.backgroundImage).toBe('');
 
-    lazyImages.fireLazyEvent(lazyImage.image);
+    lazyImages.fireLazyLoadEvent(lazyImage.image);
 
     holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
       expect(evt.target).toBe(lazyImage.image);
@@ -150,7 +150,7 @@ describe('LazyLoad class tests', function() {
       done();
     });
 
-    lazyImages.fireLazyEvent(lazyImage.image);
+    lazyImages.fireLazyLoadEvent(lazyImage.image);
 
   });
 

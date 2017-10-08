@@ -39,7 +39,7 @@ class LazyLoad {
 	}
 
   // fire lazyload event on element to begin attempting to load
-	fireLazyEvent(image) {
+	fireLazyLoadEvent(image) {
 		image.dispatchEvent(onLoad);
 	}
 

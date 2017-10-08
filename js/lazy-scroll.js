@@ -60,7 +60,7 @@ function findImagesToLoad() {
 // attempt to load an element found within the viewport
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
-		this.fireLazyEvent(lazyImage.image);
+		this.fireLazyLoadEvent(lazyImage.image);
 		lazyImage.resolved = true;
 	});
 }
