@@ -1,6 +1,6 @@
 # What is it?
 
-Image loading, event driven classes that support lazy load aka deferral of image loading. The classes support the loading of image elements, picture elements and elements with CSS background images.
+A set of event driven classes that support lazy load, aka deferral of image loading. The classes support the loading of image elements, picture elements and elements with CSS background images.
 
 ## LazyLoad, LazyScroll and LazyProximity
 
