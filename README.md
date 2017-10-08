@@ -1,6 +1,8 @@
 # LazyLoad, LazyScroll and LazyProximity
 
-Image loading, event driven classes that support lazy load aka deferral of image loading. `LazyLoad` is the base class that provides the event driven loading functionality, `LazyScroll` is an extension that triggers lazy loading on the scroll event as items appear in the viewport and `LazyProximity` is an extension that lazy loads items when the cursor is over them or they receive a touch event on cursor-less devices.
+Image loading, event driven classes that support lazy load aka deferral of image loading. The classes support the loading of image elements, picture elements and elements with CSS background images.
+
+`LazyLoad` is the base class that provides the event driven loading functionality, `LazyScroll` is a `scroll` event based extension that loads items as they appear in the viewport and `LazyProximity` is an extension that defines trigger elements which, when the cursor is over them or they receive a touch event (on cursor-less devices), triggers the lazy load of specified target elements.
 
 ## Browser support
 
@@ -9,6 +11,26 @@ IE9+ although you'll need to polyfill `Array.from`, `Array.prototype.some` and `
 ## Usage
 
 The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. 
+
+Each of these requires a `data-lazy-src` attribute to be added to each element to identify the image path to load. When using image elements, the image's `src` attribute should be omitted or left empty. 
+
+Note: omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
+
+```html
+<!-- lazy load an image element -->
+<img data-lazy-src="images/my-lazy-load-image.png">
+
+<!-- lazy load a CSS background image -->
+<section data-lazy-src="images/my-lazy-background-image.png"></section>
+
+<!-- lazy load a picture element -->
+<picture>
+  <source media="(min-width: 650px)" data-lazy-src="images/my-lazy-picture-large.png"></source>
+  <source media="(min-width: 450px)" data-lazy-src="images/my-lazy-picture-med.png"></source>
+  <img data-lazy-src="images/my-lazy-picture-small.png" />
+</picture>
+```
+Once the elements have been marked up accordingly, the classes can be used in the following ways:
 
 ```javascript
 // new school
@@ -29,19 +51,22 @@ const LazyProximity = require('./lazy-proximity.min.js');
 <script src="./lazy-proximity.min.js"></script>
 ```
 
-Install the project with `yarn` and run the appropriate command from npm `scripts` in the `package.json` file.
+To modify the classes or create your own wrapper around `LazyLoad` install the project with `yarn` and use either `yarn start` or `yarn run dist` to produce an unminified or minified output respectively. Use `yarn test` to run the test suite. 
 
 #### LazyLoad
 
-The `LazyLoad` base class gives you the means to lazy load items. It requires you to manually trigger the lazy load by firing a `lazyload` event on the item. It does not automatically trigger loading like the `LazyScroll` and `LazyProximity` classes. To use the `LazyLoad` class, create a new instance by passing a CSS selector of the elements to lazy load.
+The `LazyLoad` base class gives you the means to lazy load items. It does not automatically trigger loading like the `LazyScroll` and `LazyProximity` classes do. An instance of `LazyLoad` inherits a method - `fireLazyEvent` - which, when passed an element, will fire a `lazyload` event on that element, telling `LazyLoad` to attempt the loading of it. 
 
-```javascript
-const lazy = new LazyScroll('.your-lazy-item-identifying-selector');
+To use the `LazyLoad` class, create a new instance by passing a CSS selector of the elements to lazy load.
+
+```html
+<img class="my-lazy-image" data-lazy-src="images/my-lazy-load-image.png">
 ```
-The instance has two properties - an array of images to lazy load and a `fireLazyEvent` method that, when passed an element, will fire the `lazyload` event on it, triggering its load.
 
 ```javascript
-// pull the first element from the images array
+// create an instance 
+const lazy = new LazyScroll('.my-lazy-image');
+// pull the first element from the instance's images array
 const [lazyImage] = lazy.images;
 // call the fireLazyEvent method passing in the element to lazy load
 lazy.fireLazyEvent(lazyImage.image);
@@ -55,16 +80,30 @@ To use the `LazyScroll` class, call the class with a CSS selector of the element
 const lazy = new LazyScroll('.your-lazy-item-identifying-selector');
 ```
 
-You may find yourself in a scenario where you have a carousel of images you want to lazy load where some of the images are hidden off screen. As the carousel transitions from slide to slide and images appear in the viewport no `scroll` event occurs, so `LazyScroll` exposes a method - `rescanViewport` - to manually rescan the viewport in such a scenario. In this case you'd call this method on each carousel transition / user interaction.
+##### Manually loading an image
+
+You may find yourself in a scenario where you have images appear on screen **not** as a result of a scroll event. For example, you might have a carousel of images to lazy load but some of the images are hidden off screen, meaning `LazyScroll` will not find them in the viewport. As the carousel transitions from slide to slide, images that were previously outside the viewport will enter, but as no `scroll` event has occurred, `LazyScroll` will not be aware of them. 
+
+For these types of scenarios, `LazyScroll` provides a method - `rescanViewport` - which, when called, forces it to manually rescan the viewport for elements to lazy load. To utilise this functionality, in the case of such a carousel, the `rescanViewport` method would need to be called every time the carousel transitions from slide to slide.
 
 ```javascript
-// call this method to rescan the viewport for images to load
-lazy.rescanViewport();
+// add the `rescanViewport` method to the carousel controls
+carouselNext.addEventListener('click', lazy.rescanViewport);
 ```
 
 #### LazyProximity
 
-To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the elements to lazy load, and a CSS selector for the trigger elements. When these elements are hovered over or receive a click / touch they will trigger the loading of elements matching the selector in their `data-lazy-target` attribute.
+To use the `LazyProximity` class, call the class with two arguments - a CSS selector for the elements to lazy load (the targets), and a CSS selector for the trigger elements. When these trigger elements are hovered over or receive a click / touch they will trigger the loading of elements matching the selector in their `data-lazy-target` attribute.
+
+```html
+<!-- trigger element that loads all elements that match the selector ".my-lazy-image" -->
+<button class="lazy-btn" data-lazy-target=".my-lazy-image">Click or hover over me!</button>
+
+<!-- target elements -->
+<img class="my-lazy-image" data-lazy-src="images/my-lazy-load-image.png">
+<img class="my-lazy-image" data-lazy-src="images/my-lazy-load-image2.png">
+<img class="my-lazy-image" data-lazy-src="images/my-lazy-load-image3.png">
+```
 
 ```javascript
 const lazy = new LazyProximity('.lazy-image', '.lazy-btn');
@@ -103,56 +142,50 @@ lazy.images.filter(function(lazyImage) {
 
 ## How it works
 
-The `LazyLoad` base class takes a CSS selector of elements to be lazy loaded. `LazyLoad` supports the loading of image elements, picture elements and elements with CSS background images.
-
-```javascript
-const lazy = new LazyLoad('.lazy-image');
-```
-
-`LazyLoad` uses a `data-lazy-src` attribute to identify the image path to load. When using image elements, the image's `src` attribute should be omitted or left empty. 
-
-Note: omitting the `src` is technically invalid HTML, but some older browsers make a HTTP request if the `src` is set to an empty string so omitting is probably the safest approach.
+Upon initialisation, the `LazyLoad` class creates an array of image data, storing each element, its `src` (pulled from its `data-lazy-src` attribute) and a resolved attribute initially set to `false`. If a `HTMLPictureElement` is found the `src` will be an `array` of the `data-lazy-src` attributes from its children.
 
 ```html
-<!-- lazy load an image element -->
-<img data-lazy-src="images/my-lazy-load-image.png">
-
-<!-- lazy load a CSS background image -->
-<section data-lazy-src="images/my-lazy-background-image.png"></section>
+<!-- an image element -->
+<img class="lazy-image" data-lazy-src="images/my-lazy-load-image.png">
 
 <!-- lazy load a picture element -->
-<picture>
+<picture class="lazy-image">
   <source media="(min-width: 650px)" data-lazy-src="images/my-lazy-picture-large.png"></source>
   <source media="(min-width: 450px)" data-lazy-src="images/my-lazy-picture-med.png"></source>
   <img data-lazy-src="images/my-lazy-picture-small.png" />
 </picture>
 ```
 
-Upon initialisation, the `LazyLoad` class creates an array of image data, storing each element, its `src` (pulled from its `data-lazy-src` attribute) and a resolved attribute initially set to `false`. If a `HTMLPictureElement` is found the `src` will be an array of the `data-lazy-src` attributes from its children.
-
 ```javascript
+const lazy = new LazyLoad('.lazy-image');
+
 // each element stored in the images array is represented with the following data structure
 {
   image: <Elememt>
   src: <String or Array>
   resolved: <Boolean>
 }
+
+// image element above would produce a single source
+src: 'images/my-lazy-load-image.png'
+
+// picture element above would produce an array of sources
+src: ['images/my-lazy-picture-large.png', 'images/my-lazy-picture-med.png', 'images/my-lazy-picture-small.png']
 ```
+
 ### Lazy Events
 
-An event listener listening for a `lazyload` event is bound to each element upon initialisation. An instance of `LazyLoad` inherits a single method `fireLazyEvent` which, when passed an element, fires its `lazyload` event. Upon receipt of that event the element will attempt to load. 
+An event listener listening for a `lazyload` event is bound to each element upon initialisation. 
 
-Note: if an element that receives a `lazyload` event is not an image or picture element, upon successful load its CSS `background-image` property will be set as the loaded image. 
+Note: if an element that receives a `lazyload` event is **not** an image or picture element, upon successful load its CSS `background-image` property will be set as the loaded image. 
 
-```javascript
-// an instance of LazyLoad looks like this
-{
-  images: <Array> // array of objects representing each lazy load element (see above for data structure)
-  fireLazyEvent: <Function> // inherited
-}
-```
+#### Utilising the lazy events
 
 The `lazyload` event can be captured on the `window` or another parent like any other event that bubbles. It's a signal that `LazyLoad` is attempting to load an element and so can be used as an opportunity to do something whilst this happens, such as show a loading spinner.
+
+Upon a successful load, a `lazyloadcomplete` event is fired on the element. Following on from the previous example, this would be an opportunity to remove the loading spinner and display the element.
+
+As older browers can display images without `src` attributes as broken images and some browsers display the `alt` text of an image before the image loads, it's probably a good idea to add styling to hide elements initially and reveal upon loading. If an element can't be loaded a `lazyloaderror` event is fired.
 
 ```html
 <div class="lazy-image-container">
@@ -160,7 +193,9 @@ The `lazyload` event can be captured on the `window` or another parent like any 
   <img data-lazy-src="images/my-lazy-loading-image.png" class="lazy-image">
 </div>
 ```
+
 ```javascript
+// show a loading spinner whilst the image attempts to load 
 window.addEventListener('lazyload', function(evt) {
   var lazyImage = evt.target;
   var spinner = lazyImage.previousElementSibling;
@@ -169,6 +204,7 @@ window.addEventListener('lazyload', function(evt) {
   spinner.style.display = "block";
 });
 
+// hide the spinner and show the image if the loading is successful
 window.addEventListener('lazyloadcomplete', function(evt) {
   var lazyImage = evt.target;
   var spinner = lazyImage.previousElementSibling;
@@ -177,11 +213,17 @@ window.addEventListener('lazyloadcomplete', function(evt) {
   spinner.style.display = "none";
   lazyImage.style.display = "block";
 });
+
+// remove the image if the load is unsuccessful
+window.addEventListener('lazyloaderror', function(evt) {
+  var lazyImage = evt.target;
+  var spinner = lazyImage.previousElementSibling;
+
+  // hide the loading spinner and remove the image
+  spinner.style.display = "none";
+  lazyImage.parentNode.removeChild(lazyImage);
+});
 ```
-
-Upon a successful load, a `lazyloadcomplete` event is fired on the element. Following on from the previous example, this would be an opportunity to remove the loading spinner and display the element.
-
-As older browers can display images without `src` attributes as broken images and some browsers display the `alt` text of an image before the image loads, it's probably a good idea to add styling to hide elements initially and reveal upon loading. If an element can't be loaded a `lazyloaderror` event is fired.
 
 ### Lazy Loading a Picture Element
 
@@ -190,32 +232,17 @@ For browsers that don't support the `HTMLPictureElement`, lazy loading will not 
 ```javascript
 // example using the Picturefill polyfill
 const lazy = new LazyLoad('.lazy-picture');
-const picture = lazy.images[0];
-const image = picture.image;
+// get the first picture element
+const [picture] = lazy.images;
 
-// fire lazyload event
-lazy.fireLazyEvent(image);
+// fire lazyload event on the picture element
+lazy.fireLazyEvent(picture.image);
 
-// force polyfill to run again
+// force polyfill to run again on the element
 picturefill({
   reevaluate: true,
-  elements: [image]
+  elements: [picture.image]
 });
-```
-
-## Lazy Scroll
-
-The `LazyScroll` class is a wrapper around `LazyLoad`, using positional data to determine if an element is in the viewport. If so, its `lazyload` event is fired. The `LazyScroll` class appends the positional data of each element to the data stored on the instance.
-
-## Lazy Proximity
-
-The `LazyProximity` class is a wrapper around `LazyLoad`. `LazyProximity` allows you to define elements on the page that will trigger the loading of any amount of lazy elements when hovered over or when receiving a click / touch event, for mobile.
-
-The elements a trigger is to load should be defined with a CSS selector in its `data-lazy-target` attribute.
-
-```html
-<!-- loads all elements that match the selector ".lazy-holder img" -->
-<button class="lazy-btn" data-lazy-target=".lazy-holder img">Click or hover over me!</button>
 ```
 
 ### Licence
