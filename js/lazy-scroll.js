@@ -78,7 +78,7 @@ function removeEventListeners() {
 }
 
 // get top and left co-ordinates of an element relative to the document
-function getXYPosition(image) {
+function getImagePosition(image) {
 	const { top, left, bottom, right } = image.getBoundingClientRect();
 	const { pageXOffset, pageYOffset } = window;
   return {
@@ -87,12 +87,6 @@ function getXYPosition(image) {
     bottom: bottom + pageYOffset,
     right: right + pageXOffset
   };
-}
-
-// get top, left, right and bottom position of an image relative to document
-function getImagePosition(image) {
-	const { top, left, bottom, right } = getXYPosition(image);
-	return { left, right, top, bottom };
 }
 
 function getWindowScrollPosition() {
@@ -151,6 +145,5 @@ module.exports = {
 	LazyScroll,
 	isInViewVertically,
 	isInViewHorizontally,
-	getWindowScrollPosition,
-	getImagePosition
+	getWindowScrollPosition
 };
