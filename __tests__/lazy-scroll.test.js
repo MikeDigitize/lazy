@@ -58,106 +58,161 @@ describe('LazyScroll class tests', function() {
 		expect(lazyImage4.src).toBe(imagePath4);
 		expect(lazyImage4.resolved).toBe(false);
 
-	});
+  });
 
-	it('should detect when an image\'s vertical position is in the viewport (1)', function() {
+  it('should detect when an image\'s top and bottom positions are in the viewport', function() {
 
-		const imageTopPosition = 100;
-		const windowTopPosition = 50;
-		const imageBottomPosition = 200;
-		const windowBottomPosition = 550;
+    const imageTopPosition = 100;
+    const windowTopPosition = 50;
+    const imageBottomPosition = 200;
+    const windowBottomPosition = 550;
 
-		expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s vertical position is in the viewport (2)', function() {
+  it('should detect when an image\'s top position is in the viewport but not the bottom', function() {
 
-		const imageTopPosition = 100;
-		const windowTopPosition = 100;
-		const imageBottomPosition = 600;
-		const windowBottomPosition = 600;
+    const imageTopPosition = 100;
+    const windowTopPosition = 50;
+    const imageBottomPosition = 600;
+    const windowBottomPosition = 550;
 
-		expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s vertical position is in the viewport (3)', function() {
+  it('should detect when an image\'s bottom position is in the viewport but not the bottom', function() {
 
-		const imageTopPosition = 0;
-		const windowTopPosition = 50;
-		const imageBottomPosition = 600;
-		const windowBottomPosition = 550;
+    const imageTopPosition = 0;
+    const windowTopPosition = 50;
+    const imageBottomPosition = 500;
+    const windowBottomPosition = 550;
 
-		expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s vertical position is not in the viewport (4)', function() {
+  it('should detect when an image\'s top and bottom position are not in the viewport but the image is', function() {
 
-		const imageTopPosition = 100;
-		const windowTopPosition = 300;
-		const imageBottomPosition = 200;
-		const windowBottomPosition = 800;
+    const imageTopPosition = 0;
+    const windowTopPosition = 50;
+    const imageBottomPosition = 600;
+    const windowBottomPosition = 550;
 
-		expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(false);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s vertical position is not in the viewport (5)', function() {
+  it('should detect when an image\'s top and bottom position are the same as the window\'s', function() {
 
-		const imageTopPosition = 501;
-		const windowTopPosition = 100;
-		const imageBottomPosition = 1000;
-		const windowBottomPosition = 500;
+    const imageTopPosition = 50;
+    const windowTopPosition = 50;
+    const imageBottomPosition = 600;
+    const windowBottomPosition = 600;
 
-		expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(false);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s horizontal position is in the viewport', function() {
+  it('should detect when an image is above the viewport', function() {
 
-		const imageLeftPosition = 100;
-		const windowLeftPosition = 50;
-		const imageRightPosition = 200;
-		const windowRightPosition = 550;
+    const imageTopPosition = 50;
+    const windowTopPosition = 201;
+    const imageBottomPosition = 200;
+    const windowBottomPosition = 300;
 
-		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(false);
 
-	});
+  });
 
-	it('should detect when an image\'s horizontal position is in the viewport', function() {
+  it('should detect when an image is below the viewport', function() {
 
-		const imageLeftPosition = 100;
-		const windowLeftPosition = 100;
-		const imageRightPosition = 200;
-		const windowRightPosition = 200;
+    const imageTopPosition = 500;
+    const windowTopPosition = 100;
+    const imageBottomPosition = 600;
+    const windowBottomPosition = 300;
 
-		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
+    expect(isInViewVertically(imageTopPosition, windowTopPosition, imageBottomPosition, windowBottomPosition)).toBe(false);
 
-	});
+  });
 
-	it('should detect when an image\'s horizontal position is not in the viewport', function() {
+  it('should detect when an image\'s left and right positions are in the viewport', function() {
 
-		const imageLeftPosition = 100;
-		const windowLeftPosition = 300;
-		const imageRightPosition = 200;
-		const windowRightPosition = 400;
+    const imageLeftPosition = 100;
+    const windowLeftPosition = 50;
+    const imageRightPosition = 200;
+    const windowRightPosition = 550;
 
-		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
 
-	});
+  });
 
-	it('should detect when an image\'s horizontal position is not in the viewport', function() {
+  it('should detect when an image\'s left position is in the viewport but not the right', function() {
 
-		const imageLeftPosition = 401;
-		const windowLeftPosition = 300;
-		const imageRightPosition = 501;
-		const windowRightPosition = 400;
+    const imageLeftPosition = 100;
+    const windowLeftPosition = 50;
+    const imageRightPosition = 600;
+    const windowRightPosition = 550;
 
-		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
 
-	});
+  });
+
+  it('should detect when an image\'s right position is in the viewport but not the left', function() {
+
+    const imageLeftPosition = 0;
+    const windowLeftPosition = 50;
+    const imageRightPosition = 500;
+    const windowRightPosition = 550;
+
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
+
+  });
+
+  it('should detect when an image\'s left and right position are not in the viewport but the image is', function() {
+
+    const imageLeftPosition = 0;
+    const windowLeftPosition = 50;
+    const imageRightPosition = 600;
+    const windowRightPosition = 550;
+
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
+
+  });
+
+  it('should detect when an image\'s left and right position are the same as the window\'s', function() {
+
+    const imageLeftPosition = 50;
+    const windowLeftPosition = 50;
+    const imageRightPosition = 600;
+    const windowRightPosition = 600;
+
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
+
+  });
+
+  it('should detect when an image is to the left of the viewport', function() {
+
+    const imageLeftPosition = 50;
+    const windowLeftPosition = 201;
+    const imageRightPosition = 200;
+    const windowRightPosition = 300;
+
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
+
+  });
+
+  it('should detect when an image is to the right of the viewport', function() {
+
+    const imageLeftPosition = 500;
+    const windowLeftPosition = 100;
+    const imageRightPosition = 600;
+    const windowRightPosition = 300;
+
+    expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
+
+  });
 
 	it('should trigger the load of an image when its in the viewport', function(done) {
 
@@ -201,6 +256,6 @@ describe('LazyScroll class tests', function() {
 
 		window.scrollTo(0, lazyImage.imagePosition.top);
 
-	});
+  });
 
 });

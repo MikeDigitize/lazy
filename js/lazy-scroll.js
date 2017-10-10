@@ -139,12 +139,12 @@ function getImagesInView(images) {
 
 }
 
-function isInViewVertically(posYmin, windowYmin, posYmax, windowYmax) {
-	return (posYmin <= windowYmax && posYmin >= windowYmin) || (posYmax <= windowYmax && posYmax >= windowYmin);
+function isInViewVertically(imageTop, windowTop, imageBottom, windowBottom) {
+	return imageTop <= windowBottom && imageBottom >= windowTop;
 }
 
-function isInViewHorizontally(posXmin, windowXmin, posXmax, windowXmax) {
-	return (posXmin <= windowXmax && posXmin >= windowXmin) || (posXmax <= windowXmax && posXmax >= windowXmin);
+function isInViewHorizontally(imageLeft, windowLeft, imageRight, windowRight) {
+	return imageLeft <= windowRight && imageRight >= windowLeft;
 }
 
 module.exports = {
