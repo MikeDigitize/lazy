@@ -82,7 +82,7 @@ describe('LazyScroll class tests', function() {
 
   });
 
-  it('should detect when an image\'s bottom position is in the viewport but not the bottom', function() {
+  it('should detect when an image\'s bottom position is in the viewport but not the top', function() {
 
     const imageTopPosition = 0;
     const windowTopPosition = 50;

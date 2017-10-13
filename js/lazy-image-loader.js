@@ -47,8 +47,9 @@ function loadImage(src, image) {
      *
      */
 
-    if(image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
-      image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === HTMLUnknownElement) {
+    if (image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
+      image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === window.HTMLUnknownElement ||
+      image.parentNode && typeof window.HTMLPictureElement === 'undefined' && image.parentNode.constructor === window.HTMLElement) {
 
         Array.from(image.parentNode.children).forEach(function(child, i) {
 
@@ -85,8 +86,9 @@ function lazyLoadImage() {
   let lazyImage = new Image();
 
   // if it's a picture element, re-assign the dummy image to the img element within the picture element
-  if(image.constructor === window.HTMLPictureElement ||
-    typeof window.HTMLPictureElement === 'undefined' && image.constructor === HTMLUnknownElement) {
+  if (image.constructor === window.HTMLPictureElement ||
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLUnknownElement ||
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLElement) {
     lazyImage = image.querySelector('img');
   }
 
