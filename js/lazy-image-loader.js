@@ -110,12 +110,13 @@ function getOnLoadCallback(image) {
 	switch (true) {
 		case image.constructor === HTMLImageElement:
       return onShowImage;
-    case image.constructor !== window.HTMLPictureElement:
-			return onShowBackgroundImage;
-    default:
-
-      // empty function callback for picture element
+    // empty function callback for picture element
+    case image.constructor === window.HTMLPictureElement ||
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLUnknownElement ||
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLElement:
 			return () => {};
+    default:
+			return onShowBackgroundImage;
 	}
 }
 

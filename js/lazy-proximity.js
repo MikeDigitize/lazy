@@ -139,7 +139,7 @@ function onClick(evt) {
     if(lazyProximityTrigger) {
 
       // match the clicked trigger with a saved trigger
-      if(lazyProximityTrigger === target) {
+      if(lazyProximityTrigger === target || lazyProximityTrigger.contains(target)) {
 
         // and load that trigger's lazy element
         this.fireLazyLoadEvent(image);
