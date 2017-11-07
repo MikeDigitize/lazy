@@ -17,7 +17,7 @@ class LazyProximity extends LazyLoad {
 
     super(imageSelector);
 
-    if(!this.images.length) {
+    if(!this.images) {
       console.warn(`No elements matching the selector ${imageSelector} were found, LazyProximity could not initialise`);
       return;
     }
