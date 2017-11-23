@@ -1,0 +1,38 @@
+@mixin aoContainer {
+	@include container;
+
+	padding: 0 gutter(6);
+
+	@include susy-breakpoint($landscape, $mobileCol) {
+		@include container($tablet);
+	}
+
+	@include susy-breakpoint($tablet, $tabletCol) {
+		@include container($tablet);
+
+		padding: 0 gutter(12);
+	}
+
+	@include susy-breakpoint($desktop, $tabletCol) {
+		@include container($desktop);
+
+		padding: 0 gutter(18);
+	}
+
+	@include susy-breakpoint($uber, $tabletCol) {
+		@include container($uber);
+
+		padding: 0 gutter(24);
+	}
+}
+
+@function calculateRem($size) {
+	$remSize: $size / $defaultFontSize;
+
+	@return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+	font-size: ($size * 1px);
+	font-size: calculateRem($size);
+}

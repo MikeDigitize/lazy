@@ -1,0 +1,96 @@
+// font definitions
+$gotham: oz, Arial, Helvetica, sans-serif;
+$fontFamily: Arial, Helvetica, sans-serif;
+$aoFont: $gotham;
+$aoFontBold: ozBold, Arial, Helvetica, sans-serif;
+
+$header-large-mobile:               40;
+$header-large:                      48;
+
+$header-main-plus-mobile:           36;
+$header-main-plus:                  44;
+
+$header-main-mobile:                32;
+$header-main:                       40;
+
+$header-sub-mobile:                 28;
+$header-sub:                        36;
+
+$header-content-title-plus-mobile:  24;
+$header-content-title-plus:         32;
+
+$header-content-title-mobile:       20;
+$header-content-title:              28;
+
+$header-section-mobile:             18;
+$header-section:                    24;
+
+$header-module-mobile:              16;
+$header-module:                     20;
+
+$header-micro-mobile:               16;
+$header-micro:                      18;
+
+$header-nano-mobile:                16;
+$header-nano:                       16;
+
+$size-mobile-p-special:     16;
+$size-mobile-p1:            14;
+$size-mobile-p2:            13;
+$size-mobile-p3:            12;
+$size-mobile-p4:            11;
+
+$size-p-special:            16;
+$size-p1:                   16;
+$size-p2:                   14;
+$size-p3:                   13;
+$size-p4:                   11;
+
+$fontsize:62.5%;
+$defaultFontSize:16;
+$HlineHeight:1.2;
+$PlineHeight:1.4;
+
+$light:300;
+$normal: 400;
+$bold:700;
+$heavy: 900;
+
+//Spacing Variables
+$aoSpace: 8px;
+
+@function aoSpace($num: 1, $fontSize: 0, $lineHeight: 0) {
+	@return ($num * $aoSpace) - ($fontSize * ($lineHeight - 1)) ;
+}
+
+//breakpoint definitions
+$mobileCol: 6;
+$landscape: 544px;
+$tablet: 768px;
+$tabletCol: 12;
+$desktop: 990px;
+$uber: 1200px;
+$maxWidth: 2000px;
+
+//Colour
+$green: #7fba23;
+$grey: #a3abb1;
+$aoGrey: #a3abb1;
+$aoLightGrey: #e5e5e5;
+$aoDarkGrey: #3d4042;
+$blue: #00b5e2;
+$pink: #e6186b;
+$orange: #fb8401;
+$purple: #6e40a3;
+
+$color-text: #333333;
+$color-link: #179dda;
+$color-panel: #ebe9e5;
+$color-background: #efefef;
+$color-divider: #d4d4d4;
+$color-star: #f8d200;
+$color-deal: #bb0708;
+
+$default-text-color: #444444;
+
+$border-radius: 4px;

@@ -1,0 +1,123 @@
+body, * {
+	box-sizing: border-box;
+	text-size-adjust: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-width: 320px;
+	min-height: 100vh;
+	margin: 0;
+	line-height: 1.5;
+	background-color: $aoLightGrey;
+	color: #333333;
+}
+
+h1 {
+	@extend %header-main;
+}
+
+h2 {
+	@extend %header-sub;
+
+	margin-top: aoSpace(2);
+}
+
+h3 {
+	@extend %header-content-title-plus;
+
+	margin-top: aoSpace(2);
+}
+
+h4 {
+	@extend %header-content-title;
+
+	margin-top: aoSpace(2);
+}
+
+h5 {
+	@extend %header-section;
+
+	margin-top: aoSpace(2);
+}
+
+h6 {
+	@extend %header-module;
+
+	margin-top: aoSpace(2);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	& + p, & + ul, & + ol {
+		margin-top: aoSpace(4);
+	}
+}
+
+p {
+	@extend %p1;
+
+	margin-top: aoSpace(2);
+}
+
+ul, ol {
+	@extend %p1;
+
+	margin-top: aoSpace(2);
+}
+
+a {
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+img {
+	vertical-align: middle;
+	max-width: 100%;
+	height: auto;
+	border: none;
+	font-style: italic;
+}
+
+svg {
+	vertical-align: middle;
+}
+
+.flex-inner {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: aoSpace(2);
+	padding-left: aoSpace(2);
+
+	@media (min-width: $tablet) {
+		width: $tablet;
+	}
+
+	@media (min-width: $desktop) {
+		width: $desktop;
+	}
+
+	&.col {
+		flex-direction: column;
+
+		&-reverse {
+			flex-direction: column-reverse;
+		}
+	}
+
+	&.row {
+		flex-direction: row;
+
+		&-reverse {
+			flex-direction: row-reverse;
+		}
+	}
+
+	.no-flexwrap & {
+		display: block;
+	}
+}
