@@ -27,12 +27,15 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0"
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.11.0",
+    "eslint-config-ao": "^0.0.1-rc.2"
   },
   "babel": {
     "presets": [
       [
-        "env", {
+        "env",
+        {
           "loose": true
         }
       ]

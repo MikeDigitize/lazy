@@ -1,0 +1,13 @@
+{
+    "extends": ["ao"],
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "no-use-before-define": "off",
+        "no-console": "off",
+        "consistent-this": "off"
+    }
+}

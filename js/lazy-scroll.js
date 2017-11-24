@@ -15,26 +15,26 @@ class LazyScroll extends LazyLoad {
 
 	constructor(selector) {
 
-    super(selector);
+		super(selector);
 
-    if(!this.images) {
-      console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
-      return;
-    }
+		if (!this.images) {
+			console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
+			return;
+		}
 
-    // add the positional info of elements to the data stored on the instance
-    setLazyImagePositions.call(this);
+		// add the positional info of elements to the data stored on the instance
+		setLazyImagePositions.call(this);
 
-    // debounce the scroll and resize event handlers used to test if elements are in the viewport
+		// debounce the scroll and resize event handlers used to test if elements are in the viewport
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 		addEventListeners();
 
-  }
+	}
 
-  rescanViewport() {
-    findImagesToLoad.call(this);
-  }
+	rescanViewport() {
+		findImagesToLoad.call(this);
+	}
 
 }
 
@@ -81,12 +81,12 @@ function removeEventListeners() {
 function getImagePosition(image) {
 	const { top, left, bottom, right } = image.getBoundingClientRect();
 	const { pageXOffset, pageYOffset } = window;
-  return {
-    top: top + pageYOffset,
-    left: left + pageXOffset,
-    bottom: bottom + pageYOffset,
-    right: right + pageXOffset
-  };
+	return {
+		top: top + pageYOffset,
+		left: left + pageXOffset,
+		bottom: bottom + pageYOffset,
+		right: right + pageXOffset
+	};
 }
 
 function getWindowScrollPosition() {
@@ -121,7 +121,7 @@ function getImagesInView(images) {
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
 
-	if(unloadedImages.length === 0) {
+	if (unloadedImages.length === 0) {
 		removeEventListeners();
 		return [];
 	}

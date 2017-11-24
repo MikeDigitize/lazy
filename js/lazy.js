@@ -1,7 +1,7 @@
-const { CreateEvent } = require('./lazy-events');
+const { createEvent } = require('./lazy-events');
 const { lazyLoadImage } = require('./lazy-image-loader');
 const onLoadEventName = 'lazyload';
-const onLoad = CreateEvent(onLoadEventName);
+const onLoad = createEvent(onLoadEventName);
 const lazySrcDataAttribute = 'data-lazy-src';
 
 /**
@@ -17,12 +17,12 @@ class LazyLoad {
 
 	constructor(selector) {
 
-    const images = Array.from(document.querySelectorAll(selector));
+		const images = Array.from(document.querySelectorAll(selector));
 
-    if(!images.length) {
-      console.warn(`No elements matching the selector ${selector} were found, LazyLoad could not initialise`);
-      return;
-    }
+		if (!images.length) {
+			console.warn(`No elements matching the selector ${selector} were found, LazyLoad could not initialise`);
+			return;
+		}
 
 		// store lazy load data for each element
 		this.images = images.map(image => ({
@@ -31,14 +31,14 @@ class LazyLoad {
 			src: getLazySrc(image)
 		}));
 
-    // listen for the lazyload event on each element
+		// listen for the lazyload event on each element
 		this.images.forEach(function(lazyImage) {
 			lazyImage.image.addEventListener(onLoadEventName, lazyLoadImage.bind(lazyImage));
 		});
 
 	}
 
-  // fire lazyload event on element to begin attempting to load
+	// fire lazyload event on element to begin attempting to load
 	fireLazyLoadEvent(image) {
 		image.dispatchEvent(onLoad);
 	}
@@ -48,15 +48,15 @@ class LazyLoad {
 // get the filepath to load for each element within an instance
 function getLazySrc(image) {
 
-  // if the element is not a picture element return its `data-lazy-src` attribute
-  const src = image.getAttribute(lazySrcDataAttribute);
+	// if the element is not a picture element return its `data-lazy-src` attribute
+	const src = image.getAttribute(lazySrcDataAttribute);
 
-  if(src) {
-    return src;
-  }
+	if (src) {
+		return src;
+	}
 
-  // if the element is a picture element return an array of srcs from its children (source and img elements)
-  const srcs = Array.from(image.children).map(function(child) {
+	// if the element is a picture element return an array of srcs from its children (source and img elements)
+	const srcs = Array.from(image.children).map(function(child) {
 
     /**
      *
@@ -71,13 +71,13 @@ function getLazySrc(image) {
         return videoChild.getAttribute(lazySrcDataAttribute);
       });
     }
-    else {
+    
       return child.getAttribute(lazySrcDataAttribute);
-    }
+    
   });
 
-  // flatten the array if necessary
-  return [].concat.apply([], srcs);
+	// flatten the array if necessary
+	return [].concat.apply([], srcs);
 
 }
 
