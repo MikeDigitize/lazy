@@ -1,6 +1,6 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
-let onFindImagesToLoad, onResize;
+let onFindImagesToLoad, onResize, observer;
 
 /**
  *
@@ -11,8 +11,22 @@ let onFindImagesToLoad, onResize;
  *
  */
 
-class LazyScroll extends LazyLoad {
+function loadImage(entries) {
+	entries.forEach(entry => {
+		if (entry.intersectionRatio > 0) {
+			const { target } = entry;
 
+			// Stop observing element
+			observer.unobserve(target);
+
+			// Retrieve image url from data attribute and update src
+			const url = target.getAttribute('data-lazy-src');
+			target.src = url;
+		}
+	});
+}
+
+class LazyScroll extends LazyLoad {
 	constructor(selector) {
 
 		super(selector);
@@ -28,13 +42,23 @@ class LazyScroll extends LazyLoad {
 		// debounce the scroll and resize event handlers used to test if elements are in the viewport
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
-		addEventListeners();
+
+		// Use intersection observer if browser supports it
+		if (!('IntersectionObserver' in window)) {
+			addEventListeners();
+		} else {
+			observer = new IntersectionObserver(loadImage, {
+				rootMargin: '30px 0px',
+				threshold: 0
+			});
+
+			this.images.forEach(imageObj => observer.observe(imageObj.image));
+		}
 	}
 
 	rescanViewport() {
 		findImagesToLoad.call(this);
 	}
-
 }
 
 function setLazyImagePositions() {

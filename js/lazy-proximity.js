@@ -18,14 +18,21 @@ class LazyProximity extends LazyLoad {
 		super(imageSelector);
 
 		if (!this.images) {
-			console.warn(`No elements matching the selector ${imageSelector} were found, LazyProximity could not initialise`);
+			console.warn(
+				`No elements matching the selector ${imageSelector} 
+				were found, LazyProximity could not initialise`
+			);
 			return;
 		}
 
 		const proximityTriggers = getProximityTriggers.call(this, proximitySelector);
 
 		if (!proximityTriggers.length) {
-			console.warn(`No elements matching the selector ${proximityTriggers} were found, LazyProximity could not initialise`);
+			console.warn(
+				`No elements matching the selector ${proximityTriggers} 
+				were found, LazyProximity could not initialise`
+			);
+
 			return;
 		}
 
@@ -58,14 +65,11 @@ class LazyProximity extends LazyLoad {
 		// capture mousemove on document to detect hover over trigger
 		this.onMouseMove = debounce(onMouseMove.bind(this), 100);
 		document.addEventListener('mousemove', this.onMouseMove);
-
 	}
-
 }
 
 // find all trigger elements and their lazy load targets
 function getProximityTriggers(proximitySelector) {
-
 	return Array.from(document.querySelectorAll(proximitySelector)).map((trigger) => {
 
 		// get all targets for the trigger
@@ -80,9 +84,7 @@ function getProximityTriggers(proximitySelector) {
 			targets,
 			onClickCallback
 		};
-
 	});
-
 }
 
 function getUnloadedImages(images) {
@@ -91,7 +93,6 @@ function getUnloadedImages(images) {
 
 // detect when the cursor is over a trigger element
 function onMouseMove(evt) {
-
 	// if there are no images remaining to load, remove the mousemove listener
 	const unloadedImages = getUnloadedImages(this.images);
 	if (unloadedImages.length === 0) {
@@ -109,35 +110,26 @@ function onMouseMove(evt) {
 		const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
 
 		if (lazyProximityTrigger) {
-
 			// if the element the mouse is over is the trigger, or is a child of the trigger
 			if (lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
-
 				// load the lazy element, remove its click handler and set it as resolved
 				this.fireLazyLoadEvent(image);
 				lazyImage.resolved = true;
 				lazyProximityTrigger.removeEventListener('click', onClickCallback);
-
 			}
-
 		}
-
 	});
-
 }
 
 // detect click on trigger
 function onClick(evt) {
-
 	const { target } = evt;
 
 	// loop through images
 	this.images.forEach((lazyImage) => {
-
 		const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
 
 		if (lazyProximityTrigger) {
-
 			// match the clicked trigger with a saved trigger
 			if (lazyProximityTrigger === target || lazyProximityTrigger.contains(target)) {
 
@@ -145,13 +137,9 @@ function onClick(evt) {
 				this.fireLazyLoadEvent(image);
 				lazyImage.resolved = true;
 				lazyProximityTrigger.removeEventListener('click', onClickCallback);
-
 			}
-
 		}
-
 	});
-
 }
 
 module.exports = {
