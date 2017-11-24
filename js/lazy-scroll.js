@@ -29,7 +29,6 @@ class LazyScroll extends LazyLoad {
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 		addEventListeners();
-
 	}
 
 	rescanViewport() {
