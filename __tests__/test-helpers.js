@@ -46,7 +46,7 @@ function createLazyImage(src, lazyClass = lazyImageClass) {
 	image.classList.add(lazyClass);
 	image.style.width = '100%';
 	image.setAttribute('data-lazy-src', src);
-	
+
 	holder.appendChild(image);
 	document.body.appendChild(holder);
 
@@ -91,7 +91,7 @@ function createLazyBackground(src, lazyClass = lazyImageClass) {
 function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 
 	const trigger = document.createElement('div');
-	
+
 	trigger.constructor = HTMLDivElement;
 	trigger.classList.add(triggerClass);
 	trigger.style.height = '300px';
@@ -112,7 +112,7 @@ function cleanUpDom() {
 	holders.concat(triggers).forEach(function(element) {
 		element.parentNode.removeChild(element);
 	});
-	
+
 }
 
 module.exports = {

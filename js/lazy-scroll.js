@@ -1,6 +1,6 @@
 const { LazyLoad } = require('./lazy');
 const { debounce } = require('./debounce');
-let onFindImagesToLoad, onResize, observer;
+let onFindImagesToLoad, onResize;
 
 /**
  *
@@ -11,24 +11,8 @@ let onFindImagesToLoad, onResize, observer;
  *
  */
 
-function loadImage(entries) {
-	entries.forEach(entry => {
-		if (entry.intersectionRatio > 0) {
-			const { target } = entry;
-
-			// Stop observing element
-			observer.unobserve(target);
-
-			// Retrieve image url from data attribute and update src
-			const url = target.getAttribute('data-lazy-src');
-			target.src = url;
-		}
-	});
-}
-
 class LazyScroll extends LazyLoad {
 	constructor(selector) {
-
 		super(selector);
 
 		if (!this.images) {
@@ -47,13 +31,33 @@ class LazyScroll extends LazyLoad {
 		if (!('IntersectionObserver' in window)) {
 			addEventListeners();
 		} else {
-			observer = new IntersectionObserver(loadImage, {
-				rootMargin: '30px 0px',
+			this.onIntersection = this.onIntersection.bind(this);
+
+			this.observer = new IntersectionObserver(this.onIntersection, {
+				rootMargin: '0px 0px',
 				threshold: 0
 			});
 
-			this.images.forEach(imageObj => observer.observe(imageObj.image));
+			this.images.forEach(imageObj => this.observer.observe(imageObj.image));
 		}
+	}
+
+	onIntersection(entries) {
+		entries.forEach(entry => {
+			if (entry.intersectionRatio > 0) {
+				const { target } = entry;
+
+				// Stop observing element
+				this.observer.unobserve(target);
+
+				// Tell the instance the image has loaded
+				this.fireLazyLoadEvent(target);
+
+				// Retrieve image url from data attribute and update src
+				const url = target.getAttribute('data-lazy-src');
+				target.src = url;
+			}
+		});
 	}
 
 	rescanViewport() {

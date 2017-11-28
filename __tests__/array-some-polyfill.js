@@ -1,27 +1,27 @@
 // Production steps of ECMA-262, Edition 5, 15.4.4.17
 // Reference: http://es5.github.io/#x15.4.4.17
 if (!Array.prototype.some) {
-  Array.prototype.some = function(fun/*, thisArg*/) {
-    'use strict';
+	Array.prototype.some = function(fun/*, thisArg*/) {
 
-    if (this == null) {
-      throw new TypeError('Array.prototype.some called on null or undefined');
-    }
 
-    if (typeof fun !== 'function') {
-      throw new TypeError();
-    }
+		if (this == null) {
+			throw new TypeError('Array.prototype.some called on null or undefined');
+		}
 
-    var t = Object(this);
-    var len = t.length >>> 0;
+		if (typeof fun !== 'function') {
+			throw new TypeError();
+		}
 
-    var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-    for (var i = 0; i < len; i++) {
-      if (i in t && fun.call(thisArg, t[i], i, t)) {
-        return true;
-      }
-    }
+		var t = Object(this);
+		var len = t.length >>> 0;
 
-    return false;
-  };
+		var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+		for (var i = 0; i < len; i++) {
+			if (i in t && fun.call(thisArg, t[i], i, t)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
 }

@@ -13,8 +13,8 @@ describe('Picture element tests', function() {
 
 	afterEach(cleanUpDom);
 
-  it('Should work', function() {
-    expect(true).toBe(true);
-  });
+	it('Should work', function() {
+		expect(true).toBe(true);
+	});
 
 });
