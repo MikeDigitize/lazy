@@ -15,26 +15,21 @@ class LazyScroll extends LazyLoad {
 	constructor(selector) {
 		super(selector);
 
+		// Warn if an instance is created on the page and selector does not match any elements
 		if (!this.images) {
 			console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
 			return;
 		}
 
-		// add the positional info of elements to the data stored on the instance
-		setLazyImagePositions.call(this);
-
-		// debounce the scroll and resize event handlers used to test if elements are in the viewport
+		// Debounce the scroll and resize event handlers used to test if elements are in the viewport
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
-		onResize = debounce(setLazyImagePositions.bind(this), 100);
 
-		// Use intersection observer if browser supports it
+		// Use intersection observer if browser supports it, if not fall back to event listeners
 		if (!('IntersectionObserver' in window)) {
 			addEventListeners();
 		} else {
-			this.onIntersection = this.onIntersection.bind(this);
-
-			this.observer = new IntersectionObserver(this.onIntersection, {
-				rootMargin: '0px 0px',
+			this.observer = new IntersectionObserver(onIntersection.bind(this), {
+				rootMargin: '120px 0px',
 				threshold: 0
 			});
 
@@ -42,34 +37,41 @@ class LazyScroll extends LazyLoad {
 		}
 	}
 
-	onIntersection(entries) {
-		entries.forEach(entry => {
-			if (entry.intersectionRatio > 0) {
-				const { target } = entry;
-
-				// Stop observing element
-				this.observer.unobserve(target);
-
-				// Tell the instance the image has loaded
-				this.fireLazyLoadEvent(target);
-
-				// Retrieve image url from data attribute and update src
-				const url = target.getAttribute('data-lazy-src');
-				target.src = url;
-			}
-		});
-	}
-
+	// Override to scan the viewport (slide changes, dynamic data etc)
 	rescanViewport() {
 		findImagesToLoad.call(this);
 	}
 }
 
-function setLazyImagePositions() {
-	this.images = getLazyImagePositions(this.images);
+// Handle the loading of images in the intersection observer
+function onIntersection(entries) {
+	const unloadedImages = getUnloadedImages(this.images);
+
+	const imagesToLoad = entries.reduce((images, entry) => {
+		if (entry.intersectionRatio > 0) {
+			const { target } = entry;
+
+			// Stop observing element
+			this.observer.unobserve(target);
+
+			// Find image object
+			const image = unloadedImages.filter(i => i.image === target);
+
+			// Concat image object reference
+			return images.concat(image);
+		}
+
+		// Image not in viewport
+		return images;
+	}, []);
+
+	// Load the images
+	if (imagesToLoad.length) {
+		loadImages.call(this, imagesToLoad);
+	}
 }
 
-// adds positional data to each lazy load element stored on the instance
+// Adds positional data to each lazy load element stored on the instance
 function getLazyImagePositions(images) {
 	return images.map(lazyImage => ({
 		...lazyImage,
@@ -77,14 +79,14 @@ function getLazyImagePositions(images) {
 	}));
 }
 
-// find images to load from ones yet to be resolved
+// Find images to load from ones yet to be resolved
 function findImagesToLoad() {
-	setLazyImagePositions.call(this);
+	this.images = getLazyImagePositions(this.images);
 	const imagesToLoad = getImagesInView(this.images);
 	loadImages.call(this, imagesToLoad);
 }
 
-// attempt to load an element found within the viewport
+// Attempt to load an element found within the viewport
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyLoadEvent(lazyImage.image);
@@ -92,19 +94,21 @@ function loadImages(imagesToLoad) {
 	});
 }
 
+// Add event listeners and image loading callbacks
 function addEventListeners() {
 	window.addEventListener('scroll', onFindImagesToLoad);
 	window.addEventListener('DOMContentLoaded', onFindImagesToLoad);
 	window.addEventListener('resize', onResize);
 }
 
+// Remove all event listeners
 function removeEventListeners() {
 	window.removeEventListener('scroll', onFindImagesToLoad);
 	window.removeEventListener('DOMContentLoaded', onFindImagesToLoad);
 	window.removeEventListener('resize', onResize);
 }
 
-// get top and left co-ordinates of an element relative to the document
+// Get top and left co-ordinates of an element relative to the document
 function getImagePosition(image) {
 	const { top, left, bottom, right } = image.getBoundingClientRect();
 	const { pageXOffset, pageYOffset } = window;
@@ -121,30 +125,23 @@ function getWindowScrollPosition() {
 	return { pageXOffset, pageYOffset };
 }
 
-function getWindowSize() {
-	const width = window.innerWidth;
-	const height = window.innerHeight;
-	return { width, height };
-}
-
-// get the boundaries of the viewport to see if an element is within them
+// Get the boundaries of the viewport to see if an element is within them
 function getWindowBoundaries() {
 	const { pageXOffset, pageYOffset } = getWindowScrollPosition();
-	const { width, height } = getWindowSize();
 	const xMin = pageXOffset;
-	const xMax = pageXOffset + width;
+	const xMax = pageXOffset + window.innerWidth;
 	const yMin = pageYOffset;
-	const yMax = pageYOffset + height;
+	const yMax = pageYOffset + window.innerHeight;
 	return { xMin, xMax, yMin, yMax };
 }
 
+// Retrieve a list of all the images on the page that have not loaded
 function getUnloadedImages(images) {
 	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
-// test if a yet to be resolved element is horizontally and vertically within the viewport
+// Test if a yet to be resolved element is horizontally and vertically within the viewport
 function getImagesInView(images) {
-
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
 
@@ -157,7 +154,6 @@ function getImagesInView(images) {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
 		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
-
 }
 
 function isInViewVertically(imageTop, windowTop, imageBottom, windowBottom) {

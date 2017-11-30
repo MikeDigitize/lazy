@@ -229,4 +229,7 @@ describe('LazyScroll class tests', function() {
 
 	});
 
+	it('should trigger the load of srcset', function() {
+		
+	});
 });

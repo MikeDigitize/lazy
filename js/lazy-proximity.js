@@ -38,7 +38,6 @@ class LazyProximity extends LazyLoad {
 
 		// store additional proximity data for each element contained in an instance of LazyProximity
 		this.images = this.images.map(function(lazyImage) {
-
 			let lazyProximityTrigger, onClickCallback;
 
 			// loop through all triggers

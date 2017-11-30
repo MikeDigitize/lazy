@@ -21,7 +21,6 @@ const onError = createEvent(onErrorEventName);
 function loadImage(src, image) {
 
 	return new Promise(function(resolve, reject) {
-
 		function onLoad() {
 			removeListeners();
 			resolve(true);
@@ -46,6 +45,8 @@ function loadImage(src, image) {
 		 * Browsers that don't support HTMLPictureElement will report it as an instance of a HTMLUnknownElement.
 		 *
 		*/
+
+		const isSrcSet = /.*?\s\d+\w?\s*(?:,|$)/;
 
 		if (
 			image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
@@ -97,7 +98,7 @@ function lazyLoadImage() {
 			onImageLoad(image, src);
 			image.dispatchEvent(onComplete);
 		})
-		.catch(function loadingImageFailed() {
+		.catch(function loadingImageFailed(err) {
 			image.dispatchEvent(onError);
 		});
 

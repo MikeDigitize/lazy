@@ -14,7 +14,6 @@ const lazySrcDataAttribute = 'data-lazy-src';
  */
 
 class LazyLoad {
-
 	constructor(selector) {
 		// Create an array of all the images matching the given selector
 		const images = Array.from(document.querySelectorAll(selector));
@@ -43,7 +42,6 @@ class LazyLoad {
 	fireLazyLoadEvent(image) {
 		image.dispatchEvent(onLoad);
 	}
-
 }
 
 // get the filepath to load for each element within an instance
@@ -79,7 +77,6 @@ function getLazySrc(image) {
 
 	// flatten the array if necessary
 	return [].concat.apply([], srcs);
-
 }
 
 module.exports = { LazyLoad };
