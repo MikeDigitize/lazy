@@ -10,7 +10,6 @@ const {
 } = require('./test-helpers');
 
 describe('LazyProximity class tests', function() {
-
 	afterEach(cleanUpDom);
 
 	it('should add the proximity trigger of each image to existing lazy image data', function() {

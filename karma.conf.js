@@ -14,7 +14,7 @@ module.exports = function(config) {
 		files: [
 			'node_modules/babel-polyfill/dist/polyfill.js',
 			'js/*.js',
-			'__tests__/*.js',
+			'__tests__/**/*.js',
 			{ pattern: '__tests__/images/*.png', watched: false, included: false, served: true },
 			{ pattern: '__tests__/images/*.jpg', watched: false, included: false, served: true },
 			{ pattern: '__tests__/images/*.gif', watched: false, included: false, served: true }

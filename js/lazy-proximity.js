@@ -1,5 +1,5 @@
 const { LazyLoad } = require('./lazy');
-const { debounce } = require('./debounce');
+const { debounce } = require('./helpers');
 const lazyTargetDataAttribute = 'data-lazy-target';
 
 /**
@@ -70,7 +70,6 @@ class LazyProximity extends LazyLoad {
 // find all trigger elements and their lazy load targets
 function getProximityTriggers(proximitySelector) {
 	return Array.from(document.querySelectorAll(proximitySelector)).map((trigger) => {
-
 		// get all targets for the trigger
 		const targets = Array.from(document.querySelectorAll(trigger.getAttribute(lazyTargetDataAttribute)));
 

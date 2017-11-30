@@ -24,4 +24,15 @@ function debounce(callback, wait, immediate) {
 	};
 }
 
-module.exports = { debounce };
+function createEvent(evt) {
+	if (document.createEvent) {
+		const event = document.createEvent('CustomEvent');
+		event.initEvent(evt, true, true);
+		return event;
+	}
+
+	return new Event(evt);
+}
+
+
+module.exports = { debounce, createEvent };

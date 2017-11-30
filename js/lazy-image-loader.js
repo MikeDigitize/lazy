@@ -1,4 +1,4 @@
-const { createEvent } = require('./lazy-events');
+const { createEvent } = require('./helpers');
 const onCompleteEventName = 'lazyloadcomplete';
 const onErrorEventName = 'lazyloaderror';
 const onComplete = createEvent(onCompleteEventName);
@@ -19,7 +19,6 @@ const onError = createEvent(onErrorEventName);
  */
 
 function loadImage(src, image) {
-
 	return new Promise(function(resolve, reject) {
 		function onLoad() {
 			removeListeners();
@@ -46,8 +45,6 @@ function loadImage(src, image) {
 		 *
 		*/
 
-		const isSrcSet = /.*?\s\d+\w?\s*(?:,|$)/;
-
 		if (
 			image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
 			image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
@@ -66,7 +63,6 @@ function loadImage(src, image) {
 					});
 				}
 			});
-
 		} else {
 			image.setAttribute('src', src);
 		}
@@ -101,7 +97,6 @@ function lazyLoadImage() {
 		.catch(function loadingImageFailed(err) {
 			image.dispatchEvent(onError);
 		});
-
 }
 
 function getOnLoadCallback(image) {

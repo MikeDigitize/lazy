@@ -1,4 +1,4 @@
-const { createEvent } = require('./lazy-events');
+const { createEvent } = require('./helpers');
 const { lazyLoadImage } = require('./lazy-image-loader');
 const onLoadEventName = 'lazyload';
 const onLoad = createEvent(onLoadEventName);

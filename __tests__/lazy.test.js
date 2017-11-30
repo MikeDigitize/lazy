@@ -145,7 +145,6 @@ describe('LazyLoad class tests', function() {
 		});
 
 		lazyImages.fireLazyLoadEvent(lazyImage.image);
-
 	});
 
 });

@@ -1,5 +1,5 @@
 const { LazyLoad } = require('./lazy');
-const { debounce } = require('./debounce');
+const { debounce } = require('./helpers');
 let onFindImagesToLoad, onResize;
 
 /**
@@ -21,15 +21,19 @@ class LazyScroll extends LazyLoad {
 			return;
 		}
 
+		// Add the positional info of elements to the data stored on the instance
+		setLazyImagePositions.call(this);
+
 		// Debounce the scroll and resize event handlers used to test if elements are in the viewport
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
+		onResize = debounce(setLazyImagePositions.bind(this), 100);
 
 		// Use intersection observer if browser supports it, if not fall back to event listeners
 		if (!('IntersectionObserver' in window)) {
 			addEventListeners();
 		} else {
 			this.observer = new IntersectionObserver(onIntersection.bind(this), {
-				rootMargin: '120px 0px',
+				rootMargin: '140px 0px',
 				threshold: 0
 			});
 
@@ -69,6 +73,10 @@ function onIntersection(entries) {
 	if (imagesToLoad.length) {
 		loadImages.call(this, imagesToLoad);
 	}
+}
+
+function setLazyImagePositions() {
+	this.images = getLazyImagePositions(this.images);
 }
 
 // Adds positional data to each lazy load element stored on the instance

@@ -8,9 +8,7 @@ const {
 const { lazyImagePaths } = require('./test-helpers');
 
 describe('loadImage tests', function() {
-
 	it('Should respond appropriately when passed a correct file path', function(done) {
-
 		const { imagePath } = lazyImagePaths;
 		const image = new Image();
 

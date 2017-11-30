@@ -228,8 +228,4 @@ describe('LazyScroll class tests', function() {
 		window.scrollTo(0, lazyImage.imagePosition.top);
 
 	});
-
-	it('should trigger the load of srcset', function() {
-		
-	});
 });
