@@ -1,0 +1,15 @@
+$flexContainer: flex-container;
+$flexItem: flex-item;
+$maxCol: 12;
+$defaultGutter: 15px;
+$noFlexClass: no-flexwrap;
+
+$breakpoint-list: (
+	( $landscape, 8px, lan),
+	( $tablet,  8px,   tab),
+	( $desktop, 16px,  des),
+	( $uber,    20px,  ube)
+);
+
+@import 'flex-containers';
+@import 'flex-items';
