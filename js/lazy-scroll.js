@@ -13,6 +13,7 @@ let onFindImagesToLoad, onResize;
 
 class LazyScroll extends LazyLoad {
 	constructor(selector) {
+		// Run LazyLoad constructor
 		super(selector);
 
 		// Warn if an instance is created on the page and selector does not match any elements
@@ -33,7 +34,7 @@ class LazyScroll extends LazyLoad {
 			addEventListeners();
 		} else {
 			this.observer = new IntersectionObserver(onIntersection.bind(this), {
-				rootMargin: '140px 0px',
+				rootMargin: '0px 0px',
 				threshold: 0
 			});
 
@@ -55,13 +56,9 @@ function onIntersection(entries) {
 		if (entry.intersectionRatio > 0) {
 			const { target } = entry;
 
-			// Stop observing element
 			this.observer.unobserve(target);
+			const image = unloadedImages.find(i => i.image === target);
 
-			// Find image object
-			const image = unloadedImages.filter(i => i.image === target);
-
-			// Concat image object reference
 			return images.concat(image);
 		}
 
@@ -164,10 +161,12 @@ function getImagesInView(images) {
 	});
 }
 
+// Calculate if an image is in the viewport vertically
 function isInViewVertically(imageTop, windowTop, imageBottom, windowBottom) {
 	return imageTop <= windowBottom && imageBottom >= windowTop;
 }
 
+// Calculate if an image is in the viewport horizontally
 function isInViewHorizontally(imageLeft, windowLeft, imageRight, windowRight) {
 	return imageLeft <= windowRight && imageRight >= windowLeft;
 }

@@ -245,6 +245,5 @@ picturefill({
   elements: [picture.image]
 });
 ```
-
 ### Licence
 MIT
