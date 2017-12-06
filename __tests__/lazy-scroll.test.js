@@ -6,6 +6,7 @@ const {
 
 const {
 	createLazyImage,
+	createLazyPicture,
 	createLazyBackground,
 	cleanUpDom,
 	lazyClassNames,
@@ -17,44 +18,29 @@ describe('LazyScroll class tests', function() {
 	afterEach(cleanUpDom);
 
 	it('should add positional data to existing lazy image data', function() {
-		const {
-			imagePath,
-			imagePath2,
-			imagePath3,
-			imagePath4
-		} = lazyImagePaths;
-
-		const image = createLazyImage(imagePath).image;
-		const image2 = createLazyImage(imagePath2).image;
-		const image3 = createLazyImage(imagePath3).image;
-		const image4 = createLazyImage(imagePath4).image;
-
+		const imagePaths = Object.keys(lazyImagePaths).map(path => lazyImagePaths[path]);
 		const { lazyImageClass } = lazyClassNames;
+
+		const images = [
+			createLazyImage(imagePaths[0], lazyImageClass),
+			createLazyImage(imagePaths[1], lazyImageClass),
+			createLazyImage(imagePaths[2], lazyImageClass),
+			createLazyImage(imagePaths[3], lazyImageClass)
+		];
+
+		// Create lazy instance
 		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
-		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
 
-		expect(lazyImages.images.length).toBe(4);
-		expect(Object.keys(lazyImage).length).toBe(4);
+		// Should return a list of all images created in the images array
+		expect(lazyImages.images.length).toBe(images.length);
 
-		expect(lazyImage.image).toBe(image);
-		expect(lazyImage.imagePosition).toBeDefined();
-		expect(lazyImage.src).toBe(imagePath);
-		expect(lazyImage.resolved).toBe(false);
-
-		expect(lazyImage2.image).toBe(image2);
-		expect(lazyImage2.imagePosition).toBeDefined();
-		expect(lazyImage2.src).toBe(imagePath2);
-		expect(lazyImage2.resolved).toBe(false);
-
-		expect(lazyImage3.image).toBe(image3);
-		expect(lazyImage3.imagePosition).toBeDefined();
-		expect(lazyImage3.src).toBe(imagePath3);
-		expect(lazyImage3.resolved).toBe(false);
-
-		expect(lazyImage4.image).toBe(image4);
-		expect(lazyImage4.imagePosition).toBeDefined();
-		expect(lazyImage4.src).toBe(imagePath4);
-		expect(lazyImage4.resolved).toBe(false);
+		lazyImages.images.forEach((lazyImage, index) => {
+			expect(lazyImage.image.getAttribute('class')).toBe(lazyImageClass);
+			expect(lazyImage.imagePosition).toBeDefined();
+			expect(lazyImage.src).toBe(imagePaths[index]);
+			expect(lazyImage.resolved).toBe(false);
+			expect(lazyImage.image).toBe(images[index].image);
+		});
 	});
 
 	it('should detect when an image\'s top and bottom positions are in the viewport', function() {
@@ -154,7 +140,6 @@ describe('LazyScroll class tests', function() {
 		const windowRightPosition = 550;
 
 		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(true);
-
 	});
 
 	it('should detect when an image\'s left and right position are the same as the window\'s', function() {
@@ -174,7 +159,6 @@ describe('LazyScroll class tests', function() {
 		const windowRightPosition = 300;
 
 		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
-
 	});
 
 	it('should detect when an image is to the right of the viewport', function() {
@@ -184,7 +168,6 @@ describe('LazyScroll class tests', function() {
 		const windowRightPosition = 300;
 
 		expect(isInViewHorizontally(imageLeftPosition, windowLeftPosition, imageRightPosition, windowRightPosition)).toBe(false);
-
 	});
 
 	it('should trigger the load of an image when its in the viewport', function(done) {
@@ -206,8 +189,10 @@ describe('LazyScroll class tests', function() {
 		});
 
 		window.scrollTo(0, lazyImage.imagePosition.top);
-
 	});
+
+	// TODO - Write this test to use picture element
+
 
 	it('should trigger the load of a background image when its in the viewport', function(done) {
 		const { imagePath } = lazyImagePaths;
@@ -226,6 +211,5 @@ describe('LazyScroll class tests', function() {
 		});
 
 		window.scrollTo(0, lazyImage.imagePosition.top);
-
 	});
 });

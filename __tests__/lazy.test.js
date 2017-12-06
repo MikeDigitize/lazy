@@ -33,6 +33,8 @@ describe('LazyLoad class tests', function() {
 	});
 
 	it('should find no images from an invalid selector', function() {
+		console.warn = () => '';
+
 		const {
 			imagePath,
 			imagePath2,

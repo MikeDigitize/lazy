@@ -1,77 +1,91 @@
-// bunch of common helper functions and values to use during testing
+// Test constants
+const lazyClassNames = Object.freeze({
+	lazyImageClass: 'lazy-image',
+	lazyImageClass2: 'lazy-image2',
+	lazyImageClass3: 'lazy-image3',
+	lazyImageHolderClass: 'lazy-image-holder',
+	lazyTriggerClass: 'lazy-trigger',
+	lazyTriggerClass2: 'lazy-trigger2',
+	lazyTriggerClass3: 'lazy-trigger3',
+	fakelazyImageClass: 'fake-lazy-image'
+});
 
-const lazyImageClass = 'lazy-image';
-const lazyImageClass2 = 'lazy-image2';
-const lazyImageClass3 = 'lazy-image3';
-const lazyImageHolderClass = 'lazy-image-holder';
-const lazyTriggerClass = 'lazy-trigger';
-const lazyTriggerClass2 = 'lazy-trigger2';
-const lazyTriggerClass3 = 'lazy-trigger3';
-const fakelazyImageClass = 'fake-lazy-image';
+const lazyImagePaths = Object.freeze({
+	imagePath: '__tests__/images/bb.png',
+	imagePath2: '__tests__/images/earth.jpg',
+	imagePath3: '__tests__/images/light.jpg',
+	imagePath4: '__tests__/images/logo.png',
+	gifPath: '__tests__/images/brent.gif',
+	fakeImagePath: '__tests__/images/fake.jpg'
+});
 
-const imagePath = '__tests__/images/bb.png';
-const imagePath2 = '__tests__/images/earth.jpg';
-const imagePath3 = '__tests__/images/light.jpg';
-const imagePath4 = '__tests__/images/logo.png';
-const gifPath = '__tests__/images/brent.gif';
-const fakeImagePath = '__tests__/images/fake.jpg';
-
-const lazyClassNames = {
-	lazyImageClass,
-	lazyImageClass2,
-	lazyImageClass3,
-	lazyImageHolderClass,
-	lazyTriggerClass,
-	lazyTriggerClass2,
-	lazyTriggerClass3,
-	fakelazyImageClass
-};
-
-const lazyImagePaths = {
-	imagePath,
-	imagePath2,
-	imagePath3,
-	imagePath4,
-	gifPath,
-	fakeImagePath
-};
-
-function createLazyImage(src, lazyClass = lazyImageClass) {
-
+// Create a lazy image within a holder
+function createLazyImage(src, imageClass = lazyClassNames.lazyImageClass) {
 	const holder = createLazyHolder();
-	const image = document.createElement('image');
-
-	// needs to be explicity set in Karma
-	image.constructor = HTMLImageElement;
-	image.classList.add(lazyClass);
-	image.style.width = '100%';
-	image.setAttribute('data-lazy-src', src);
-
+	const image = createImage(src, imageClass);
 	holder.appendChild(image);
 	document.body.appendChild(holder);
 
 	return { holder, image };
+}
 
+// Create a picture element with multiple sources within a holder
+function createLazyPicture(srcs = [], imageClass = lazyClassNames.lazyImageClass) {
+	const holder = createLazyHolder();
+
+	// Create picture element
+	const picture = document.createElement('picture');
+	picture.classList.add(imageClass);
+
+	// Create and append image sources
+	srcs.forEach(function(src) {
+		const source = document.createElement('source');
+		source.setAttribute('data-lazy-src', src.path);
+		source.setAttribute('media', `(min-width: ${src.minWidth}px)`);
+		picture.appendChild(source);
+	});
+
+	// Add image fallback
+	if (srcs[0]) {
+		const image = createImage(srcs[0].path);
+		picture.appendChild(image);
+	}
+
+	holder.appendChild(picture);
+
+	document.body.appendChild(holder);
+
+	return { holder, picture };
+}
+
+function createImage(src, imageClass) {
+	const image = document.createElement('image');
+	image.constructor = HTMLImageElement;
+	image.style.width = '100%';
+	image.setAttribute('data-lazy-src', src);
+
+	if (imageClass) {
+		image.classList.add(imageClass);
+	}
+
+	return image;
 }
 
 function createLazyHolder() {
-
 	const holder = document.createElement('div');
 
 	// needs to be explicity set in Karma
 	holder.constructor = HTMLDivElement;
 
-	holder.classList.add(lazyImageHolderClass);
+	holder.classList.add(lazyClassNames.lazyImageHolderClass);
 	holder.style.height = '300px';
 	holder.style.width = '300px';
 	holder.style.position = 'relative';
 
 	return holder;
-
 }
 
-function createLazyBackground(src, lazyClass = lazyImageClass) {
-
+function createLazyBackground(src, lazyClass = lazyClassNames.lazyImageClass) {
 	const holder = createLazyHolder();
 	const divWithBackground = document.createElement('div');
 
@@ -85,11 +99,9 @@ function createLazyBackground(src, lazyClass = lazyImageClass) {
 	document.body.appendChild(holder);
 
 	return { holder, divWithBackground };
-
 }
 
-function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
-
+function createLazyTrigger(triggerClass, targetClass = lazyClassNames.lazyImageClass) {
 	const trigger = document.createElement('div');
 
 	trigger.constructor = HTMLDivElement;
@@ -101,18 +113,16 @@ function createLazyTrigger(triggerClass, targetClass = lazyImageClass) {
 	document.body.appendChild(trigger);
 
 	return trigger;
-
 }
 
 function cleanUpDom() {
-
+	const { lazyImageClass, lazyTriggerClass, lazyTriggerClass2, lazyTriggerClass3, lazyImageHolderClass } = lazyClassNames;
 	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}`));
 	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
 
 	holders.concat(triggers).forEach(function(element) {
 		element.parentNode.removeChild(element);
 	});
-
 }
 
 module.exports = {
@@ -121,5 +131,6 @@ module.exports = {
 	createLazyBackground,
 	cleanUpDom,
 	lazyClassNames,
-	lazyImagePaths
+	lazyImagePaths,
+	createLazyPicture
 };

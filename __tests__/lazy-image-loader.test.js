@@ -16,7 +16,6 @@ describe('loadImage tests', function() {
 			expect(result).toEqual(true);
 			done();
 		});
-
 	});
 
 	it('Should respond appropriately when passed an incorrect file path', function(done) {
@@ -27,7 +26,6 @@ describe('loadImage tests', function() {
 			expect(result).toEqual(false);
 			done();
 		});
-
 	});
 
 	it('Should respond appropriately when passed a correct GIF file path', function(done) {
@@ -38,9 +36,7 @@ describe('loadImage tests', function() {
 			expect(result).toEqual(true);
 			done();
 		});
-
 	});
-
 });
 
 describe('getOnLoadCallback tests', function() {
