@@ -5,6 +5,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const webpackPlugins = isProduction ? [
 	// Production plugins
+	new webpack.DefinePlugin({
+		'process.env.NODE_ENV': '"production"'
+	}),
 	new webpack.optimize.UglifyJsPlugin(),
 	new webpack.optimize.ModuleConcatenationPlugin(),
 	new BundleAnalyzerPlugin()
