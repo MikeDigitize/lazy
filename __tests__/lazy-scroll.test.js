@@ -191,9 +191,6 @@ describe('LazyScroll class tests', function() {
 		window.scrollTo(0, lazyImage.imagePosition.top);
 	});
 
-	// TODO - Write this test to use picture element
-
-
 	it('should trigger the load of a background image when its in the viewport', function(done) {
 		const { imagePath } = lazyImagePaths;
 		const { lazyImageClass } = lazyClassNames;

@@ -29,7 +29,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.11.0",
-    "eslint-config-ao": "^0.0.1-rc.2"
+    "eslint-config-ao": "^0.0.1-rc.2",
+    "webpack-bundle-analyzer": "^2.9.1"
   },
   "babel": {
     "presets": [
@@ -38,7 +39,11 @@
         {
           "loose": true,
           "targets": {
-            "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+            "browsers": [
+              "> 1%",
+              "last 2 versions",
+              "not ie <= 8"
+            ]
           }
         }
       ]

@@ -13,19 +13,16 @@ let onFindImagesToLoad, onResize;
 
 class LazyScroll extends LazyLoad {
 	constructor(selector) {
-		// Run LazyLoad constructor
 		super(selector);
 
-		// Warn if an instance is created on the page and selector does not match any elements
 		if (!this.images) {
 			console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
 			return;
 		}
 
-		// Add the positional info of elements to the data stored on the instance
 		setLazyImagePositions.call(this);
 
-		// Debounce the scroll and resize event handlers used to test if elements are in the viewport
+		// Debounce the scroll listeners for performance
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
 
@@ -33,7 +30,7 @@ class LazyScroll extends LazyLoad {
 		if (!('IntersectionObserver' in window)) {
 			addEventListeners();
 		} else {
-			this.observer = new IntersectionObserver(onIntersection.bind(this), {
+			this.observer = new window.IntersectionObserver(onIntersection.bind(this), {
 				rootMargin: '0px 0px',
 				threshold: 0
 			});
@@ -54,6 +51,7 @@ function onIntersection(entries) {
 
 	const imagesToLoad = entries.reduce((images, entry) => {
 		if (entry.intersectionRatio > 0) {
+			console.log('Loading...', entry);
 			const { target } = entry;
 
 			this.observer.unobserve(target);

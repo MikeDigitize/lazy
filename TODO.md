@@ -6,11 +6,11 @@ checking correct image has loaded
 
 - [ ] Check support of an image element that has a sizes attribute
 
-- [ ] Full audit of spec compliancy
+- [ ] Full audit of spec compliance
 
 - [ ] Full audit of unit tests
 
-- [ ] Audit of demos (including backwards compatability)
+- [ ] Audit of demos (including backwards comparability)
 
 - [ ] UAT test demos
 

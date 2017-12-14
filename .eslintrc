@@ -11,6 +11,7 @@
         "no-console": "off",
         "consistent-this": "off",
         "no-extend-native": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "no-process-env": "off"
     }
 }

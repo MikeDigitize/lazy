@@ -1,14 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
-const webpackPlugins = [];
-let watch = true;
+const isProduction = process.env.NODE_ENV === 'production';
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-if (process.env.NODE_ENV === 'production') {
-	webpackPlugins.push(
-		new webpack.optimize.UglifyJsPlugin()
-	);
-	watch = false;
-}
+const webpackPlugins = isProduction ? [
+	// Production plugins
+	new webpack.optimize.UglifyJsPlugin(),
+	new webpack.optimize.ModuleConcatenationPlugin(),
+	new BundleAnalyzerPlugin()
+] : [
+	 // Development plugins
+];
 
 module.exports = {
 	entry: {
@@ -17,7 +19,7 @@ module.exports = {
 		'lazy-proximity.min': path.resolve(__dirname, 'js/lazy-proximity.js')
 	},
 	output: {
-		path: path.resolve(__dirname, 'js'),
+		path: path.resolve(__dirname, 'js/min'),
 		filename: '[name].js',
 		libraryTarget: 'umd'
 	},
@@ -38,5 +40,5 @@ module.exports = {
 		}]
 	},
 	plugins: webpackPlugins,
-	watch
+	watch: !isProduction
 };
