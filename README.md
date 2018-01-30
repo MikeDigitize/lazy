@@ -246,29 +246,5 @@ picturefill({
 });
 ```
 
-### Roadmap
-* Create todo md file
-
-* More complete coverage of picture element including 
-checking correct image has loaded
-
-* Check support of an image element that has a sizes attribute
-
-* Full audit of spec compliancy
-
-* Full audit of unit tests
-
-* Audit of demos (including backwards compatability)
-
-* UAT test demos
-
-* Add to deals page
-
-* Repo audit
-
-* Merge with Mikes repo
-
-* Webpack bundling audit
-
 ### Licence
 MIT
