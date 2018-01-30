@@ -6,7 +6,6 @@ const {
 
 const {
 	createLazyImage,
-	createLazyPicture,
 	createLazyBackground,
 	cleanUpDom,
 	lazyClassNames,

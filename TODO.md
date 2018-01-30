@@ -1,5 +1,4 @@
 # Todos
-- [ X ] Create TODO.md file
 
 - [ ] More complete coverage of picture element including 
 checking correct image has loaded
@@ -18,6 +17,4 @@ checking correct image has loaded
 
 - [ ] Repo audit
 
-- [ ] Merge with Mikes repo
-
-- [ ] Webpack bundling audit
+- [X] Webpack bundling audit

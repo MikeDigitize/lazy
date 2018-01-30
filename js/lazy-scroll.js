@@ -51,7 +51,6 @@ function onIntersection(entries) {
 
 	const imagesToLoad = entries.reduce((images, entry) => {
 		if (entry.intersectionRatio > 0) {
-			console.log('Loading...', entry);
 			const { target } = entry;
 
 			this.observer.unobserve(target);
