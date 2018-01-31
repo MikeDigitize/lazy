@@ -1,5 +1,5 @@
 const { LazyLoad } = require('./lazy');
-const { debounce } = require('./debounce');
+const { debounce } = require('./helpers');
 let onFindImagesToLoad, onResize;
 
 /**
@@ -12,37 +12,68 @@ let onFindImagesToLoad, onResize;
  */
 
 class LazyScroll extends LazyLoad {
-
 	constructor(selector) {
+		super(selector);
 
-    super(selector);
+		if (!this.images) {
+			console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
+			return;
+		}
 
-    if(!this.images) {
-      console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
-      return;
-    }
+		setLazyImagePositions.call(this);
 
-    // add the positional info of elements to the data stored on the instance
-    setLazyImagePositions.call(this);
-
-    // debounce the scroll and resize event handlers used to test if elements are in the viewport
+		// Debounce the scroll listeners for performance
 		onFindImagesToLoad = debounce(findImagesToLoad.bind(this), 100);
 		onResize = debounce(setLazyImagePositions.bind(this), 100);
-		addEventListeners();
 
-  }
+		// Use intersection observer if browser supports it, if not fall back to event listeners
+		if (!('IntersectionObserver' in window)) {
+			addEventListeners();
+		} else {
+			this.observer = new window.IntersectionObserver(onIntersection.bind(this), {
+				rootMargin: '0px 0px',
+				threshold: 0
+			});
 
-  rescanViewport() {
-    findImagesToLoad.call(this);
-  }
+			this.images.forEach(imageObj => this.observer.observe(imageObj.image));
+		}
+	}
 
+	// Override to scan the viewport (slide changes, dynamic data etc)
+	rescanViewport() {
+		findImagesToLoad.call(this);
+	}
+}
+
+// Handle the loading of images in the intersection observer
+function onIntersection(entries) {
+	const unloadedImages = getUnloadedImages(this.images);
+
+	const imagesToLoad = entries.reduce((images, entry) => {
+		if (entry.intersectionRatio > 0) {
+			const { target } = entry;
+
+			this.observer.unobserve(target);
+			const image = unloadedImages.find(i => i.image === target);
+
+			return images.concat(image);
+		}
+
+		// Image not in viewport
+		return images;
+	}, []);
+
+	// Load the images
+	if (imagesToLoad.length) {
+		loadImages.call(this, imagesToLoad);
+	}
 }
 
 function setLazyImagePositions() {
 	this.images = getLazyImagePositions(this.images);
 }
 
-// adds positional data to each lazy load element stored on the instance
+// Adds positional data to each lazy load element stored on the instance
 function getLazyImagePositions(images) {
 	return images.map(lazyImage => ({
 		...lazyImage,
@@ -50,14 +81,14 @@ function getLazyImagePositions(images) {
 	}));
 }
 
-// find images to load from ones yet to be resolved
+// Find images to load from ones yet to be resolved
 function findImagesToLoad() {
-	setLazyImagePositions.call(this);
+	this.images = getLazyImagePositions(this.images);
 	const imagesToLoad = getImagesInView(this.images);
 	loadImages.call(this, imagesToLoad);
 }
 
-// attempt to load an element found within the viewport
+// Attempt to load an element found within the viewport
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyLoadEvent(lazyImage.image);
@@ -65,28 +96,30 @@ function loadImages(imagesToLoad) {
 	});
 }
 
+// Add event listeners and image loading callbacks
 function addEventListeners() {
 	window.addEventListener('scroll', onFindImagesToLoad);
 	window.addEventListener('DOMContentLoaded', onFindImagesToLoad);
 	window.addEventListener('resize', onResize);
 }
 
+// Remove all event listeners
 function removeEventListeners() {
 	window.removeEventListener('scroll', onFindImagesToLoad);
 	window.removeEventListener('DOMContentLoaded', onFindImagesToLoad);
 	window.removeEventListener('resize', onResize);
 }
 
-// get top and left co-ordinates of an element relative to the document
+// Get top and left co-ordinates of an element relative to the document
 function getImagePosition(image) {
 	const { top, left, bottom, right } = image.getBoundingClientRect();
 	const { pageXOffset, pageYOffset } = window;
-  return {
-    top: top + pageYOffset,
-    left: left + pageXOffset,
-    bottom: bottom + pageYOffset,
-    right: right + pageXOffset
-  };
+	return {
+		top: top + pageYOffset,
+		left: left + pageXOffset,
+		bottom: bottom + pageYOffset,
+		right: right + pageXOffset
+	};
 }
 
 function getWindowScrollPosition() {
@@ -94,34 +127,27 @@ function getWindowScrollPosition() {
 	return { pageXOffset, pageYOffset };
 }
 
-function getWindowSize() {
-	const width = window.innerWidth;
-	const height = window.innerHeight;
-	return { width, height };
-}
-
-// get the boundaries of the viewport to see if an element is within them
+// Get the boundaries of the viewport to see if an element is within them
 function getWindowBoundaries() {
 	const { pageXOffset, pageYOffset } = getWindowScrollPosition();
-	const { width, height } = getWindowSize();
 	const xMin = pageXOffset;
-	const xMax = pageXOffset + width;
+	const xMax = pageXOffset + window.innerWidth;
 	const yMin = pageYOffset;
-	const yMax = pageYOffset + height;
+	const yMax = pageYOffset + window.innerHeight;
 	return { xMin, xMax, yMin, yMax };
 }
 
+// Retrieve a list of all the images on the page that have not loaded
 function getUnloadedImages(images) {
 	return images.filter(lazyImage => !lazyImage.resolved);
 }
 
-// test if a yet to be resolved element is horizontally and vertically within the viewport
+// Test if a yet to be resolved element is horizontally and vertically within the viewport
 function getImagesInView(images) {
-
 	const { xMin, xMax, yMin, yMax } = getWindowBoundaries();
 	const unloadedImages = getUnloadedImages(images);
 
-	if(unloadedImages.length === 0) {
+	if (unloadedImages.length === 0) {
 		removeEventListeners();
 		return [];
 	}
@@ -130,13 +156,14 @@ function getImagesInView(images) {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
 		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
 	});
-
 }
 
+// Calculate if an image is in the viewport vertically
 function isInViewVertically(imageTop, windowTop, imageBottom, windowBottom) {
 	return imageTop <= windowBottom && imageBottom >= windowTop;
 }
 
+// Calculate if an image is in the viewport horizontally
 function isInViewHorizontally(imageLeft, windowLeft, imageRight, windowRight) {
 	return imageLeft <= windowRight && imageRight >= windowLeft;
 }

@@ -2,56 +2,45 @@ const {
 	loadImage,
 	getOnLoadCallback,
 	onShowImage,
-	loadPictureElement,
 	onShowBackgroundImage
 } = require('../js/lazy-image-loader');
 
 const { lazyImagePaths } = require('./test-helpers');
 
 describe('loadImage tests', function() {
-
 	it('Should respond appropriately when passed a correct file path', function(done) {
-
-    const { imagePath } = lazyImagePaths;
-    const image = new Image();
+		const { imagePath } = lazyImagePaths;
+		const image = new Image();
 
 		loadImage(imagePath, image).then(function(result) {
 			expect(result).toEqual(true);
 			done();
 		});
-
 	});
 
 	it('Should respond appropriately when passed an incorrect file path', function(done) {
-
-    const { fakeImagePath } = lazyImagePaths;
-    const image = new Image();
+		const { fakeImagePath } = lazyImagePaths;
+		const image = new Image();
 
 		loadImage(fakeImagePath, image).catch(function(result) {
 			expect(result).toEqual(false);
 			done();
 		});
-
 	});
 
 	it('Should respond appropriately when passed a correct GIF file path', function(done) {
-
-    const { gifPath } = lazyImagePaths;
-    const image = new Image();
+		const { gifPath } = lazyImagePaths;
+		const image = new Image();
 
 		loadImage(gifPath, image).then(function(result) {
 			expect(result).toEqual(true);
 			done();
 		});
-
 	});
-
 });
 
 describe('getOnLoadCallback tests', function() {
-
 	const image = document.createElement('img');
-	const picture = document.createElement('picture');
 	const div = document.createElement('div');
 
 	it('Should return the Image element loader when an image is received', function() {
@@ -63,5 +52,4 @@ describe('getOnLoadCallback tests', function() {
 		const result = getOnLoadCallback(div);
 		expect(result).toBe(onShowBackgroundImage);
 	});
-
 });
