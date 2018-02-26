@@ -39,27 +39,27 @@ function loadImage(src, image) {
 		image.addEventListener('error', errorHandler);
 
 		/**
-		 *
-		 * If the image is within a picture element, set srcset on each child.
-		 * Browsers that don't support HTMLPictureElement will report it as an instance of a HTMLUnknownElement.
-		 *
-		*/
+     *
+     * If the image is within a picture element, set srcset on each child.
+     * Browsers that don't support HTMLPictureElement will report it as an instance of a HTMLUnknownElement.
+     *
+     */
 
 		if (
 			image.parentNode && image.parentNode.constructor === window.HTMLPictureElement ||
-			image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
-			image.parentNode.constructor === window.HTMLUnknownElement ||
-			image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
-			image.parentNode.constructor === window.HTMLElement
+      image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
+      image.parentNode.constructor === window.HTMLUnknownElement ||
+      image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
+      image.parentNode.constructor === window.HTMLElement
 		) {
-			Array.from(image.parentNode.children).forEach(function(child, i) {
+			Array.from(image.parentNode.children).forEach(function(child, index) {
 				// IE9 polyfill approach is to use a video element around the source elements
 				if (child.constructor !== HTMLVideoElement) {
-					child.setAttribute('srcset', src[i]);
+					child.setAttribute('srcset', src[index]);
 				} else {
 					// the source elements will be children of the video element in ie9
-					Array.from(child.children).forEach(function(videoChild, j) {
-						videoChild.setAttribute('srcset', src[i + j]);
+					Array.from(child.children).forEach(function(videoChild) {
+						videoChild.setAttribute('srcset', src[index]);
 					});
 				}
 			});
@@ -80,8 +80,8 @@ function lazyLoadImage() {
 	// if it's a picture element, re-assign the dummy image to the img element within the picture element
 	if (
 		image.constructor === window.HTMLPictureElement ||
-	    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLUnknownElement ||
-		typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLElement
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLUnknownElement ||
+    typeof window.HTMLPictureElement === 'undefined' && image.constructor === window.HTMLElement
 	) {
 		lazyImage = image.querySelector('img');
 	}
