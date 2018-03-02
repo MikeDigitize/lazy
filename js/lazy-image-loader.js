@@ -52,18 +52,18 @@ function loadImage(src, image) {
       image.parentNode && typeof window.HTMLPictureElement === 'undefined' &&
       image.parentNode.constructor === window.HTMLElement
 		) {
-		  let index = 0;
 
+      let srcIndex = 0; // Track which index we are up to from the `src` array
 			Array.from(image.parentNode.children).forEach(function(child) {
 				// IE9 polyfill approach is to use a video element around the source elements
 				if (child.constructor !== HTMLVideoElement) {
-					child.setAttribute('srcset', src[index]);
-					index++;
+          child.setAttribute('srcset', src[srcIndex]);
+          srcIndex++;
 				} else {
 					// the source elements will be children of the video element in ie9
 					Array.from(child.children).forEach(function(videoChild) {
-						videoChild.setAttribute('srcset', src[index]);
-						index++;
+            videoChild.setAttribute('srcset', src[srcIndex]);
+            srcIndex++;
 					});
 				}
 			});
@@ -72,7 +72,6 @@ function loadImage(src, image) {
 		}
 	});
 }
-
 
 // fired upon receipt of the `lazyload` event for each element stored in a LazyLoad instance
 function lazyLoadImage() {
