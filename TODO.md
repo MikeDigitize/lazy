@@ -9,12 +9,12 @@ checking correct image has loaded
 
 - [ ] Full audit of unit tests
 
-- [ ] Audit of demos (including backwards comparability)
+- [X] Add polyfill to demos
 
-- [ ] UAT test demos
+- [X] Audit of demos (including backwards comparability)
 
-- [ ] Add to deals page
+- [X] UAT test demos
 
-- [ ] Repo audit
+- [X] Repo audit
 
 - [X] Webpack bundling audit

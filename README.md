@@ -1,16 +1,18 @@
-# What is it?
+# Lazy &middot; ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://reactjs.org/docs/how-to-contribute.html#your-first-pull-request)
+
+### What is it?
 
 A set of event driven classes which support lazy load, aka deferral of image loading. The classes support the loading of image elements, picture elements and elements with CSS background images.
 
-## LazyLoad, LazyScroll and LazyProximity
+### LazyLoad, LazyScroll and LazyProximity
 
 `LazyLoad` is the base class that provides the event driven loading functionality, `LazyScroll` is a `scroll` event based extension that loads items as they appear in the viewport and `LazyProximity` is an extension that defines trigger elements which, when the cursor is over them or they receive a touch event (on cursor-less devices), trigger the lazy load of specified target elements.
 
-## Browser support
+### Browser support
 
 IE9+ although you'll need to polyfill `Array.from`, `Array.prototype.some` and `Element.prototype.classList`. If you want to lazy load the `HTMLPictureElement` you'll need to polyfill it for non-supporting browsers ([Picturefill is recommended](https://github.com/scottjehl/picturefill)).
 
-## Usage
+### Usage
 
 The `lazy.min.js`, `lazy-scroll.min.js` and `lazy-proximity.min.js` files are in the `js` folder. 
 
