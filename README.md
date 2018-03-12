@@ -239,6 +239,7 @@ You can do this manually by listening to the `lazyload` event and calling the `p
 ```javascript
 // example using the Picturefill polyfill
 const lazy = new LazyLoad('.lazy-picture');
+
 // get the first picture element
 const [picture] = lazy.images;
 
