@@ -242,16 +242,16 @@ const lazy = new LazyLoad('.lazy-picture');
 // get the first picture element
 const [picture] = lazy.images;
 
-// fire lazyload event on the picture element
-lazy.fireLazyLoadEvent(picture.image);
-
-// force polyfill to run again on the element
+// force polyfill to run again on the element on lazyload event
 window.addEventListener('lazyload', function() {
   picturefill({
     reevaluate: true,
     elements: [picture.image]
   });
 });
+
+// fire lazyload event on the picture element
+lazy.fireLazyLoadEvent(picture.image);
 
 ```
 
