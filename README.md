@@ -230,7 +230,11 @@ window.addEventListener('lazyloaderror', function(evt) {
 
 ### Lazy Loading a Picture element
 
-For browsers that don't support the `HTMLPictureElement`, lazy loading will not work without some additional help from your chosen polyfill. The [Picturefill](https://github.com/scottjehl/picturefill) polyfill is used in the demo and tests. As non-supporting browsers will not react when the `srcset` property of an image is set (`LazyLoad` does not set the `src` property of source elements and the image within a picture element, it sets their `srcset` property), you'll need to retrigger the polyfill to force the picture element to load.
+For browsers that don't support the `HTMLPictureElement`, lazy loading will not work without some additional help from your chosen polyfill. The [Picturefill](https://github.com/scottjehl/picturefill) polyfill is used in the demo and tests and is recommended to use in conjunction with `LazyLoad`. 
+
+As non-supporting browsers will not react when the `srcset` property of an image is set (`LazyLoad` does not set the `src` property of source elements and the image within a picture element, it sets their `srcset` property), the polyfill we need to re-evaluate the picture element when this happens.
+
+You can do this manually by listening to the `lazyload` event and calling the `picturefill` function, passing in the picture element to re-evaluate (see below), or use the `picturefill mutation` [plugin](https://github.com/scottjehl/picturefill/tree/master/dist/plugins/mutation), which will handle the behaviour automatically (recommended).
 
 ```javascript
 // example using the Picturefill polyfill
@@ -242,10 +246,13 @@ const [picture] = lazy.images;
 lazy.fireLazyLoadEvent(picture.image);
 
 // force polyfill to run again on the element
-picturefill({
-  reevaluate: true,
-  elements: [picture.image]
+window.addEventListener('lazyload', function() {
+  picturefill({
+    reevaluate: true,
+    elements: [picture.image]
+  });
 });
+
 ```
 
 ### Licence
