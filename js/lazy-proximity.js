@@ -19,7 +19,7 @@ class LazyProximity extends LazyLoad {
 
 		if (!this.images) {
 			console.warn(
-				`No elements matching the selector ${imageSelector} 
+				`No elements matching the selector ${imageSelector}
 				were found, LazyProximity could not initialise`
 			);
 			return;
@@ -29,7 +29,7 @@ class LazyProximity extends LazyLoad {
 
 		if (!proximityTriggers.length) {
 			console.warn(
-				`No elements matching the selector ${proximityTriggers} 
+				`No elements matching the selector ${proximityTriggers}
 				were found, LazyProximity could not initialise`
 			);
 
@@ -61,9 +61,9 @@ class LazyProximity extends LazyLoad {
 
 		});
 
-		// capture mousemove on document to detect hover over trigger
-		this.onMouseMove = debounce(onMouseMove.bind(this), 100);
-		document.addEventListener('mousemove', this.onMouseMove);
+		// capture mouseover on document to detect hover over trigger
+		this.onMouseOver = debounce(onMouseOver.bind(this), 100);
+		document.addEventListener('mouseover', this.onMouseOver);
 	}
 }
 
@@ -90,11 +90,11 @@ function getUnloadedImages(images) {
 }
 
 // detect when the cursor is over a trigger element
-function onMouseMove(evt) {
-	// if there are no images remaining to load, remove the mousemove listener
+function onMouseOver(evt) {
+	// if there are no images remaining to load, remove the mouseover listener
 	const unloadedImages = getUnloadedImages(this.images);
 	if (unloadedImages.length === 0) {
-		document.removeEventListener('mousemove', this.onMouseMove);
+		document.removeEventListener('mouseover', this.onMouseOver);
 		return;
 	}
 
