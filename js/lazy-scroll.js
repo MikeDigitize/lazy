@@ -16,7 +16,9 @@ class LazyScroll extends LazyLoad {
 		super(selector);
 
 		if (!this.images) {
-			console.warn(`No elements matching the selector ${selector} were found, LazyScroll could not initialise`);
+			console.warn(
+				`No elements matching the selector ${selector} were found, LazyScroll could not initialise`
+			);
 			return;
 		}
 
@@ -30,10 +32,13 @@ class LazyScroll extends LazyLoad {
 		if (!('IntersectionObserver' in window)) {
 			addEventListeners();
 		} else {
-			this.observer = new window.IntersectionObserver(onIntersection.bind(this), {
-				rootMargin: '0px 0px',
-				threshold: 0
-			});
+			this.observer = new window.IntersectionObserver(
+				onIntersection.bind(this),
+				{
+					rootMargin: '0px 0px',
+					threshold: 0
+				}
+			);
 
 			this.images.forEach(imageObj => this.observer.observe(imageObj.image));
 		}
@@ -154,7 +159,10 @@ function getImagesInView(images) {
 
 	return unloadedImages.filter(function(lazyImage) {
 		const { top, left, bottom, right } = lazyImage.imagePosition;
-		return isInViewVertically(top, yMin, bottom, yMax) && isInViewHorizontally(left, xMin, right, xMax);
+		return (
+			isInViewVertically(top, yMin, bottom, yMax) &&
+			isInViewHorizontally(left, xMin, right, xMax)
+		);
 	});
 }
 

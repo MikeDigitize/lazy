@@ -8,7 +8,8 @@
   "scripts": {
     "start": "SET NODE_ENV=development&&webpack",
     "dist": "SET NODE_ENV=production&&webpack",
-    "test": "karma start karma.conf.js"
+    "test": "karma start karma.conf.js",
+    "lint": "eslint ./"
   },
   "dependencies": {
     "babel-plugin-transform-proto-to-assign": "^6.26.0",
@@ -28,29 +29,11 @@
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
-    "eslint": "^4.11.0",
+    "eslint": "^4.19.0",
     "eslint-config-ao": "^0.0.1-rc.2",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "prettier": "^1.11.1",
     "webpack-bundle-analyzer": "^2.9.1"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "loose": true,
-          "targets": {
-            "browsers": [
-              "> 1%",
-              "last 2 versions",
-              "not ie <= 8"
-            ]
-          }
-        }
-      ]
-    ],
-    "plugins": [
-      "transform-object-rest-spread",
-      "transform-proto-to-assign"
-    ]
   }
 }

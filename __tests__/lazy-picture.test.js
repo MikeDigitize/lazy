@@ -1,6 +1,4 @@
-const {
-	LazyScroll
-} = require('../js/lazy-scroll');
+const { LazyScroll } = require('../js/lazy-scroll');
 
 const {
 	createLazyPicture,
@@ -21,11 +19,26 @@ describe('Picture element tests', function() {
 		lazyImageClass = lazyClassNames.lazyImageClass;
 
 		images = [
-			createLazyPicture([{ minWidth: 250, path: [imagePaths[0]] }], lazyImageClass),
-			createLazyPicture([{ minWidth: 250, path: [imagePaths[1]] }], lazyImageClass),
-			createLazyPicture([{ minWidth: 250, path: [imagePaths[2]] }], lazyImageClass),
-			createLazyPicture([{ minWidth: 250, path: [imagePaths[3]] }], lazyImageClass),
-			createLazyPicture([{ minWidth: 250, path: [imagePaths[4]] }], lazyImageClass)
+			createLazyPicture(
+				[{ minWidth: 250, path: [imagePaths[0]] }],
+				lazyImageClass
+			),
+			createLazyPicture(
+				[{ minWidth: 250, path: [imagePaths[1]] }],
+				lazyImageClass
+			),
+			createLazyPicture(
+				[{ minWidth: 250, path: [imagePaths[2]] }],
+				lazyImageClass
+			),
+			createLazyPicture(
+				[{ minWidth: 250, path: [imagePaths[3]] }],
+				lazyImageClass
+			),
+			createLazyPicture(
+				[{ minWidth: 250, path: [imagePaths[4]] }],
+				lazyImageClass
+			)
 		];
 
 		// Create lazy instance
@@ -43,7 +56,9 @@ describe('Picture element tests', function() {
 			expect(lazyPicture.image.getAttribute('class')).toBe(lazyImageClass);
 			expect(lazyPicture.imagePosition).toBeDefined();
 			expect(lazyPicture.resolved).toBe(false);
-			expect(lazyPicture.image.querySelector('source').getAttribute('data-lazy-src')).toBe(imagePaths[index]);
+			expect(
+				lazyPicture.image.querySelector('source').getAttribute('data-lazy-src')
+			).toBe(imagePaths[index]);
 		});
 	});
 });

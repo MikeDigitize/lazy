@@ -1,0 +1,3 @@
+js/min/*
+__tests__/polyfills/*
+demos/*

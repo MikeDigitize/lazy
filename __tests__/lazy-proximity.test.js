@@ -13,25 +13,19 @@ describe('LazyProximity class tests', function() {
 	afterEach(cleanUpDom);
 
 	it('should add the proximity trigger of each image to existing lazy image data', function() {
+		const { lazyImageClass, lazyTriggerClass } = lazyClassNames;
 
-		const {
-			lazyImageClass,
-			lazyTriggerClass
-		} = lazyClassNames;
-
-		const {
-			imagePath,
-			imagePath2,
-			imagePath3,
-			imagePath4
-		} = lazyImagePaths;
+		const { imagePath, imagePath2, imagePath3, imagePath4 } = lazyImagePaths;
 
 		const image = createLazyImage(imagePath).image;
 		const image2 = createLazyImage(imagePath2).image;
 		const image3 = createLazyImage(imagePath3).image;
 		const image4 = createLazyImage(imagePath4).image;
 		const trigger = createLazyTrigger(lazyTriggerClass);
-		const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+		const lazyImages = new LazyProximity(
+			`.${lazyImageClass}`,
+			`.${lazyTriggerClass}`
+		);
 		const [lazyImage, lazyImage2, lazyImage3, lazyImage4] = lazyImages.images;
 
 		expect(Object.keys(lazyImage).length).toBe(5);
@@ -61,11 +55,9 @@ describe('LazyProximity class tests', function() {
 		expect(lazyImage4.src).toBe(imagePath4);
 		expect(lazyImage4.resolved).toBe(false);
 		expect(lazyImage4.onClickCallback).toBeDefined();
-
 	});
 
 	it('should add proximity data from multiple proximity triggers', function() {
-
 		const {
 			lazyImageClass,
 			lazyImageClass2,
@@ -75,11 +67,7 @@ describe('LazyProximity class tests', function() {
 			lazyTriggerClass3
 		} = lazyClassNames;
 
-		const {
-			imagePath,
-			imagePath2,
-			imagePath3
-		} = lazyImagePaths;
+		const { imagePath, imagePath2, imagePath3 } = lazyImagePaths;
 
 		const image = createLazyImage(imagePath, lazyImageClass).image;
 		const image2 = createLazyImage(imagePath2, lazyImageClass2).image;
@@ -89,7 +77,10 @@ describe('LazyProximity class tests', function() {
 		const trigger2 = createLazyTrigger(lazyTriggerClass2, lazyImageClass2);
 		const trigger3 = createLazyTrigger(lazyTriggerClass3, lazyImageClass3);
 
-		const lazyImages = new LazyProximity(`.${lazyImageClass}, .${lazyImageClass2}, .${lazyImageClass3}`, `.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`);
+		const lazyImages = new LazyProximity(
+			`.${lazyImageClass}, .${lazyImageClass2}, .${lazyImageClass3}`,
+			`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`
+		);
 		const [lazyImage, lazyImage2, lazyImage3] = lazyImages.images;
 
 		expect(Object.keys(lazyImage).length).toBe(5);
@@ -112,20 +103,18 @@ describe('LazyProximity class tests', function() {
 		expect(lazyImage3.src).toBe(imagePath3);
 		expect(lazyImage3.resolved).toBe(false);
 		expect(lazyImage3.onClickCallback).toBeDefined();
-
 	});
 
 	it('should trigger the loading of an image when a proximity target is clicked', function(done) {
-
-		const {
-			lazyImageClass,
-			lazyTriggerClass
-		} = lazyClassNames;
+		const { lazyImageClass, lazyTriggerClass } = lazyClassNames;
 
 		const { imagePath } = lazyImagePaths;
 		const { image, holder } = createLazyImage(imagePath, lazyImageClass);
 		const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);
-		const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+		const lazyImages = new LazyProximity(
+			`.${lazyImageClass}`,
+			`.${lazyTriggerClass}`
+		);
 		const [lazyImage] = lazyImages.images;
 
 		holder.addEventListener('lazyload', function onLazyLoad(evt) {
@@ -135,23 +124,23 @@ describe('LazyProximity class tests', function() {
 		});
 
 		lazyImage.lazyProximityTrigger.click();
-
 	});
 
 	it('should set an image src when a proximity target is clicked', function(done) {
-
-		const {
-			lazyImageClass,
-			lazyTriggerClass
-		} = lazyClassNames;
+		const { lazyImageClass, lazyTriggerClass } = lazyClassNames;
 
 		const { imagePath } = lazyImagePaths;
 		const { image, holder } = createLazyImage(imagePath, lazyImageClass);
 		const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);
-		const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+		const lazyImages = new LazyProximity(
+			`.${lazyImageClass}`,
+			`.${lazyTriggerClass}`
+		);
 		const [lazyImage] = lazyImages.images;
 
-		holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
+		holder.addEventListener('lazyloadcomplete', function onLazyLoadComplete(
+			evt
+		) {
 			expect(evt.target).toBe(lazyImage.image);
 			const src = lazyImage.image.getAttribute('src');
 			expect(src).toBeDefined();
@@ -161,33 +150,35 @@ describe('LazyProximity class tests', function() {
 		});
 
 		lazyImage.lazyProximityTrigger.click();
-
 	});
 
 	it('should set a background-image property when a proximity target is clicked', function(done) {
-
-		const {
-			lazyImageClass,
-			lazyTriggerClass
-		} = lazyClassNames;
+		const { lazyImageClass, lazyTriggerClass } = lazyClassNames;
 
 		const { imagePath } = lazyImagePaths;
 		const { holder } = createLazyBackground(imagePath);
 		const trigger = createLazyTrigger(lazyTriggerClass, lazyImageClass);
-		const lazyImages = new LazyProximity(`.${lazyImageClass}`, `.${lazyTriggerClass}`);
+		const lazyImages = new LazyProximity(
+			`.${lazyImageClass}`,
+			`.${lazyTriggerClass}`
+		);
 		const [lazyImage] = lazyImages.images;
 
-		holder.parentNode.addEventListener('lazyloadcomplete', function onLazyLoadComplete(evt) {
-			expect(evt.target).toBe(lazyImage.image);
-			const { backgroundImage } = lazyImage.image.style;
-			expect(backgroundImage).toBeDefined();
-			expect(backgroundImage).toContain(imagePath);
-			holder.parentNode.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
-			done();
-		});
+		holder.parentNode.addEventListener(
+			'lazyloadcomplete',
+			function onLazyLoadComplete(evt) {
+				expect(evt.target).toBe(lazyImage.image);
+				const { backgroundImage } = lazyImage.image.style;
+				expect(backgroundImage).toBeDefined();
+				expect(backgroundImage).toContain(imagePath);
+				holder.parentNode.removeEventListener(
+					'lazyloadcomplete',
+					onLazyLoadComplete
+				);
+				done();
+			}
+		);
 
 		lazyImage.lazyProximityTrigger.click();
-
 	});
-
 });

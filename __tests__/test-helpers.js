@@ -30,7 +30,10 @@ function createLazyImage(src, imageClass = lazyClassNames.lazyImageClass) {
 }
 
 // Create a picture element with multiple sources within a holder
-function createLazyPicture(srcs = [], imageClass = lazyClassNames.lazyImageClass) {
+function createLazyPicture(
+	srcs = [],
+	imageClass = lazyClassNames.lazyImageClass
+) {
 	const holder = createLazyHolder();
 
 	// Create picture element
@@ -101,7 +104,10 @@ function createLazyBackground(src, lazyClass = lazyClassNames.lazyImageClass) {
 	return { holder, divWithBackground };
 }
 
-function createLazyTrigger(triggerClass, targetClass = lazyClassNames.lazyImageClass) {
+function createLazyTrigger(
+	triggerClass,
+	targetClass = lazyClassNames.lazyImageClass
+) {
 	const trigger = document.createElement('div');
 
 	trigger.constructor = HTMLDivElement;
@@ -116,9 +122,21 @@ function createLazyTrigger(triggerClass, targetClass = lazyClassNames.lazyImageC
 }
 
 function cleanUpDom() {
-	const { lazyImageClass, lazyTriggerClass, lazyTriggerClass2, lazyTriggerClass3, lazyImageHolderClass } = lazyClassNames;
-	const holders = Array.from(document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}`));
-	const triggers = Array.from(document.querySelectorAll(`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`));
+	const {
+		lazyImageClass,
+		lazyTriggerClass,
+		lazyTriggerClass2,
+		lazyTriggerClass3,
+		lazyImageHolderClass
+	} = lazyClassNames;
+	const holders = Array.from(
+		document.querySelectorAll(`.${lazyImageClass}, .${lazyImageHolderClass}`)
+	);
+	const triggers = Array.from(
+		document.querySelectorAll(
+			`.${lazyTriggerClass}, .${lazyTriggerClass2}, .${lazyTriggerClass3}`
+		)
+	);
 
 	holders.concat(triggers).forEach(function(element) {
 		element.parentNode.removeChild(element);
