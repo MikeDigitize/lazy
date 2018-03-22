@@ -1,10 +1,10 @@
 {
-    "extends": ["ao"],
+    "root": true,
+    "extends": ["ao", "plugin:prettier/recommended"],
     "env": {
         "browser": true,
         "node": true,
-        "es6": true,
-        "jest": true
+        "es6": true
     },
     "rules": {
         "no-use-before-define": "off",

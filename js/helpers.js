@@ -34,5 +34,4 @@ function createEvent(evt) {
 	return new Event(evt);
 }
 
-
 module.exports = { debounce, createEvent };
