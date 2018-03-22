@@ -6,8 +6,8 @@
   "author": "Mike Chadwick <chad_01@hotmail.co.uk>",
   "license": "MIT",
   "scripts": {
-    "start": "SET NODE_ENV=development&&webpack",
-    "dist": "SET NODE_ENV=production&&webpack",
+    "start": "webpack --mode=development --watch",
+    "dist": "webpack --mode=production",
     "test": "karma start karma.conf.js",
     "lint": "eslint ./"
   },
@@ -22,11 +22,11 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-ie-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
-    "webpack": "^3.5.5"
+    "webpack": "^4.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.19.0",
@@ -34,6 +34,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "prettier": "^1.11.1",
-    "webpack-bundle-analyzer": "^2.9.1"
+    "webpack-bundle-analyzer": "^2.11.1",
+    "webpack-cli": "^2.0.12"
   }
 }
