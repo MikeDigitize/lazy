@@ -43,7 +43,7 @@ module.exports = function(config) {
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
 			'js/*.js': ['commonjs', 'babel', 'coverage'],
-			'__tests__/*.js': ['commonjs', 'babel', 'coverage']
+			'__tests__/*.js': ['commonjs', 'babel']
 		},
 
 		// test results reporter to use
