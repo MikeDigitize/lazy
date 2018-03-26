@@ -9,7 +9,8 @@
     "start": "webpack --mode=development --watch",
     "dist": "webpack --mode=production",
     "test": "karma start karma.conf.js",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "precommit": "npm run lint && npm test"
   },
   "dependencies": {
     "babel-plugin-transform-proto-to-assign": "^6.26.0",
@@ -33,6 +34,7 @@
     "eslint-config-ao": "^0.0.1-rc.2",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.15.0-rc.13",
     "prettier": "^1.11.1",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.12"
