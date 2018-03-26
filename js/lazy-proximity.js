@@ -12,9 +12,7 @@ const lazyTargetDataAttribute = 'data-lazy-target';
  */
 
 class LazyProximity extends LazyLoad {
-
 	constructor(imageSelector, proximitySelector) {
-
 		super(imageSelector);
 
 		if (!this.images) {
@@ -25,7 +23,10 @@ class LazyProximity extends LazyLoad {
 			return;
 		}
 
-		const proximityTriggers = getProximityTriggers.call(this, proximitySelector);
+		const proximityTriggers = getProximityTriggers.call(
+			this,
+			proximitySelector
+		);
 
 		if (!proximityTriggers.length) {
 			console.warn(
@@ -42,9 +43,10 @@ class LazyProximity extends LazyLoad {
 
 			// loop through all triggers
 			proximityTriggers.forEach(function(proximityTrigger) {
-
 				// when a trigger's target is found
-				const isTarget = proximityTrigger.targets.some((target) => target === lazyImage.image);
+				const isTarget = proximityTrigger.targets.some(
+					target => target === lazyImage.image
+				);
 
 				// add its trigger and click callback to the target's data on the instance
 				if (isTarget) {
@@ -58,7 +60,6 @@ class LazyProximity extends LazyLoad {
 				lazyProximityTrigger,
 				onClickCallback
 			};
-
 		});
 
 		// capture mouseover on document to detect hover over trigger
@@ -69,20 +70,24 @@ class LazyProximity extends LazyLoad {
 
 // find all trigger elements and their lazy load targets
 function getProximityTriggers(proximitySelector) {
-	return Array.from(document.querySelectorAll(proximitySelector)).map((trigger) => {
-		// get all targets for the trigger
-		const targets = Array.from(document.querySelectorAll(trigger.getAttribute(lazyTargetDataAttribute)));
+	return Array.from(document.querySelectorAll(proximitySelector)).map(
+		trigger => {
+			// get all targets for the trigger
+			const targets = Array.from(
+				document.querySelectorAll(trigger.getAttribute(lazyTargetDataAttribute))
+			);
 
-		// store a reference to it for removal later
-		const onClickCallback = onClick.bind(this);
-		trigger.addEventListener('click', onClickCallback);
+			// store a reference to it for removal later
+			const onClickCallback = onClick.bind(this);
+			trigger.addEventListener('click', onClickCallback);
 
-		return {
-			trigger,
-			targets,
-			onClickCallback
-		};
-	});
+			return {
+				trigger,
+				targets,
+				onClickCallback
+			};
+		}
+	);
 }
 
 function getUnloadedImages(images) {
@@ -103,13 +108,15 @@ function onMouseOver(evt) {
 	const trigger = document.elementFromPoint(clientX, clientY);
 
 	// loop through the remaining unloaded images
-	unloadedImages.forEach((lazyImage) => {
-
+	unloadedImages.forEach(lazyImage => {
 		const { lazyProximityTrigger, onClickCallback, image } = lazyImage;
 
 		if (lazyProximityTrigger) {
 			// if the element the mouse is over is the trigger, or is a child of the trigger
-			if (lazyProximityTrigger === trigger || lazyProximityTrigger.contains(trigger)) {
+			if (
+				lazyProximityTrigger === trigger ||
+				lazyProximityTrigger.contains(trigger)
+			) {
 				// load the lazy element, remove its click handler and set it as resolved
 				this.fireLazyLoadEvent(image);
 				lazyImage.resolved = true;
@@ -124,13 +131,15 @@ function onClick(evt) {
 	const { target } = evt;
 
 	// loop through images
-	this.images.forEach((lazyImage) => {
+	this.images.forEach(lazyImage => {
 		const { lazyProximityTrigger, image, onClickCallback } = lazyImage;
 
 		if (lazyProximityTrigger) {
 			// match the clicked trigger with a saved trigger
-			if (lazyProximityTrigger === target || lazyProximityTrigger.contains(target)) {
-
+			if (
+				lazyProximityTrigger === target ||
+				lazyProximityTrigger.contains(target)
+			) {
 				// and load that trigger's lazy element
 				this.fireLazyLoadEvent(image);
 				lazyImage.resolved = true;
