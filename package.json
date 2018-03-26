@@ -13,9 +13,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "npm run lint"
-    ]
+    "*.js": ["eslint"]
   },
   "dependencies": {
     "babel-plugin-transform-proto-to-assign": "^6.26.0",
