@@ -55,11 +55,10 @@ class LazyProximity extends LazyLoad {
 				}
 			});
 
-			return {
-				...lazyImage,
+			return Object.assign({}, lazyImage, {
 				lazyProximityTrigger,
 				onClickCallback
-			};
+			});
 		});
 
 		// capture mouseover on document to detect hover over trigger
