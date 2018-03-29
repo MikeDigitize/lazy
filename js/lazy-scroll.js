@@ -80,10 +80,11 @@ function setLazyImagePositions() {
 
 // Adds positional data to each lazy load element stored on the instance
 function getLazyImagePositions(images) {
-	return images.map(lazyImage => ({
-		...lazyImage,
-		imagePosition: getImagePosition(lazyImage.image)
-	}));
+	return images.map(lazyImage =>
+		Object.assign({}, lazyImage, {
+			imagePosition: getImagePosition(lazyImage.image)
+		})
+	);
 }
 
 // Find images to load from ones yet to be resolved
