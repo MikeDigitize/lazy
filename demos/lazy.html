@@ -4,7 +4,7 @@
   <div class="[ flex-inner ]">
     <div class="[ flex-container cont-6 ]">
       <div class="[ flex-item grow ] logo">
-        <a href="//ao.com" target="_blank" rel="nofollow">
+        <a href="https://ao.com">
           <svg class="ao-logo" aria-hidden="true" version="1.1" viewbox="0 0 345 345" width="64" height="64">
             <g>
               <path fill-rule="evenodd" d="M140.304,17.401c-8.772,0-15.605,4.546-20.549,12.602c-8.757-9.553-19.72-14.089-34.515-14.089
@@ -26,23 +26,38 @@
             </g>
           </svg>
         </a>
-      </div><!-- /.[ flex-item grow ] logo -->
-      <div class="[ flex-item grow ] github"><a href="https://github.com/AORetail" target="_blank" rel="nofollow">
-        <svg class="github-logo" aria-hidden="true" version="1.1" viewbox="0 0 16 16" width="32" height="32">
-          <path fill-rule="evenodd"
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-        </svg>
-      </a></div><!-- /.[ flex-item grow ] github --></div><!-- /.[ flex-container cont-6 ] --></div>
-  <!-- /.[ flex-inner ] -->
-</header><!-- /.ao-demo-header -->
+      </div>
+
+      <div class="[ flex-item grow ] github">
+        <a href="https://github.com/AORetail">
+          <svg class="github-logo" aria-hidden="true" version="1.1" viewbox="0 0 16 16" width="32" height="32">
+            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
 
 <main class="ao-demo-content">
   <div class="[ flex-inner ]">
-    <div class="intro"><h1 class="title">AO lazy load - Lazy</h1>
+    <nav class="navigation">
+      <ul>
+        <li>
+          <a href="./scroll.html">&lt; Prev</a>
+        </li>
+        <li>
+          <a href="./picture.html">Next &gt;</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="intro">
+      <h1 class="title">AO lazy load - Lazy</h1>
       <p>The LazyLoad base class gives you the means to lazy load items.</p>
       <p>It does not automatically trigger loading like the LazyScroll and LazyProximity classes do.</p>
-      <p>An instance of LazyLoad inherits a method - fireLazyLoadEvent - which, when passed an element, will fire a
-        lazyload event on that element, telling LazyLoad to attempt to load it.</p>
+      <p>An instance of LazyLoad inherits a method - fireLazyLoadEvent - which, when passed an element, will fire a lazyload
+        event on that element, telling LazyLoad to attempt to load it.</p>
       <pre class="code-block">
         <label class="[ language html ]">html</label>
 <code class="language-html">&lt;img class="my-lazy-image" data-lazy-src="./img/my-lazy-load-image.png"&gt;</code>
@@ -64,7 +79,9 @@ lazy.fireLazyLoadEvent(lazyImage.image);</code>
     <div class="demo-block">
       <div class="[ flex-container cont-lan-6 cont-des-4 ] lazy">
         <div class="[ flex-item ]">
-          <div class="placeholder"><img data-lazy-src="./img/250x250.jpg" class="image-1"></div>
+          <div class="placeholder">
+            <img data-lazy-src="./img/250x250.jpg" class="image-1">
+          </div>
           <button type="button" class="ao-cta btn" data-lazy-target=".image-1">Click me!</button>
         </div>
       </div>
@@ -74,36 +91,38 @@ lazy.fireLazyLoadEvent(lazyImage.image);</code>
     <script type="text/javascript" src="../js/min/lazy.min.js"></script>
 
     <script type="text/javascript">
+
       var lazyImages = new LazyLoad('.image-1');
 
       Array.from(document.querySelectorAll('.btn')).forEach(function (trigger) {
-
         trigger.addEventListener('click', function onClick() {
-
           trigger.removeEventListener('click', onClick);
           var targets = Array.from(document.querySelectorAll(trigger.getAttribute('data-lazy-target')));
-
           targets.forEach(function (target) {
             lazyImages.fireLazyLoadEvent(target);
           });
-
         });
-
       });
 
       window.addEventListener('lazyloadcomplete', function (event) {
         console.log('loaded!', event.target);
-
         var trgPlaceholder = event.target.parentElement;
-
         trgPlaceholder.style.backgroundColor = '#ffffff';
       });
+
     </script>
-  </div><!-- /.[ flex-inner ] --></main><!-- /.ao-demo-content -->
+  </div>
+</main>
+
 <footer class="ao-demo-footer">
   <ul>
-    <li><a href="//ao.com" target="_blank" rel="nofollow">ao.com</a></li>
-    <li><a href="//ao-jobs.com" target="_blank" rel="nofollow">ao-jobs.com</a></li>
+    <li>
+      <a href="https://ao.com">ao.com</a>
+    </li>
+    <li>
+      <a href="https://ao-jobs.com">ao-jobs.com</a>
+    </li>
   </ul>
-</footer><!-- /.ao-demo-footer -->
+</footer>
+
 <script src="./scripts/OS-demo-frame.js"></script>
