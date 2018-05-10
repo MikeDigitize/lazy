@@ -97,11 +97,12 @@ function lazyLoadImage() {
 	const onImageLoad = getOnLoadCallback(image);
 
 	loadImage(src, lazyImage)
-		.then(function loadedImage() {
+		.then(() => {
 			onImageLoad(image, src);
+			this.resolved = true;
 			image.dispatchEvent(onComplete);
 		})
-		.catch(function loadingImageFailed(err) {
+		.catch(function loadingImageFailed() {
 			image.dispatchEvent(onError);
 		});
 }

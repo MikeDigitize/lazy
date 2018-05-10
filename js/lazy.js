@@ -15,10 +15,8 @@ const lazySrcDataAttribute = 'data-lazy-src';
 
 class LazyLoad {
 	constructor(selector) {
-		// Create an array of all the images matching the given selector
 		const images = Array.from(document.querySelectorAll(selector));
 
-		// Warn user if no images found
 		if (!images.length) {
 			console.warn(
 				`No elements matching the selector ${selector} were found, LazyLoad could not initialise`
@@ -26,25 +24,26 @@ class LazyLoad {
 			return;
 		}
 
-		// store lazy load data for each element
 		this.images = images.map(image => ({
 			image,
 			resolved: false,
 			src: getLazySrc(image)
 		}));
 
-		// listen for the lazyload event on each element
-		this.images.forEach(function(lazyImage) {
-			lazyImage.image.addEventListener(
-				onLoadEventName,
-				lazyLoadImage.bind(lazyImage)
-			);
+		this.images.forEach(function initialiseLoadEventListeners(lazyImage) {
+			lazyImage.onLoad = lazyLoadImage.bind(lazyImage);
+			lazyImage.image.addEventListener(onLoadEventName, lazyImage.onLoad);
 		});
 	}
 
-	// fire lazyload event on element to begin attempting to load
 	fireLazyLoadEvent(image) {
 		image.dispatchEvent(onLoad);
+	}
+
+	destroy() {
+		this.images.forEach(function removeLoadEventListeners(lazyImage) {
+			lazyImage.image.removeEventListener(onLoadEventName, lazyImage.onLoad);
+		});
 	}
 }
 

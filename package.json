@@ -5,12 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/MikeDigitize/lazy",
   "license": "MIT",
-  "keywords": [
-    "ao",
-    "lazy",
-    "load",
-    "scroll"
-  ],
+  "keywords": ["ao", "lazy", "load", "scroll"],
   "scripts": {
     "start": "webpack --mode=development --watch",
     "dist": "webpack --mode=production",
@@ -19,9 +14,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint"
-    ]
+    "*.js": ["eslint"]
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

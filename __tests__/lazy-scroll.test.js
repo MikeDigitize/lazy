@@ -310,4 +310,35 @@ describe('LazyScroll class tests', function() {
 
 		window.scrollTo(0, lazyImage.imagePosition.top);
 	});
+
+	it('should remove scroll event listeners when destroy method is called', function(done) {
+		const { imagePath, imagePath2 } = lazyImagePaths;
+		const { lazyImageClass } = lazyClassNames;
+		const holder1 = createLazyImage(imagePath, lazyImageClass).holder;
+		const holder2 = createLazyImage(imagePath2, lazyImageClass).holder;
+
+		holder1.style.top = '2000px';
+		holder2.style.top = '6000px';
+
+		const lazyImages = new LazyScroll(`.${lazyImageClass}`);
+		const [lazyImage, lazyImage2] = lazyImages.images;
+
+		holder1.addEventListener('lazyloadcomplete', function onLazyLoadComplete() {
+			holder1.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
+
+			lazyImages.destroy();
+			window.scrollTo(
+				lazyImage.imagePosition.top,
+				lazyImage2.imagePosition.top
+			);
+
+			setTimeout(function() {
+				expect(lazyImage2.resolved).toBe(false);
+			}, 1000);
+
+			done();
+		});
+
+		window.scrollTo(0, lazyImage.imagePosition.top);
+	});
 });
