@@ -48,7 +48,6 @@ describe('LazyLoad class tests', function() {
 		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
 		const [lazyImage] = lazyImages.images;
 
-		expect(Object.keys(lazyImage).length).toBe(3);
 		expect(lazyImage.image).toBe(image);
 		expect(lazyImage.src).toBe(imagePath);
 		expect(lazyImage.resolved).toBe(false);
@@ -89,6 +88,7 @@ describe('LazyLoad class tests', function() {
 			const src = lazyImage.image.getAttribute('src');
 			expect(src).toBeDefined();
 			expect(src).toContain(imagePath);
+			expect(lazyImage.resolved).toBe(true);
 			holder.removeEventListener('lazyloadcomplete', onLazyLoadComplete);
 			done();
 		});
@@ -113,6 +113,7 @@ describe('LazyLoad class tests', function() {
 			const { backgroundImage } = lazyImage.image.style;
 			expect(backgroundImage).toBeDefined();
 			expect(backgroundImage).toContain(imagePath);
+			expect(lazyImage.resolved).toBe(true);
 			holder.parentNode.removeEventListener(
 				'lazyloadcomplete',
 				onLazyLoadComplete
@@ -130,10 +131,27 @@ describe('LazyLoad class tests', function() {
 
 		holder.addEventListener('lazyloaderror', function onLazyLoadError(evt) {
 			expect(evt.target).toBe(lazyImage.image);
+			expect(lazyImage.resolved).toBe(false);
 			holder.removeEventListener('lazyloaderror', onLazyLoadError);
 			done();
 		});
 
 		lazyImages.fireLazyLoadEvent(lazyImage.image);
+	});
+
+	it('should remove the onload event listeners for each image when the destroy method is called', function(done) {
+		const { imagePath } = lazyImagePaths;
+		createLazyImage(imagePath);
+		const { lazyImageClass } = lazyClassNames;
+		const lazyImages = new LazyLoad(`.${lazyImageClass}`);
+		const [lazyImage] = lazyImages.images;
+
+		lazyImages.destroy();
+		lazyImages.fireLazyLoadEvent(lazyImage.image);
+
+		setTimeout(function() {
+			expect(lazyImage.resolved).toBe(false);
+			done();
+		}, 1000);
 	});
 });

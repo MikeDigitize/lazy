@@ -48,6 +48,11 @@ class LazyScroll extends LazyLoad {
 	rescanViewport() {
 		findImagesToLoad.call(this);
 	}
+
+	destroy() {
+		super.destroy();
+		removeEventListeners();
+	}
 }
 
 // Handle the loading of images in the intersection observer
@@ -98,7 +103,6 @@ function findImagesToLoad() {
 function loadImages(imagesToLoad) {
 	imagesToLoad.forEach(lazyImage => {
 		this.fireLazyLoadEvent(lazyImage.image);
-		lazyImage.resolved = true;
 	});
 }
 
@@ -180,6 +184,5 @@ function isInViewHorizontally(imageLeft, windowLeft, imageRight, windowRight) {
 module.exports = {
 	LazyScroll,
 	isInViewVertically,
-	isInViewHorizontally,
-	getWindowScrollPosition
+	isInViewHorizontally
 };
