@@ -334,9 +334,8 @@ describe('LazyScroll class tests', function() {
 
 			setTimeout(function() {
 				expect(lazyImage2.resolved).toBe(false);
+				done();
 			}, 1000);
-
-			done();
 		});
 
 		window.scrollTo(0, lazyImage.imagePosition.top);
